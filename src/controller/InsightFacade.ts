@@ -4,8 +4,6 @@
 import {IInsightFacade, InsightResponse, QueryRequest} from "./IInsightFacade";
 
 import Log from "../Util";
-import {unzip} from "zlib";
-import {gzip} from "zlib";
 
 export default class InsightFacade implements IInsightFacade {
 
@@ -15,72 +13,54 @@ export default class InsightFacade implements IInsightFacade {
 
     addDataset(id: string, content: string): Promise<InsightResponse> {
 
-        return new Promise(function (fulfill, reject) {
-                var rp = require('request-promise-native');
-                // TODO: implement
+       var fs = require("fs");
+        var JSZip = require("jszip");
 
-            /*let LOP = [];
+        var contentArray:any[] = [];
 
-            var zipFile = new JSZip();
-
-            var jsZipObject = zipFile.file(content);*/
-
-           /* for (let i of jsZipObject) {
-                LOP.push(rp(i));
-            }*/
-
-            var fs = require('fs');
-            var JSZip = require('jszip');
-
-            new JSZip.external.Promise(function (resolve, reject) {
-
-                fs.readFile(content, function (err, data) {
-
-                    if (err){
-                        reject(err);
-
-                    }else{
-                        resolve(data);
-                    }
-
-                });
-
-            }).then(function (data) {
-                return JSZip.loadAsync(data);
-
+        var jsonObjArray:any[] = [];
+        /*
+// read a zip file
+        fs.readFile(content, function(err:any, data:any) {
+            if (err) throw err;
+            JSZip.loadAsync(data).then(function (zip:any) {
+                for (let i in zip) {
+                    //missing try catch for empty jSon error
+                    jsonObjArray.push(JSON.parse(i));
+                }
+                // ...
             });
+        });
 
+        for (let key in jsonObjArray) {
 
-          /*  fs.readFile(content, function (err:any, data:any) {
-                if (err) throw err;
-                JSZip.loadAsync(data).then(function (zip) {
+        }*/
 
-
-                });
-
-            })*/
-
-           /* zipFile.loadAsync(content)
-                .then*/
-
-/*
-            Promise.all(LOP)
-                .then( function(urls: string[]) {
-
-                    let jsonList = [];
-
-                    for (let url of urls) {
-                        try {
-                            let jsonObject = JSON.parse(url);
-                            //if (isEmpty(jsonObject)) reject('Error: No number was provided');
-                            jsonList.push(jsonObject);
-                        } catch (err) {
-                            reject('Error: Could not parse JSON');
-                        }}
-
-
-            fulfill();*/
+       return new JSZip.external.Promise(function (resolve:any, reject:any) {
+            fs.readFile(content, function(err:any, data:any) {
+                if (err) {
+                    reject({"error": err});
+                }
+                else {
+                    resolve(data);
+                }
             });
+        })
+            .then(function (data:any) {
+            return JSZip.loadAsync(data);
+        })
+            .then(function(zip: any) {
+                for (let i in zip) {
+                    //missing try catch for empty jSon error
+                    jsonObjArray.push(JSON.parse(i));
+                }
+
+                for (let key in jsonObjArray) {
+
+                }
+
+
+            })
 
     }
 
