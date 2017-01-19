@@ -6,6 +6,7 @@ import Server from "../src/rest/Server";
 import {expect} from 'chai';
 import Log from "../src/Util";
 import {InsightResponse} from "../src/controller/IInsightFacade";
+import InsightFacade from "../src/controller/InsightFacade";
 
 describe("EchoSpec", function () {
 
@@ -64,5 +65,7 @@ describe("EchoSpec", function () {
         expect(out.body).to.have.property('error');
         expect(out.body).to.deep.equal({error: 'Message not provided'});
     });
+
+
 
 });
