@@ -11,6 +11,8 @@ export default class DataStructureM {
         Log.trace('DataStructureM::init()');
     }
 
+    //primary key: course dept + course id + course
+
 
 
 
