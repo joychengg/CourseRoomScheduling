@@ -73,9 +73,8 @@ export default class InsightFacade implements IInsightFacade {
                                 reject(400, {"error":err});
                             })
                     });
-                }
-        }
-    })
+                })
+        })
 }
 
             /*      // console.log("help");
