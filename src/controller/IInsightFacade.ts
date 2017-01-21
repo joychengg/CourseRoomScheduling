@@ -15,6 +15,7 @@ export interface QueryRequest {
 
 export interface IInsightFacade {
 
+
     /**
      * Add a dataset to UBCInsight.
      *
@@ -45,6 +46,7 @@ export interface IInsightFacade {
      *
      */
     addDataset(id: string, content: string): Promise<InsightResponse>;
+
 
     /**
      * Remove a dataset from UBCInsight.

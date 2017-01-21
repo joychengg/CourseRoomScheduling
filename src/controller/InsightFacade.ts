@@ -4,9 +4,19 @@
 import {IInsightFacade, InsightResponse, QueryRequest} from "./IInsightFacade";
 
 import Log from "../Util";
+import {isString} from "util";
 
 var fs = require("fs");
 var JSZip = require("jszip");
+
+export class IInsightResponse implements InsightResponse {
+    code:number;
+    body:{};
+    constructor(code:number, body:{}) {
+        this.code = code;
+        this.body = body;
+    };
+}
 
 export default class InsightFacade implements IInsightFacade {
 
@@ -14,42 +24,44 @@ export default class InsightFacade implements IInsightFacade {
         Log.trace('InsightFacadeImpl::init()');
     }
 
+
+
     addDataset(id: string, content: string): Promise<InsightResponse> {
 
+        var emptyResponse: InsightResponse = {
+            code: 400,
+            body: {"error": "empty content"}
+        };
 
-        var contentArray: any[] = [];
-
-        var jsonObjArray: any[] = [];
-        /*
-         // read a zip file
-         fs.readFile(content, function(err:any, data:any) {
-         if (err) throw err;
-         JSZip.loadAsync(data).then(function (zip:any) {
-         for (let i in zip) {
-         //missing try catch for empty jSon error
-         jsonObjArray.push(JSON.parse(i));
-         }
-         // ...
-         });
-         });
-
-         for (let key in jsonObjArray) {
-
-         }*/
 
         return new Promise(function (resolve: any, reject: any) {
 
 
-            if (!content)
-                reject({"error":"empty content"});
+            if (!content) reject(emptyResponse);
 
-            JSZip.loadAsync(content, {'base64':true})
+            JSZip.loadAsync(content, {"base64":true})
 
                 .then(function (zip: any) {
 
-                    console.log("help");
+                    zip.forEach(function(filename:string) {
 
-                    for (let i in zip) {
+                        zip.files[filename].async("string")
+                            .then (function(jsonArray:string[]) {
+                                console.log(jsonArray);
+
+                                resolve(200,{});
+                            })
+
+
+                    });
+
+
+
+
+
+
+
+
                         //missing try catch for empty jSon error
 
                         //add to data struction
@@ -58,26 +70,21 @@ export default class InsightFacade implements IInsightFacade {
                         //save the data structure to a global variable. easier to query
                         //but if using the global variable, then need to write code in query to check if the global variable exist
                         //if it doesnt exist then we need to load it using fs
-                        jsonObjArray.push(JSON.parse(i));
-                    }
+                        //console.log(i);
 
-                    for (let key in jsonObjArray) {
-                        console.log(key);
-
-
-
-                    }
-
-                    resolve();
 
                 })
                 .catch(function (err: any) {
-                    reject(err);
+                    var errResponse: InsightResponse = {
+                        code: 400,
+                        body: {"error": err}
+                    };
+                    reject(errResponse);
                 })
 
-        });
+        })};
 
-    }
+
 
     removeDataset(id: string): Promise<InsightResponse> {
         return null;
