@@ -43,7 +43,7 @@ describe("InsightFacadeTest", function () {
 
     it("checking what's in zip", function () {
         this.timeout(10000);
-        return insightFacade.addDataset('courses', zipStuff).then(function(value) {
+        return insightFacade.addDataset('123courses', zipStuff).then(function(value) {
             Log.test('Value: ' + value);
         }).catch(function (err) {
             console.log("error" +err);
