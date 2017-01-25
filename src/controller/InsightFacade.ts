@@ -117,7 +117,7 @@ export default class InsightFacade implements IInsightFacade {
                             }
 
                             fs.writeFileSync('./tmp/courses', JSON.stringify(everythingArr));
-                        })
+                        });
 
                             // fs.mkdir(path, function (err:any) {
                             //     if (err) {
@@ -211,9 +211,37 @@ export default class InsightFacade implements IInsightFacade {
     }
 
     performQuery(query: QueryRequest): Promise <InsightResponse> {
-        //
+        //QUERY ::='{'BODY ', ' OPTIONS '}'
+        return new Promise(function (resolve:any, reject:any) {
+
+            var random = [];
+            console.log(Object.keys(query.WHERE).length);
+            for (var i = 0; i < Object.keys(query.WHERE).length; i++) {
+                try {
+                    var json = JSON.parse(JSON.stringify(query.WHERE), (key:any, value:any) =>{
+                        console.log(key);
+                        //console.log(value)
+                    });
+                    //console.log(JSON.stringify(json));
+                    random.push(json);
+                    console.log('this is the where part' + random);
+                    resolve();
+                } catch (err) {
+
+                    var cantparseResponse: InsightResponse = {
+                        code: 400,
+                        body: {"error": err}
+                    };
+                    // var wherePart = JSON.parse(query.WHERE);
 
 
-        return null;
+                }
+
+            }
+                    resolve(emptyResponse);
+
+        })
+
+
     }
 }

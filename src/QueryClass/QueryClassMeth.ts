@@ -7,7 +7,10 @@ export default class QueryClassMeth {
     }
 
 
+    getFilter (filter:any){
 
+
+    }
 
 
 
