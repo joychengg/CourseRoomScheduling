@@ -31,9 +31,27 @@ describe("InsightFacadeTest", function () {
         zipStuff = Buffer.from(fs.readFileSync("./courses111.zip")).toString('base64');
         //zipStuff = fs.readFileSync("./courses.zip", "base64");
         queryRequest.WHERE = {
-            "GT": {
-                "courses_avg": 97
-            }
+            "OR":[
+                {
+                    "AND":[
+                        {
+                            "GT":{
+                                "courses_avg":90
+                            }
+                        },
+                        {
+                            "IS":{
+                                "courses_dept":"adhe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "EQ":{
+                        "courses_avg":95
+                    }
+                }
+            ]
         };
         queryRequest.OPTIONS = {
             "COLUMNS":[
@@ -64,7 +82,7 @@ describe("InsightFacadeTest", function () {
     it("checking what's in zip", function () {
         this.timeout(10000);
         return insightFacade.addDataset('123courses', zipStuff).then(function(value) {
-            Log.test('Value: ' + value);
+            Log.test('Value: ' + value.code);
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();

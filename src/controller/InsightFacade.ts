@@ -7,6 +7,7 @@ import Log from "../Util";
 
 import QueryClassMeth from "../QueryClass/QueryClassMeth";
 
+
 var fs = require("fs");
 var JSZip = require("jszip");
 
@@ -89,23 +90,20 @@ export default class InsightFacade implements IInsightFacade {
                             }
                             //everythingArr would contain allllll the courses one by one
 
-                        // })
-                        //
-                        // .then(function (content:any) {
-                            var fileExists = fs.exists(id);
+                            var fileExists = fs.existsSync('./tmp/courses');
                             var path = './tmp';
 
                             try {
-                                //  if (!fs.exists(path)){
                                 fs.mkdirSync(path);
-                                // if (fileExists)
+                                // if (fileExists){
                                 //     resolve(existsResponse);
-                                // else
+                                // }else{
                                 //     resolve(newResponse);
-                                //  }
-
-
+                                // }
+                                // try to see if a folder can be made
                             }catch(err){
+
+                                //if cant be made then output the error
                                 console.log(err);
                             }
 
@@ -119,50 +117,6 @@ export default class InsightFacade implements IInsightFacade {
                             fs.writeFileSync('./tmp/courses', JSON.stringify(everythingArr));
                         });
 
-                            // fs.mkdir(path, function (err:any) {
-                            //     if (err) {
-                            //         console.log('failed to create directory', err);
-                            //     } else {
-                            //         fs.writeFileSync(id, JSON.stringify(everythingArr));
-                            //
-                            //         if (fileExists)
-                            //             resolve(existsResponse);
-                            //         else
-                            //             resolve(newResponse);
-                            //     }
-                            // });
-
-
-                           //var fileExists = fs.existsSync(id);
-                            var outputJson: any = {};
-                            console.log("output");
-
-
-                            //fs.writeFileSync(id, JSON.stringify(everythingArr));
-
-                            // need to write error for invalid ID
-
-                            // if (fileExists)
-                            //     resolve(201,existsResponse);
-                            // else
-                            //     resolve(204,newResponse);
-
-                            // fs.existsSync(id, (err:any) =>{
-                            //     if(!err){
-                            //         fs.unlink(id);
-                            //         fs.writeFileSync(id, everythingArr);
-                            //         resolve(201,{});
-                            //
-                            //     } else{
-                            //         var outputJson : any = {};
-                            //         for (i=0; i <everythingArr.length ; i++){
-                            //             outputJson.push(everythingArr[i]);
-                            //         }
-                            //         fs.writeFileSync(id, JSON.stringify(outputJson));
-                            //         resolve(204,{});
-                            //     }
-                            // });
-
                 })
 
                 .catch(function (err: any) {
@@ -174,9 +128,7 @@ export default class InsightFacade implements IInsightFacade {
                     reject(errResponse);
 
                 })
-
         })
-
     }
 
 
@@ -214,31 +166,51 @@ export default class InsightFacade implements IInsightFacade {
         //QUERY ::='{'BODY ', ' OPTIONS '}'
         return new Promise(function (resolve:any, reject:any) {
 
-            var random = [];
-            console.log(Object.keys(query.WHERE).length);
-            for (var i = 0; i < Object.keys(query.WHERE).length; i++) {
-                try {
-                    var json = JSON.parse(JSON.stringify(query.WHERE), (key:any, value:any) =>{
-                        console.log(key);
-                        //console.log(value)
-                    });
-                    //console.log(JSON.stringify(json));
-                    random.push(json);
-                    console.log('this is the where part' + random);
-                    resolve();
-                } catch (err) {
+            var arrOfKey:any = [];
+            var arrOfValue:any = [];
 
-                    var cantparseResponse: InsightResponse = {
-                        code: 400,
-                        body: {"error": err}
-                    };
-                    // var wherePart = JSON.parse(query.WHERE);
+            var objforQuery = new QueryClassMeth();
+
+            var arrOFCourses = objforQuery.getFilter(query.WHERE);
 
 
-                }
 
-            }
-                    resolve(emptyResponse);
+            //objforQuery.getFilter(query);
+
+            // for (var i = 0; i < Object.keys(query.WHERE).length; i++) {
+            //
+            //     try {
+            //        // var json = JSON.parse(JSON.stringify(query.WHERE), (key:any, value:any) =>{
+            //
+            //             var categoryNames = query.WHERE.map(function (item:any) {
+            //                 return Object.keys(item)[0];
+            //             });
+            //
+            //             console.log(categoryNames);
+            //
+            //            // arrOfKey.push(key);
+            //
+            //             //arrOfValue.push(value);
+            //        // });
+            //         //console.log(JSON.stringify(json));
+            //         //random.push(json);
+            //         resolve();
+            //     } catch (err) {
+            //
+            //         var cantparseResponse: InsightResponse = {
+            //             code: 400,
+            //             body: {"error": err}
+            //         };
+            //         // var wherePart = JSON.parse(query.WHERE);
+            //
+            //
+            //     }
+            //
+            // }
+                // console.log('this is the key part  ' + arrOfKey);
+                //
+                // console.log('this is value part  ' + arrOfValue);
+            resolve(emptyResponse);
 
         })
 
