@@ -171,7 +171,7 @@ export default class InsightFacade implements IInsightFacade {
 
             var objforQuery = new QueryClassMeth();
 
-            var arrOFCourses = objforQuery.getFilter(query.WHERE);
+            var arrOFCourses = objforQuery.getFilter();
 
 
 
