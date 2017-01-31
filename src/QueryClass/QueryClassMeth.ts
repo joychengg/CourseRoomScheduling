@@ -25,11 +25,11 @@ export default class QueryClassMeth {
         return (course[key] === value);
     }
 
-    not_expr (filter:Function):boolean {
+    not_expr (filter:boolean):boolean {
         return !filter;
     }
 
-    and_expr (filter:Function, ...filter2:Function[]):boolean{
+    and_expr (filter:boolean, ...filter2:boolean[]):boolean{
 
         for (var i = 0, fn2; fn2 = filter2[i]; i++) {
             if (!(filter && fn2)) return false;
@@ -38,7 +38,7 @@ export default class QueryClassMeth {
         return true;
     }
 
-    or_expr(filter:Function, ...filter2:Function[]):boolean{
+    or_expr(filter:boolean, ...filter2:boolean[]):boolean{
 
         if (filter) return true;
 
@@ -49,57 +49,66 @@ export default class QueryClassMeth {
         return false;
     }
 
-
-
-    // function traverse(o,func) {
-    //     for (var i in o) {
-    //         func.apply(this,[i,o[i]]);
-    //         if (o[i] !== null && typeof(o[i])=="object") {
-    //             //going on step down in the object tree!!
-    //             traverse(o[i],func);
-    //         }
-    //     }
-    // }
-
     Filter (input:any, course:any ): boolean{
 
-        if (input.key === "GT"){
+        var key = Object.keys(input)[0];
 
-            return this.gt_expr(course, input.GT[0].key, input.GT[0][input.GT[0].key]);
+        if (key === "GT"){
+
+            return this.gt_expr(course, Object.keys(input.GT[0])[0], input.GT[0][input.GT[0].key]);
         }
 
-        if (input.key === "LT"){
+        if (key === "LT"){
 
             return this.lt_expr(course, input.LT[0].key, input.LT[0][input.LT[0].key]);
         }
 
-        if (input.key === "EQ"){
+        if (key === "EQ"){
 
             return this.eq_expr(course, input.EQ[0].key, input.EQ[0][input.EQ[0].key]);
         }
 
-        if (input.key === "IS"){
+        if (key === "IS"){
 
             return this.is_expr(course, input.IS[0].key, input.IS[0][input.IS[0].key]);
         }
 
-        if (input.key === "AND") {
+        if (key === "AND") {
             var exprs = input.AND;
 
+            for (let key of exprs) {
 
+                if (!this.Filter(key,course)) return false;
 
+            }
+            return true;
 
+        }
+
+        if (key === "OR") {
+            var exprs = input.OR;
+
+            for (let key of exprs) {
+
+                if(this.Filter(key, course)) return true;
+
+            }
+            return false;
 
         }
 
 
+        if (key === "NOT") {
 
+            var exprs = input.NOT;
 
+            if (this.Filter(exprs, course)) {
+                return false;
+            } else {
+                return true;
 
-
-
-        return true;
-
+            }
+        }
 
     }
 

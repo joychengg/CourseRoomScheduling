@@ -26,6 +26,10 @@ var existsResponse: InsightResponse = {
     body : {}
 };
 
+
+var everythingArr: any[] = [];
+
+
 export default class InsightFacade implements IInsightFacade {
 
     constructor() {
@@ -78,7 +82,7 @@ export default class InsightFacade implements IInsightFacade {
 
                         .then(function (content:any) {
 
-                            var everythingArr: any[] = [];
+                           // var everythingArr: any[] = [];
                             console.log(jsonObjArray.length);
                             for (var i = 0; i < jsonObjArray.length; i++) {
 
@@ -95,11 +99,6 @@ export default class InsightFacade implements IInsightFacade {
 
                             try {
                                 fs.mkdirSync(path);
-                                // if (fileExists){
-                                //     resolve(existsResponse);
-                                // }else{
-                                //     resolve(newResponse);
-                                // }
                                 // try to see if a folder can be made
                             }catch(err){
 
@@ -136,29 +135,32 @@ export default class InsightFacade implements IInsightFacade {
 
         return new Promise(function (resolve: any, reject: any) {
 
-            if (!id)
-                reject(emptyResponse);
+                if (!id)
+                    reject(emptyResponse);
 
-            fs.existsSync(id, (err:any) => {
-                if (!err){
-                    fs.unlink(id);
-                    var successResponse: InsightResponse = {
-                        code : 204,
-                        body : {}
-                    };
-                    resolve(successResponse);
-                }
-                else {
+                try{
 
+                    var ifExists= fs.existsSync('./tmp/courses');
+
+                    if (ifExists) {
+                        fs.unlinkSync('./tmp/courses');
+                        var successResponse: InsightResponse = {
+                            code : 204,
+                            body : {}
+                        };
+                        resolve(successResponse);
+                    }}
+                catch(err){
                     var removeResponse: InsightResponse = {
-                        code : 404,
-                        body : {"error": err}
-                    };
+                        code: 404,
+                        body: {"error": err}
+                };
                     reject(removeResponse);
-                }
-            })
 
-        })
+                }
+            }
+
+        )
 
     }
 
@@ -166,51 +168,30 @@ export default class InsightFacade implements IInsightFacade {
         //QUERY ::='{'BODY ', ' OPTIONS '}'
         return new Promise(function (resolve:any, reject:any) {
 
-            var arrOfKey:any = [];
-            var arrOfValue:any = [];
+            var arrOFCourses = [];
 
             var objforQuery = new QueryClassMeth();
 
-            var arrOFCourses = objforQuery.getFilter();
 
 
+            if (everythingArr.length === 0){
+                everythingArr = fs.readFileSync('./tmp/courses');
+            }
+            //console.log(everythingArr);
 
-            //objforQuery.getFilter(query);
+            for (var course of everythingArr) {
 
-            // for (var i = 0; i < Object.keys(query.WHERE).length; i++) {
-            //
-            //     try {
-            //        // var json = JSON.parse(JSON.stringify(query.WHERE), (key:any, value:any) =>{
-            //
-            //             var categoryNames = query.WHERE.map(function (item:any) {
-            //                 return Object.keys(item)[0];
-            //             });
-            //
-            //             console.log(categoryNames);
-            //
-            //            // arrOfKey.push(key);
-            //
-            //             //arrOfValue.push(value);
-            //        // });
-            //         //console.log(JSON.stringify(json));
-            //         //random.push(json);
-            //         resolve();
-            //     } catch (err) {
-            //
-            //         var cantparseResponse: InsightResponse = {
-            //             code: 400,
-            //             body: {"error": err}
-            //         };
-            //         // var wherePart = JSON.parse(query.WHERE);
-            //
-            //
-            //     }
-            //
-            // }
-                // console.log('this is the key part  ' + arrOfKey);
-                //
-                // console.log('this is value part  ' + arrOfValue);
-            resolve(emptyResponse);
+                if (objforQuery.Filter(query.WHERE, course))
+                arrOFCourses.push(course);
+
+            }
+            console.log(arrOFCourses);
+
+            var resultResponse: InsightResponse = {
+                code : 200,
+                body : arrOFCourses
+            };
+            resolve(resultResponse);
 
         })
 
