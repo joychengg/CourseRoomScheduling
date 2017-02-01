@@ -42,7 +42,7 @@ describe("InsightFacadeTest", function () {
 
     before(function () { //runs once
         Log.test('Before: ' + (<any>this).test.parent.title);
-        zipStuff = Buffer.from(fs.readFileSync("./courses111.zip")).toString('base64');
+        zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
         //zipStuff = fs.readFileSync("./courses.zip", "base64");
         queryRequest.WHERE = {
             "OR":[
