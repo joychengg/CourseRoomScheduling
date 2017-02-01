@@ -6,6 +6,7 @@ import {IInsightFacade, InsightResponse, QueryRequest} from "./IInsightFacade";
 import Log from "../Util";
 
 import QueryClassMeth from "../QueryClass/QueryClassMeth";
+import {stringify} from "querystring";
 
 
 var fs = require("fs");
@@ -61,20 +62,20 @@ export default class InsightFacade implements IInsightFacade {
 
                         .then(function (content: string[]) {
                             for (var i = 0; i < content.length; i++) {
-                                try {
-                                    var json = JSON.parse(content[i]);
-                                    // console.log(JSON.stringify(json));
-                                    jsonObjArray.push(json);
-                                } catch (err) {
 
-                                    var cantparseResponse: InsightResponse = {
-                                        code : 400,
-                                        body : {"error": err}
-                                    };
-                                    reject(cantparseResponse);
-                                }
-
+                                var json = JSON.parse(content[i]);
+                                // console.log(JSON.stringify(json));
+                                jsonObjArray.push(json);
                             }
+                        })
+                        .catch (function (err:any) {
+
+                            var cantparseResponse: InsightResponse = {
+                                code : 400,
+                                body : {"error": err}
+                            };
+                            reject(cantparseResponse);
+
                         })
 
 
@@ -82,7 +83,7 @@ export default class InsightFacade implements IInsightFacade {
 
                         .then(function (content:any) {
 
-                           // var everythingArr: any[] = [];
+                            // var everythingArr: any[] = [];
                             console.log(jsonObjArray.length);
                             for (var i = 0; i < jsonObjArray.length; i++) {
 
@@ -101,9 +102,12 @@ export default class InsightFacade implements IInsightFacade {
                                 fs.mkdirSync(path);
                                 // try to see if a folder can be made
                             }catch(err){
-
-                                //if cant be made then output the error
-                                console.log(err);
+                                if (fileExists) {
+                                    resolve(existsResponse);
+                                }else {
+                                    resolve(newResponse);
+                                }
+                                //if cant be made then check if file exist or not
                             }
 
                             if (fileExists) {
@@ -135,62 +139,157 @@ export default class InsightFacade implements IInsightFacade {
 
         return new Promise(function (resolve: any, reject: any) {
 
-                if (!id)
-                    reject(emptyResponse);
+            if (!id)
+                reject(emptyResponse);
+            var promises: Promise<string>[] = [];
 
-                try{
+            var ifExists= fs.existsSync('./tmp/courses');
 
-                    var ifExists= fs.existsSync('./tmp/courses');
+            if (ifExists)
+                promises.push(fs.unlink('./tmp/courses'));
 
-                    if (ifExists) {
-                        fs.unlinkSync('./tmp/courses');
-                        var successResponse: InsightResponse = {
-                            code : 204,
-                            body : {}
-                        };
-                        resolve(successResponse);
-                    }}
-                catch(err){
+            Promise.all(promises)
+
+                .then(function (id: any) {
+
+                    var successResponse: InsightResponse = {
+                        code : 204,
+                        body : {}
+                    };
+
+                    resolve(successResponse);
+                })
+                .catch(function (err: any)
+                {
                     var removeResponse: InsightResponse = {
                         code: 404,
-                        body: {"error": err}
-                };
-                    reject(removeResponse);
+                        body: {"error":err}
+                    };
+                    resolve(removeResponse);
+                })
+        })
 
-                }
-
-            }
-
-        )
 
     }
 
     performQuery(query: QueryRequest): Promise <InsightResponse> {
-        //QUERY ::='{'BODY ', ' OPTIONS '}'
+
         return new Promise(function (resolve:any, reject:any) {
+
 
             var arrOFCourses = [];
 
+            var finalCourseArr = [];
+
             var objforQuery = new QueryClassMeth();
 
-            if (everythingArr.length === 0){
+
+            if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
+
+                var failResponse: InsightResponse = {
+                    code: 400,
+                    body: {}
+                };
+                resolve(failResponse);
+            }
+
+            if (!(fs.existsSync('./tmp/courses'))) {
+                var resultResponse: InsightResponse = {
+                    code: 424,
+                    body: {missing: "courses"}
+                };
+
+                resolve(resultResponse);
+            }
+
+
+            if (everythingArr.length === 0) {
                 everythingArr = fs.readFileSync('./tmp/courses');
             }
 
+
             for (var course of everythingArr) {
+                try {
 
-                if (objforQuery.Filter(query.WHERE, course))
-                arrOFCourses.push(course);
+                    if (objforQuery.Filter(query.WHERE, course))
+                        arrOFCourses.push(course);
+                } catch (err) {
 
+                    var failResponse: InsightResponse = {
+                        code: 400,
+                        body: err
+                    };
+                    resolve(failResponse);
+                }
             }
 
 
-            console.log(arrOFCourses);
+            for (var course of arrOFCourses) {
+                try {
+
+                    finalCourseArr.push(objforQuery.Combine(course, query.OPTIONS));
+
+                } catch (err) {
+
+                    var failResponse: InsightResponse = {
+                        code: 400,
+                        body: err
+                    };
+                    resolve(failResponse);
+                }
+            }
+
+
+            var column = Object.keys(query.OPTIONS)[0];
+            var order = query.OPTIONS.ORDER;
+
+            // console.log(query.OPTIONS.COLUMNS);
+            var count = 0;
+            for (var i of query.OPTIONS.COLUMNS) {
+
+                if (i === order) {
+                    count++;
+                    break;
+                }
+            }
+            if (count === 0) {
+                var failResponse: InsightResponse = {
+                    code: 400,
+                    body: {}
+                };
+                resolve(failResponse);
+            }
+
+
+            finalCourseArr.sort(function(a, b) {
+                var orderS = query.OPTIONS['ORDER'];
+
+                return parseFloat(a[orderS]) - parseFloat(b[orderS]);
+            });
+
+           // console.log(finalCourseArr);
+            //console.log(Object.keys(finalCourseArr)[0]);
+
+            // if (Object.keys(finalCourseArr)[0]==="missing"){
+            //     var resultResponse: InsightResponse = {
+            //         code : 424,
+            //         body : finalCourseArr
+            //     };
+            //
+            //     resolve(resultResponse);
+            //
+            //
+            // }
+
+            var n1 = {render:'TABLE', result:{}};
+
+            n1.result = finalCourseArr;
 
             var resultResponse: InsightResponse = {
                 code : 200,
-                body : arrOFCourses
+                body : n1
             };
+
             resolve(resultResponse);
 
         })

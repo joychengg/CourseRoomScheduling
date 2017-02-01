@@ -76,80 +76,133 @@ export default class QueryClassMeth {
 
     }
 
+    isJson(str:any):boolean {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
 
     Filter (input:any, course:any ): boolean{
 
-        var key = Object.keys(input)[0];
+        try {
 
-        if (key === "GT"){
+            var key = Object.keys(input)[0];
 
-            var key1 = Object.keys(input.GT);
+            if (key === "GT") {
 
-            return this.gt_expr(course, this.methodKey(key1[0]), input.GT[key1[0]]);
+                var key1 = Object.keys(input.GT);
 
-        }
-
-        if (key === "LT"){
-            var key1 = Object.keys(input.LT);
-
-            return this.lt_expr(course, this.methodKey(key1[0]), input.LT[key1[0]]);
-        }
-
-        if (key === "EQ"){
-            var key1 = Object.keys(input.EQ);
-            return this.eq_expr(course, this.methodKey(key1[0]), input.EQ[key1[0]]);
-        }
-
-        if (key === "IS"){
-            var key1 = Object.keys(input.IS);
-            return this.is_expr(course, this.methodKey(key1[0]), input.IS[key1[0]]);
-        }
-
-        if (key === "AND") {
-            var exprs = input.AND;
-
-            for (let key of exprs) {
-
-                if (!this.Filter(key,course)) return false;
+                return this.gt_expr(course, this.methodKey(key1[0]), input.GT[key1[0]]);
 
             }
-            return true;
 
-        }
+            if (key === "LT") {
+                var key1 = Object.keys(input.LT);
 
-        if (key === "OR") {
-            var exprs = input.OR;
-
-            for (let key of exprs) {
-
-                if(this.Filter(key, course)) return true;
-
+                return this.lt_expr(course, this.methodKey(key1[0]), input.LT[key1[0]]);
             }
-            return false;
 
-        }
+            if (key === "EQ") {
+                var key1 = Object.keys(input.EQ);
+                return this.eq_expr(course, this.methodKey(key1[0]), input.EQ[key1[0]]);
+            }
 
+            if (key === "IS") {
+                var key1 = Object.keys(input.IS);
+                return this.is_expr(course, this.methodKey(key1[0]), input.IS[key1[0]]);
+            }
 
-        if (key === "NOT") {
+            if (key === "AND") {
+                var exprs = input.AND;
 
-            var exprs = input.NOT;
+                for (let key of exprs) {
 
-            if (this.Filter(exprs, course)) {
-                return false;
-            } else {
+                    if (!this.Filter(key, course)) return false;
+
+                }
                 return true;
 
             }
+
+            if (key === "OR") {
+                var exprs = input.OR;
+
+                for (let key of exprs) {
+
+                    if (this.Filter(key, course)) return true;
+
+                }
+                return false;
+
+            }
+
+
+            if (key === "NOT") {
+
+                var exprs = input.NOT;
+
+                if (this.Filter(exprs, course)) {
+                    return false;
+                } else {
+                    return true;
+
+                }
+            }
+        }catch(err){
+            return err;
         }
 
     }
 
-    Combine(course:any, input:any): string{
+    Combine(course:any, input_option:any): any{
+
+            var column = Object.keys(input_option)[0];
+
+            var order = Object.keys(input_option)[1];
+
+            var result: any = {};
+
+            var miss = [];
+
+            try {
+                for (var i = 0; i < input_option[column].length; i++) {
+
+                    for (var c = 0; c < Object.keys(course).length; c++) {
 
 
+                        if (this.methodKey(input_option[column][i]) === Object.keys(course)[c]) {
+
+                            result[input_option[column][i]] = course[Object.keys(course)[c]];
+                        }
+
+                        // }else{
+                        //     miss[c] = input_option[column][i];
+                        //
+                        // }
+
+                    }
+
+                }
+            }catch (err){
+
+                return err;
+
+            }
 
 
-        return 'fuck u';
+            return result;
+        //     console.log("miss  "+miss);
+        //
+        // if (miss!=null) {
+        //     return result;
+        // }else{
+        //     return miss;
+        // }
+
     }
 
 

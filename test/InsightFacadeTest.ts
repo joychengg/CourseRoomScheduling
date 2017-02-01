@@ -25,6 +25,20 @@ describe("InsightFacadeTest", function () {
         }
     };
 
+    var queryRequest2: QueryRequest = {
+        WHERE: {},
+        OPTIONS: {COLUMNS: [],
+            ORDER: '',
+            FORM:"TABLE"
+        }
+    };
+    var queryRequest3: QueryRequest = {
+        WHERE: {},
+        OPTIONS: {COLUMNS: [],
+            ORDER: '',
+            FORM:"TABLE"
+        }
+    };
 
     before(function () { //runs once
         Log.test('Before: ' + (<any>this).test.parent.title);
@@ -53,14 +67,78 @@ describe("InsightFacadeTest", function () {
                 }
             ]
         };
+
         queryRequest.OPTIONS = {
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+
+        queryRequest2.WHERE = {
+            "OR":[
+                {
+                    "AND":[
+                        {
+                            "GT":{
+                                "courses_avg":90
+                            }
+                        },
+                        {
+                            "IS":{
+                                "courses_dept":"adhe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "EQ":{
+                        "courses_avg":95
+                    }
+                }
+            ]
+        };
+
+        queryRequest2.OPTIONS = {
             "COLUMNS":[
                 "courses_dept",
+                "courses_id",
                 "courses_avg"
             ],
             "ORDER":"courses_avg",
             "FORM":"TABLE"
         };
+
+        queryRequest3.WHERE = {
+            "OR":[
+                {
+                    "AND":[
+                        {
+                            "GT":{
+                                "hello":90
+                            }
+                        },
+                        {
+                            "IS":{
+                                "courses":"adhe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "EQ":{
+                        "courses_avg":95
+                    }
+                }
+            ]
+        };
+
+        queryRequest3.OPTIONS = {
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses",
+            "FORM":"TABLE"
+        };
+
     });
 
     beforeEach(function () {
@@ -78,11 +156,32 @@ describe("InsightFacadeTest", function () {
     });
 
 
+    it("delete file fail --- reject(404)", function () {
+        this.timeout(10000);
+        return insightFacade.removeDataset('courses').then(function(value) {
+            Log.test('Value: ' + value.code);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect(err.code).to.equal(204);
+        });
+    });
 
-    it("checking what's in zip", function () {
+    it("missing query", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(424);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("first add of file - resolve in 204", function () {
         this.timeout(10000);
         return insightFacade.addDataset('123courses', zipStuff).then(function(value) {
             Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(204);
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -92,28 +191,42 @@ describe("InsightFacadeTest", function () {
     it("query", function () {
         this.timeout(10000);
         return insightFacade.performQuery(queryRequest).then(function(value) {
-            Log.test('Value: ' + value);
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
         });
     });
 
-    it("delete file fail --- reject(404)", function () {
+    it("query with no order str", function () {
         this.timeout(10000);
-        return insightFacade.removeDataset('courses').then(function(value) {
+        return insightFacade.performQuery(queryRequest3).then(function(value) {
             Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(400);
         }).catch(function (err) {
             console.log("error" +err);
-            expect(err.code).to.equal(404);
+            expect.fail();
         });
     });
 
-    it("new file from zip --- resolve(204)", function () {
+    it("query_ complex", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest2).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+
+    it("second add --- resolve(201)", function () {
         this.timeout(10000);
         return insightFacade.addDataset('courses', zipStuff).then(function(value) {
             Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(204);
+            expect(value.code).to.equal(201);
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -134,6 +247,17 @@ describe("InsightFacadeTest", function () {
     it("delete file success --- resolve(204)", function () {
         this.timeout(10000);
         return insightFacade.removeDataset('courses').then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(204);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("last add, folder exist but no file - resolve in 204", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('123courses', zipStuff).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(204);
         }).catch(function (err) {

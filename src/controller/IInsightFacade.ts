@@ -15,7 +15,7 @@ export interface QueryRequest {
     WHERE: any;
 
     OPTIONS:{
-        COLUMNS: string[];
+        COLUMNS: any[];
         ORDER: string;
         FORM:"TABLE";
     }
