@@ -158,6 +158,7 @@ export default class InsightFacade implements IInsightFacade {
                     reject(removeResponse);
 
                 }
+
             }
 
         )
@@ -172,12 +173,9 @@ export default class InsightFacade implements IInsightFacade {
 
             var objforQuery = new QueryClassMeth();
 
-
-
             if (everythingArr.length === 0){
                 everythingArr = fs.readFileSync('./tmp/courses');
             }
-            //console.log(everythingArr);
 
             for (var course of everythingArr) {
 
@@ -185,6 +183,8 @@ export default class InsightFacade implements IInsightFacade {
                 arrOFCourses.push(course);
 
             }
+
+
             console.log(arrOFCourses);
 
             var resultResponse: InsightResponse = {

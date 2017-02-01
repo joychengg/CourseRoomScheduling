@@ -99,4 +99,47 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("delete file fail --- reject(404)", function () {
+        this.timeout(10000);
+        return insightFacade.removeDataset('courses').then(function(value) {
+            Log.test('Value: ' + value.code);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect(err.code).to.equal(404);
+        });
+    });
+
+    it("new file from zip --- resolve(204)", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('courses', zipStuff).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(204);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("exists file --- resolve(201)", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('courses', zipStuff).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(201);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("delete file success --- resolve(204)", function () {
+        this.timeout(10000);
+        return insightFacade.removeDataset('courses').then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(204);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
 });

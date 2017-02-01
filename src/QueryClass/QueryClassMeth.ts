@@ -49,28 +49,60 @@ export default class QueryClassMeth {
         return false;
     }
 
+
+    methodKey (input: string){
+
+        var output: string = '';
+    if (input === 'courses_avg'){
+        return output = 'Avg';
+    }else if(input === 'courses_dept'){
+        return output = 'Subject';
+    }else if(input === 'courses_id'){
+        return output = 'Course';
+    }else if (input === 'courses_instructor'){
+        return output = 'Professor';
+    }else if (input === 'courses_title'){
+        return output = 'Title';
+    }else if (input === 'courses_pass'){
+        return output = 'Pass';
+    }else if (input === 'courses_fail'){
+        return output = 'Fail';
+    }else if (input === 'courses_audit'){
+        return output = 'Audit';
+    }else if(input === 'courses_uuid'){
+        return output = 'id';
+    }
+
+
+    }
+
+
     Filter (input:any, course:any ): boolean{
 
         var key = Object.keys(input)[0];
 
         if (key === "GT"){
 
-            return this.gt_expr(course, Object.keys(input.GT[0])[0], input.GT[0][input.GT[0].key]);
+            var key1 = Object.keys(input.GT);
+
+            return this.gt_expr(course, this.methodKey(key1[0]), input.GT[key1[0]]);
+
         }
 
         if (key === "LT"){
+            var key1 = Object.keys(input.LT);
 
-            return this.lt_expr(course, input.LT[0].key, input.LT[0][input.LT[0].key]);
+            return this.lt_expr(course, this.methodKey(key1[0]), input.LT[key1[0]]);
         }
 
         if (key === "EQ"){
-
-            return this.eq_expr(course, input.EQ[0].key, input.EQ[0][input.EQ[0].key]);
+            var key1 = Object.keys(input.EQ);
+            return this.eq_expr(course, this.methodKey(key1[0]), input.EQ[key1[0]]);
         }
 
         if (key === "IS"){
-
-            return this.is_expr(course, input.IS[0].key, input.IS[0][input.IS[0].key]);
+            var key1 = Object.keys(input.IS);
+            return this.is_expr(course, this.methodKey(key1[0]), input.IS[key1[0]]);
         }
 
         if (key === "AND") {
@@ -112,7 +144,13 @@ export default class QueryClassMeth {
 
     }
 
+    Combine(course:any, input:any): string{
 
+
+
+
+        return 'fuck u';
+    }
 
 
 
