@@ -28,7 +28,7 @@ var existsResponse: InsightResponse = {
 };
 
 
- var everythingArr: any[] = [];
+var everythingArr: any[] = [];
 
 
 export default class InsightFacade implements IInsightFacade {
@@ -42,11 +42,10 @@ export default class InsightFacade implements IInsightFacade {
         var jsonObjArray: any[] = [];
 
         //Buffer.from(fs.readFileSync(content)).toString('base64')
-        var inside = fs.readFileSync(content, 'base64');
 
         return new Promise(function (resolve: any, reject: any) {
 
-
+            var inside = fs.readFileSync(content, 'base64');
 
             if (!inside)
                 reject(emptyResponse);
@@ -88,7 +87,7 @@ export default class InsightFacade implements IInsightFacade {
                         .then(function (content:any) {
 
                             // var everythingArr: any[] = [];
-                            console.log(jsonObjArray.length);
+                            // console.log(jsonObjArray.length);
                             for (var i = 0; i < jsonObjArray.length; i++) {
 
                                 var arrayOfCourses = jsonObjArray[i].result;   //loop through the jsonObjectList's result node and put everything into an array
@@ -100,11 +99,12 @@ export default class InsightFacade implements IInsightFacade {
                             //everythingArr would contain allllll the courses one by one
 
 
-                            var path = './tmp';
-                            var fileExists = fs.existsSync(path+'/courses');
+                            var path = './'+ id+'.json';
+                            var fileExists = fs.existsSync(path);
 
                             try {
-                                fs.mkdirSync(path);
+                                //fs.mkdirSync(path);
+                                fs.writeFileSync( path, JSON.stringify(everythingArr));
                                 // try to see if a folder can be made
                             }catch(err){
                                 if (fileExists) {
@@ -122,7 +122,7 @@ export default class InsightFacade implements IInsightFacade {
                                 resolve(newResponse);
                             }
 
-                            fs.writeFileSync( path+'/courses', JSON.stringify(everythingArr));
+                            //fs.writeFileSync( path, JSON.stringify(everythingArr));
                         });
 
                 })
@@ -146,32 +146,77 @@ export default class InsightFacade implements IInsightFacade {
 
             if (!id)
                 reject(emptyResponse);
-            var promises: Promise<string>[] = [];
 
-            var ifExists= fs.existsSync('./tmp/courses');
+            var path = './'+ id+'.json';
 
-            if (ifExists)
-                promises.push(fs.unlink('./tmp/courses'));
 
-            Promise.all(promises)
+            fs.exists(path,function (value:boolean) {
+                if (!value){
 
-                .then(function (id: any) {
-
-                    var successResponse: InsightResponse = {
-                        code : 204,
-                        body : {}
-                    };
-
-                    resolve(successResponse);
-                })
-                .catch(function (err: any)
-                {
                     var removeResponse: InsightResponse = {
                         code: 404,
-                        body: {"error":err}
+                        body: {}
                     };
-                    resolve(removeResponse);
-                })
+                    reject(removeResponse);
+
+
+                }else{
+                    fs.unlink(path,function () {
+                        var successResponse: InsightResponse = {
+                            code: 204,
+                            body: {}
+                        };
+
+                        resolve(successResponse);
+                    });
+
+                }
+
+            });
+
+            //     var promises: Promise<string>[] = [];
+            //
+            //     var path = './'+ id+'.json';
+            //
+            //     var ifExists= fs.existsSync(path);
+            //
+            //     if (ifExists)
+            //         promises.push(fs.unlink(path));
+            //
+            //     Promise.all(promises)
+            //
+            //         .then(function (id: any) {
+            //
+            //             for (var stuff of id){
+            //             try {
+            //
+            //                 var successResponse: InsightResponse = {
+            //                     code: 204,
+            //                     body: {}
+            //                 };
+            //
+            //                 resolve(successResponse);
+            //
+            //             }catch (err){
+            //
+            //                 var removeResponse: InsightResponse = {
+            //                     code: 404,
+            //                     body: {"error":err}
+            //                 };
+            //                 reject(removeResponse);
+            //
+            //             }
+            //         }
+            // })
+            //         .catch(function (err: any)
+            //         {
+            //             var removeResponse: InsightResponse = {
+            //                 code: 404,
+            //                 body: {"error":err}
+            //             };
+            //             reject(removeResponse);
+            //         })
+            //
         })
 
 
@@ -187,6 +232,8 @@ export default class InsightFacade implements IInsightFacade {
 
             var objforQuery = new QueryClassMeth();
 
+            var path = './courses.json';
+
 
             if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
 
@@ -194,36 +241,58 @@ export default class InsightFacade implements IInsightFacade {
                     code: 400,
                     body: {}
                 };
-                resolve(failResponse);
+                reject(failResponse);
             }
 
-            if (!(fs.existsSync('./tmp/courses'))) {
+            // if (!(query.WHERE.hasOwnProperty('courses_avg')||query.WHERE.hasOwnProperty('courses_id')||query.WHERE.hasOwnProperty('courses_dept')
+            //     ||query.WHERE.hasOwnProperty('OR')||query.WHERE.hasOwnProperty('EQ')||query.WHERE.hasOwnProperty('AND')||
+            //     query.WHERE.hasOwnProperty('GT')||query.WHERE.hasOwnProperty('IS'))){
+            //     var failResponse: InsightResponse = {
+            //         code: 400,
+            //         body: {}
+            //     };
+            //     reject(failResponse);
+            // }
+
+            // if (!objforQuery.checkKey(query.WHERE)){
+            //     var failResponse: InsightResponse = {
+            //         code: 400,
+            //         body: {}
+            //     };
+            //     reject(failResponse);
+            //
+            // }
+
+            if (!(fs.existsSync(path))) {
                 var resultResponse: InsightResponse = {
                     code: 424,
                     body: {missing: "courses"}
                 };
 
-                resolve(resultResponse);
+                reject(resultResponse);
             }
 
 
             if (everythingArr.length === 0) {
-                everythingArr = fs.readFileSync('./tmp/courses');
+                everythingArr = fs.readFileSync(path);
             }
+
+
 
 
             for (var course of everythingArr) {
                 try {
 
-                    if (objforQuery.Filter(query.WHERE, course))
+                    if (objforQuery.Filter(query.WHERE, course)===true)
                         arrOFCourses.push(course);
                 } catch (err) {
-
-                    var failResponse: InsightResponse = {
-                        code: 400,
-                        body: err
-                    };
-                    resolve(failResponse);
+                    if (err === "invalid key") {
+                        var failResponse: InsightResponse = {
+                            code: 400,
+                            body: err
+                        };
+                        reject(failResponse);
+                    }
                 }
             }
 
@@ -239,10 +308,11 @@ export default class InsightFacade implements IInsightFacade {
                         code: 400,
                         body: err
                     };
-                    resolve(failResponse);
+                    reject(failResponse);
                 }
             }
 
+            //console.log("watch here   "+ JSON.stringify(finalCourseArr));
 
             var column = Object.keys(query.OPTIONS)[0];
             var order = query.OPTIONS.ORDER;
@@ -261,7 +331,7 @@ export default class InsightFacade implements IInsightFacade {
                     code: 400,
                     body: {}
                 };
-                resolve(failResponse);
+                reject(failResponse);
             }
 
 
@@ -271,7 +341,7 @@ export default class InsightFacade implements IInsightFacade {
                 return parseFloat(a[orderS]) - parseFloat(b[orderS]);
             });
 
-           // console.log(finalCourseArr);
+            // console.log(finalCourseArr);
             //console.log(Object.keys(finalCourseArr)[0]);
 
             // if (Object.keys(finalCourseArr)[0]==="missing"){
@@ -289,7 +359,7 @@ export default class InsightFacade implements IInsightFacade {
 
             n1.result = finalCourseArr;
 
-          //  console.log("here is final result  " + n1);
+            console.log("here is final result  " + JSON.stringify(n1));
 
             var resultResponse: InsightResponse = {
                 code : 200,

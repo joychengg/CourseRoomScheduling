@@ -180,7 +180,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
         }).catch(function (err) {
             console.log("error" +err);
-            expect(err.code).to.equal(204);
+            expect(err.code).to.equal(404);
         });
     });
 
@@ -188,10 +188,10 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(queryRequest).then(function(value) {
             Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(424);
+            expect.fail();
         }).catch(function (err) {
             console.log("error" +err);
-            expect.fail();
+            expect(err.code).to.equal(424);
         });
     });
 
@@ -221,10 +221,10 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(queryRequest3).then(function(value) {
             Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(400);
+            expect.fail();
         }).catch(function (err) {
             console.log("error" +err);
-            expect.fail();
+            expect(err.code).to.equal(400);
         });
     });
 
@@ -275,7 +275,7 @@ describe("InsightFacadeTest", function () {
 
     it("last add, folder exist but no file - resolve in 204", function () {
         this.timeout(10000);
-        return insightFacade.addDataset('123courses', zipStuff).then(function(value) {
+        return insightFacade.addDataset('courses', zipStuff).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(204);
         }).catch(function (err) {
