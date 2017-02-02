@@ -12,60 +12,82 @@ import {InsightResponse, QueryRequest} from "../src/controller/IInsightFacade";
 import InsightFacade from "../src/controller/InsightFacade";
 
 import fs = require("fs");
+var zipStuff: any = null;
+var insightFacade: InsightFacade = null;
+var queryRequest: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var queryRequest2: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+var queryRequest3: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
 
 describe("InsightFacadeTest", function () {
 
-    var zipStuff: any = null;
-    var insightFacade: InsightFacade = null;
-    var queryRequest: QueryRequest = {
-        WHERE: {},
-        OPTIONS: {COLUMNS: [],
-                  ORDER: '',
-                  FORM:"TABLE"
-        }
-    };
-
-    var queryRequest2: QueryRequest = {
-        WHERE: {},
-        OPTIONS: {COLUMNS: [],
-            ORDER: '',
-            FORM:"TABLE"
-        }
-    };
-    var queryRequest3: QueryRequest = {
-        WHERE: {},
-        OPTIONS: {COLUMNS: [],
-            ORDER: '',
-            FORM:"TABLE"
-        }
-    };
 
     before(function () { //runs once
         Log.test('Before: ' + (<any>this).test.parent.title);
-        zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
+        //zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
+        // let path = "./courses.zip";
+        // zipStuff = JSON.parse(require('fs').readFileSync(path, {String}));
+
+
+        // try {
+        //     fs.mkdirSync(path);
+        //     // try to see if a folder can be made
+        // }catch(err){
+        //     if (fileExists) {
+        //         resolve(existsResponse);
+        //     }else {
+        //         resolve(newResponse);
+        //     }
+        //     //if cant be made then check if file exist or not
+        // }
+        //
+        // if (fileExists) {
+        //     resolve(existsResponse);
+        // }
+        // else {
+        //     resolve(newResponse);
+        // }
+
+
+
+
+
+    });
+
+    beforeEach(function () {
+
+        Log.test('BeforeTest: ' + (<any>this).currentTest.title);
+        insightFacade = new InsightFacade();
+        zipStuff = "./courses.zip";
+        //zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
+
+        // var fileExists = fs.existsSync('../courses');
+        // var path = './tmp';
+        // fs.writeFileSync( path+'/courses', JSON.stringify(insightFacade.addDataset('courses', zipStuff)));
+
         //zipStuff = fs.readFileSync("./courses.zip", "base64");
         queryRequest.WHERE = {
-            "OR":[
-                {
-                    "AND":[
-                        {
-                            "GT":{
-                                "courses_avg":90
-                            }
-                        },
-                        {
-                            "IS":{
-                                "courses_dept":"adhe"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "EQ":{
-                        "courses_avg":95
-                    }
-                }
-            ]
+            "GT":{
+                "courses_avg":97
+            }
         };
 
         queryRequest.OPTIONS = {
@@ -139,11 +161,7 @@ describe("InsightFacadeTest", function () {
             "FORM":"TABLE"
         };
 
-    });
 
-    beforeEach(function () {
-        Log.test('BeforeTest: ' + (<any>this).currentTest.title);
-        insightFacade = new InsightFacade();
     });
 
     after(function () {
@@ -179,7 +197,7 @@ describe("InsightFacadeTest", function () {
 
     it("first add of file - resolve in 204", function () {
         this.timeout(10000);
-        return insightFacade.addDataset('123courses', zipStuff).then(function(value) {
+        return insightFacade.addDataset('courses', zipStuff).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(204);
         }).catch(function (err) {
@@ -213,7 +231,7 @@ describe("InsightFacadeTest", function () {
     it("query_ complex", function () {
         this.timeout(10000);
         return insightFacade.performQuery(queryRequest2).then(function(value) {
-            Log.test('Value: ' + value.code);
+            Log.test('Value: ' + JSON.stringify(value.body));
             expect(value.code).to.equal(200);
         }).catch(function (err) {
             console.log("error" +err);

@@ -28,7 +28,7 @@ var existsResponse: InsightResponse = {
 };
 
 
-var everythingArr: any[] = [];
+ var everythingArr: any[] = [];
 
 
 export default class InsightFacade implements IInsightFacade {
@@ -41,15 +41,19 @@ export default class InsightFacade implements IInsightFacade {
 
         var jsonObjArray: any[] = [];
 
+        //Buffer.from(fs.readFileSync(content)).toString('base64')
+        var inside = fs.readFileSync(content, 'base64');
 
         return new Promise(function (resolve: any, reject: any) {
 
-            if (!content)
-                reject(400, {"error": "empty content"});
+
+
+            if (!inside)
+                reject(emptyResponse);
 
             var promises: Promise<string>[] = [];
 
-            JSZip.loadAsync(content, {"base64": true})
+            JSZip.loadAsync(inside, {"base64": true})
 
                 .then(function (zip: any) {
                     for (let key in zip.files) {
@@ -95,8 +99,9 @@ export default class InsightFacade implements IInsightFacade {
                             }
                             //everythingArr would contain allllll the courses one by one
 
-                            var fileExists = fs.existsSync('./tmp/courses');
+
                             var path = './tmp';
+                            var fileExists = fs.existsSync(path+'/courses');
 
                             try {
                                 fs.mkdirSync(path);
@@ -117,7 +122,7 @@ export default class InsightFacade implements IInsightFacade {
                                 resolve(newResponse);
                             }
 
-                            fs.writeFileSync('./tmp/courses', JSON.stringify(everythingArr));
+                            fs.writeFileSync( path+'/courses', JSON.stringify(everythingArr));
                         });
 
                 })
@@ -175,7 +180,6 @@ export default class InsightFacade implements IInsightFacade {
     performQuery(query: QueryRequest): Promise <InsightResponse> {
 
         return new Promise(function (resolve:any, reject:any) {
-
 
             var arrOFCourses = [];
 
@@ -284,6 +288,8 @@ export default class InsightFacade implements IInsightFacade {
             var n1 = {render:'TABLE', result:{}};
 
             n1.result = finalCourseArr;
+
+          //  console.log("here is final result  " + n1);
 
             var resultResponse: InsightResponse = {
                 code : 200,
