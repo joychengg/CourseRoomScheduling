@@ -76,8 +76,8 @@ describe("InsightFacadeTest", function () {
 
         Log.test('BeforeTest: ' + (<any>this).currentTest.title);
         insightFacade = new InsightFacade();
-        zipStuff = "./courses.zip";
-        //zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
+        //zipStuff = "./courses.zip";
+        zipStuff = Buffer.from(fs.readFileSync("courses.zip")).toString('base64');
 
         // var fileExists = fs.existsSync('../courses');
         // var path = './tmp';
