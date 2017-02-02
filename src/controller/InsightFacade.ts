@@ -359,7 +359,7 @@ export default class InsightFacade implements IInsightFacade {
 
             n1.result = finalCourseArr;
 
-            console.log("here is final result  " + JSON.stringify(n1));
+            //console.log("here is final result  " + JSON.stringify(n1));
 
             var resultResponse: InsightResponse = {
                 code : 200,
