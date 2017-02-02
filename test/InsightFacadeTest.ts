@@ -231,7 +231,7 @@ describe("InsightFacadeTest", function () {
     it("query_ complex", function () {
         this.timeout(10000);
         return insightFacade.performQuery(queryRequest2).then(function(value) {
-            Log.test('Value: ' + JSON.stringify(value.body));
+            Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
         }).catch(function (err) {
             console.log("error" +err);
