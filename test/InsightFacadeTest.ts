@@ -640,7 +640,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-           // expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult));
+          //  expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -700,7 +700,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest14).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-          //  Log.test("body  " + JSON.stringify(value.body));
+          // Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -768,7 +768,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest2).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            //expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult_complex));
+           // expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult_complex));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();

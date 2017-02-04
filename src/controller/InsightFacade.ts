@@ -8,6 +8,7 @@ import Log from "../Util";
 import QueryClassMeth from "../QueryClass/QueryClassMeth";
 import {stringify} from "querystring";
 import {isNullOrUndefined} from "util";
+import {QueryRequest2} from "../QueryClass/responseInterface";
 
 
 var fs = require("fs");
@@ -265,7 +266,6 @@ export default class InsightFacade implements IInsightFacade {
 
             var path = './courses.json';
 
-
             if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
 
                 var failResponse: InsightResponse = {
@@ -275,6 +275,7 @@ export default class InsightFacade implements IInsightFacade {
                 reject(failResponse);
             }
 
+           // console.log("check for where part" + objforQuery.isJson(JSON.stringify(query.WHERE)));
 
 
             if ((query.OPTIONS.FORM !=="TABLE")||(isNullOrUndefined(query.OPTIONS.FORM))){
@@ -363,29 +364,16 @@ export default class InsightFacade implements IInsightFacade {
                 return parseFloat(a[orderS]) - parseFloat(b[orderS]);
             });
 
-            // console.log(finalCourseArr);
-            //console.log(Object.keys(finalCourseArr)[0]);
 
-            // if (Object.keys(finalCourseArr)[0]==="missing"){
-            //     var resultResponse: InsightResponse = {
-            //         code : 424,
-            //         body : finalCourseArr
-            //     };
-            //
-            //     resolve(resultResponse);
-            //
-            //
-            // }
+            var resultThing:QueryRequest2 = {
+                render:'TABLE',
+                result: finalCourseArr
 
-            var n1 = {render:'TABLE', result:{}};
-
-            n1.result = finalCourseArr;
-
-            //console.log("here is final result  " + JSON.stringify(n1));
+            };
 
             var resultResponse: InsightResponse = {
                 code : 200,
-                body : n1
+                body : resultThing
             };
 
             resolve(resultResponse);
