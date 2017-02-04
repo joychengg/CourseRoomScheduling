@@ -91,6 +91,9 @@ export default class InsightFacade implements IInsightFacade {
                                 //
                                 // }
 
+
+
+
                                 var json = JSON.parse(content[i]);
 
                                 //console.log("this is the result" +content[i][0]);
