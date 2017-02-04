@@ -62,13 +62,13 @@ var queryRequest6: QueryRequest = {
     }
 };
 
-var queryRequest7: QueryRequest = {
-    WHERE: {},
-    OPTIONS: {COLUMNS: [],
-        ORDER: '',
-        FORM:""
-    }
-};
+// var queryRequest7: QueryRequest = {
+//     WHERE: {},
+//     OPTIONS: {COLUMNS: [],
+//         ORDER: '',
+//         FORM:""
+//     }
+// };
 
 var queryRequest8: QueryRequest = {
     WHERE: {},
@@ -130,16 +130,17 @@ describe("InsightFacadeTest", function () {
             "FORM":"TABLE"
         };
 
-        queryRequest9.WHERE = {
-            "GT":{
-                "courses_avg"
-            }
-        };
-        queryRequest9.OPTIONS = {
-            "COLUMNS":["courses_dept", "courses_avg"],
-            "ORDER",
-            "FORM":"TABLE"
-        };
+        // queryRequest9.WHERE = {
+        //     "GT":{
+        //         "courses_avg"
+        //     }
+        // };
+        // queryRequest9.OPTIONS = {
+        //     "COLUMNS":["courses_dept", "courses_avg"],
+        //     "ORDER",
+        //     "FORM":"TABLE"
+        // };
+
         queryRequest2.WHERE = {
             "OR":[
                 {
@@ -304,16 +305,18 @@ describe("InsightFacadeTest", function () {
             "FORM":"TABLE"
         };
 
-        queryRequest7.WHERE = {
-            "GT":{
-                "courses_avg":97
-            }
-        };
-        queryRequest7.OPTIONS = {
-            "COLUMNS":["courses_dept", "courses_avg"],
-            "ORDER":"courses_avg",
+        // queryRequest7.WHERE = {
+        //     "GT":{
+        //         "courses_avg":97
+        //     }
+        // };
+        // queryRequest7.OPTIONS = {
+        //     "COLUMNS":["courses_dept", "courses_avg"],
+        //     "ORDER":"courses_avg",
+        //
+        // };
 
-        };
+
         queryRequest8.WHERE = {
             "GT":{
                 "wrong_avg":97
@@ -515,16 +518,16 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("query with wrong form", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest7).then(function(value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" +err);
-            expect(err.code).to.equal(400);
-        });
-    });
+    // it("query with wrong form", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest7).then(function(value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" +err);
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
 
 
     it("query with wrong id", function () {
