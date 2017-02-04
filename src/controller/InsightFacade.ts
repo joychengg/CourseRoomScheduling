@@ -61,12 +61,43 @@ export default class InsightFacade implements IInsightFacade {
                             promises.push(zip.file(key).async("string"));
                         }
                     }
+
                     Promise.all(promises)
 
                         .then(function (content: string[]) {
+
+                            if (content.length===0){
+                                var cantparseResponse: InsightResponse = {
+                                    code : 400,
+                                    body : {}
+                                };
+                                reject(cantparseResponse);
+
+                            }
+
+
                             for (var i = 0; i < content.length; i++) {
 
+                               // console.log("this is the result" + Object.keys(content[i]));
+                                console.log("this is the result" +content[i][0]);
+
+                                // if (Object.keys(content[i])[0] !== "result") {
+                                //
+                                //     var cantparseResponse: InsightResponse = {
+                                //         code: 400,
+                                //         body: {}
+                                //     };
+                                //     reject(cantparseResponse);
+                                //
+                                // }
+
                                 var json = JSON.parse(content[i]);
+
+                                //console.log("this is the result" +content[i][0]);
+                                //console.log("this is the parse part" +content[0]);
+
+
+
                                 // console.log(JSON.stringify(json));
                                 jsonObjArray.push(json);
                             }
@@ -138,7 +169,6 @@ export default class InsightFacade implements IInsightFacade {
                 })
         })
     }
-
 
     removeDataset(id: string): Promise<InsightResponse> {
 
@@ -244,17 +274,9 @@ export default class InsightFacade implements IInsightFacade {
                 reject(failResponse);
             }
 
-            // if (!(query.WHERE.hasOwnProperty('courses_avg')||query.WHERE.hasOwnProperty('courses_id')||query.WHERE.hasOwnProperty('courses_dept')
-            //     ||query.WHERE.hasOwnProperty('OR')||query.WHERE.hasOwnProperty('EQ')||query.WHERE.hasOwnProperty('AND')||
-            //     query.WHERE.hasOwnProperty('GT')||query.WHERE.hasOwnProperty('IS'))){
-            //     var failResponse: InsightResponse = {
-            //         code: 400,
-            //         body: {}
-            //     };
-            //     reject(failResponse);
-            // }
-
-            // if (!objforQuery.checkKey(query.WHERE)){
+            // if(objforQuery.checkInvalid(query.WHERE)===false){
+            //
+            //     //check if AND, OR, IS etc...
             //     var failResponse: InsightResponse = {
             //         code: 400,
             //         body: {}
@@ -263,21 +285,20 @@ export default class InsightFacade implements IInsightFacade {
             //
             // }
 
-            if (!(fs.existsSync(path))) {
-                var resultResponse: InsightResponse = {
-                    code: 424,
-                    body: {missing: "courses"}
-                };
 
-                reject(resultResponse);
-            }
+            // if (!(fs.existsSync(path))) {
+            //     var resultResponse: InsightResponse = {
+            //         code: 424,
+            //         body: {missing: "courses"}
+            //     };
+            //
+            //     reject(resultResponse);
+            // }
 
 
             if (everythingArr.length === 0) {
                 everythingArr = fs.readFileSync(path);
             }
-
-
 
 
             for (var course of everythingArr) {
@@ -286,13 +307,13 @@ export default class InsightFacade implements IInsightFacade {
                     if (objforQuery.Filter(query.WHERE, course)===true)
                         arrOFCourses.push(course);
                 } catch (err) {
-                    if (err === "invalid key") {
+                  //  if (err === "invalid key") {
                         var failResponse: InsightResponse = {
                             code: 400,
                             body: err
                         };
                         reject(failResponse);
-                    }
+                   // }
                 }
             }
 

@@ -1,6 +1,9 @@
 import Log from "../Util";
 import {QueryRequest} from "../controller/IInsightFacade";
 import {isArray} from "util";
+import {isNumber} from "util";
+import {isString} from "util";
+import {isNullOrUndefined} from "util";
 
 export default class QueryClassMeth {
 
@@ -83,6 +86,8 @@ export default class QueryClassMeth {
 
         var output: string = '';
 
+        if (!this.checkKey(input.slice(0,6))) throw new Error ("invalid key");
+
             if (input === 'courses_avg') {
                 return output = 'Avg';
             } else if (input === 'courses_pass') {
@@ -100,6 +105,8 @@ export default class QueryClassMeth {
     methodKey2 (input: string):string{
 
         var output: string = '';
+
+        if (!this.checkKey(input.slice(0,6))) throw new Error ("invalid key");
 
         if (input === 'courses_dept') {
             return output = 'Subject';
@@ -120,6 +127,8 @@ export default class QueryClassMeth {
     methodKey3 (input: string):string{
 
         var output: string = '';
+
+        if (!this.checkKey(input.slice(0,6))) throw new Error ("invalid key");
 
         if (input === 'courses_dept') {
             return output = 'Subject';
@@ -154,39 +163,64 @@ export default class QueryClassMeth {
         return true;
     }
 
+    // checkInvalid(input:any): boolean{
+    //     var key = Object.keys(input)[0];
+    //
+    //     if (key !== ("GT" || "LT" || "IS" || "EQ" || "AND" || "OR" || "NOT")){
+    //         return false;
+    //     }
+    //     return this.checkInvalid(key);
+    // }
+
+    checkTypeMath(input_key:any, input_value:any): boolean{
+
+    if (input_key===("courses_avg"||"courses_pass"||"courses_fail"||"courses_audit")&&isNumber(input_value))
+        return true;
+    else throw new Error;
+
+    }
+
+    checkTypeString(input_key:any, input_value:any): boolean{
+
+        if (input_key===("courses_dept"||"courses_id"||"courses_instructor"||"courses_title"
+            ||"courses_uuid")&&isString(input_value))
+            return true;
+        else throw new Error;
+    }
+
+    checkKey(key:string):boolean {
+        if (key === "course") return true;
+
+        return false;
+    }
+
 
     Filter (input:any, course:any ): boolean{
-
-
 
             var key = Object.keys(input)[0];
 
             if (key === "GT") {
 
                 var key1 = Object.keys(input.GT);
-
+                this.checkTypeMath(key1[0],input.GT[key1[0]]);
                 return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
 
-            }
-
-            if (key === "LT") {
+            }else if (key === "LT") {
                 var key1 = Object.keys(input.LT);
-
+                this.checkTypeMath(key1[0],input.LT[key1[0]]);
                 return this.lt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
-            }
-
-            if (key === "EQ") {
+            }else if (key === "EQ") {
                 var key1 = Object.keys(input.EQ);
+                this.checkTypeMath(key1[0],input.EQ[key1[0]]);
                 return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
-            }
-
-            if (key === "IS") {
+            }else if (key === "IS") {
                 var key1 = Object.keys(input.IS);
+                this.checkTypeString(key1[0],input.IS[key1[0]]);
                 return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]]);
-            }
-
-            if (key === "AND") {
+            }else if (key === "AND") {
                 var exprs = input.AND;
+
+                if (input.AND.length === 0) throw new Error;
 
                 for (let key of exprs) {
 
@@ -195,10 +229,10 @@ export default class QueryClassMeth {
                 }
                 return true;
 
-            }
-
-            if (key === "OR") {
+            }else if (key === "OR") {
                 var exprs = input.OR;
+
+                if (input.OR.length === 0) throw new Error;
 
                 for (let key of exprs) {
 
@@ -207,10 +241,7 @@ export default class QueryClassMeth {
                 }
                 return false;
 
-            }
-
-
-            if (key === "NOT") {
+            }else if (key === "NOT") {
 
                 var exprs = input.NOT;
 
@@ -220,11 +251,9 @@ export default class QueryClassMeth {
                     return true;
 
                 }
+            }else{
+                throw new Error ("invalid key");
             }
-
-            throw new Error ("invalid key");
-
-
     }
 
     Combine(course:any, input_option:any) {
@@ -248,11 +277,6 @@ export default class QueryClassMeth {
                             result[input_option[column][i]] = course[Object.keys(course)[c]];
                         }
 
-                        // }else{
-                        //     miss[c] = input_option[column][i];
-                        //
-                        // }
-
                     }
 
 
@@ -260,14 +284,6 @@ export default class QueryClassMeth {
 
                 return result;
 
-
-        //     console.log("miss  "+miss);
-        //
-        // if (miss!=null) {
-        //     return result;
-        // }else{
-        //     return miss;
-        // }
 
     }
 

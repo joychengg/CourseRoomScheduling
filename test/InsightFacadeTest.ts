@@ -36,38 +36,39 @@ var queryRequest3: QueryRequest = {
         FORM:"TABLE"
     }
 };
+var queryRequest4: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var queryRequest5: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+
+var queryRequest6: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
 
 describe("InsightFacadeTest", function () {
 
 
     before(function () { //runs once
         Log.test('Before: ' + (<any>this).test.parent.title);
-        //zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
+        zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
         // let path = "./courses.zip";
         // zipStuff = JSON.parse(require('fs').readFileSync(path, {String}));
-
-
-        // try {
-        //     fs.mkdirSync(path);
-        //     // try to see if a folder can be made
-        // }catch(err){
-        //     if (fileExists) {
-        //         resolve(existsResponse);
-        //     }else {
-        //         resolve(newResponse);
-        //     }
-        //     //if cant be made then check if file exist or not
-        // }
-        //
-        // if (fileExists) {
-        //     resolve(existsResponse);
-        // }
-        // else {
-        //     resolve(newResponse);
-        // }
-
-
-
 
 
     });
@@ -77,7 +78,7 @@ describe("InsightFacadeTest", function () {
         Log.test('BeforeTest: ' + (<any>this).currentTest.title);
         insightFacade = new InsightFacade();
         //zipStuff = "./courses.zip";
-        zipStuff = Buffer.from(fs.readFileSync("courses.zip")).toString('base64');
+        //zipStuff = Buffer.from(fs.readFileSync("courses.zip")).toString('base64');
 
         // var fileExists = fs.existsSync('../courses');
         // var path = './tmp';
@@ -89,13 +90,11 @@ describe("InsightFacadeTest", function () {
                 "courses_avg":97
             }
         };
-
         queryRequest.OPTIONS = {
             "COLUMNS":["courses_dept", "courses_avg"],
             "ORDER":"courses_avg",
             "FORM":"TABLE"
         };
-
 
         queryRequest2.WHERE = {
             "OR":[
@@ -132,17 +131,18 @@ describe("InsightFacadeTest", function () {
         };
 
         queryRequest3.WHERE = {
+            //check wrong "courses_something"
             "OR":[
                 {
                     "AND":[
                         {
                             "GT":{
-                                "hello":90
+                                "courses_avg":90
                             }
                         },
                         {
                             "IS":{
-                                "courses":"adhe"
+                                "courses_dept":"adhe"
                             }
                         }
                     ]
@@ -160,6 +160,106 @@ describe("InsightFacadeTest", function () {
             "ORDER":"courses",
             "FORM":"TABLE"
         };
+
+        queryRequest4.WHERE = {
+            //check wrong "or, and, is, etcc"
+            "OR":[
+                {
+                    "wrong":[
+                        {
+                            "wrong":{
+                                "courses_avg":90
+                            }
+                        },
+                        {
+                            "IS":{
+                                "courses_dept":"adhe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "EQ":{
+                        "courses_avg":95
+                    }
+                }
+            ]
+        };
+
+        queryRequest4.OPTIONS = {
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest5.WHERE = {
+            "OR":[
+                {
+                    "AND":[
+                        {
+                            "GT":{
+                                "courses_avg":"hello"
+                            }
+                        },
+                        {
+                            "IS":{
+                                "courses_dept":"adhe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "EQ":{
+                        "courses_avg":95
+                    }
+                }
+            ]
+        };
+
+        queryRequest5.OPTIONS = {
+            "COLUMNS":[
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest6.WHERE = {
+            "OR":[
+                {
+                    "AND":[
+                        {
+                            "GT":{
+                                "courses":90
+                            }
+                        },
+                        {
+                            "IS":{
+                                "courses":"adhe"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "EQ":{
+                        "courses_avg":95
+                    }
+                }
+            ]
+        };
+
+        queryRequest6.OPTIONS = {
+            "COLUMNS":[
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
 
 
     });
@@ -184,16 +284,16 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("missing query", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest).then(function(value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" +err);
-            expect(err.code).to.equal(424);
-        });
-    });
+    // it("missing, query", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest).then(function(value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" +err);
+    //         expect(err.code).to.equal(424);
+    //     });
+    // });
 
     it("first add of file - resolve in 204", function () {
         this.timeout(10000);
@@ -218,15 +318,60 @@ describe("InsightFacadeTest", function () {
     });
 
     it("query with no order str", function () {
+
+        //actually falsey, b/c no order string also wrong keys in where
         this.timeout(10000);
         return insightFacade.performQuery(queryRequest3).then(function(value) {
             Log.test('Value: ' + value.code);
             expect.fail();
         }).catch(function (err) {
             console.log("error" +err);
+            Log.test('Value: ' + err.code);
             expect(err.code).to.equal(400);
         });
     });
+
+
+    it("query with wrong courses_wrong", function () {
+
+        //wrong thingy
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest6).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            Log.test('Value: ' + err.code);
+            expect(err.code).to.equal(400);
+        });
+    });
+
+    it("query with wrong AND, OR", function () {
+
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest4).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            Log.test('Value: ' + err.code);
+            expect(err.code).to.equal(400);
+        });
+    });
+
+    it("query with wrong type", function () {
+
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest5).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            Log.test('Value: ' + err.code);
+            expect(err.code).to.equal(400);
+        });
+    });
+
 
     it("query_ complex", function () {
         this.timeout(10000);
