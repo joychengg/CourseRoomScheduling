@@ -46,16 +46,27 @@ export default class InsightFacade implements IInsightFacade {
 
         return new Promise(function (resolve: any, reject: any) {
 
-           // var inside = fs.readFileSync(content, 'base64');
+            try {
+                var inside = fs.readFileSync(content, 'base64');
+            }catch(err){
+                var cantparseResponse: InsightResponse = {
+                    code : 400,
+                    body : {}
+                };
+                reject(cantparseResponse);
 
-            if (!content)
+            }
+
+            if (!inside)
                 reject(emptyResponse);
 
             var promises: Promise<string>[] = [];
 
-            JSZip.loadAsync(content, {"base64": true})
+            JSZip.loadAsync(inside, {"base64": true})
 
                 .then(function (zip: any) {
+
+
                     for (let key in zip.files) {
 
                         if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
@@ -275,27 +286,6 @@ export default class InsightFacade implements IInsightFacade {
                 reject(failResponse);
 
             }
-
-            // if(objforQuery.checkInvalid(query.WHERE)===false){
-            //
-            //     //check if AND, OR, IS etc...
-            //     var failResponse: InsightResponse = {
-            //         code: 400,
-            //         body: {}
-            //     };
-            //     reject(failResponse);
-            //
-            // }
-
-
-            // if (!(fs.existsSync(path))) {
-            //     var resultResponse: InsightResponse = {
-            //         code: 424,
-            //         body: {missing: "courses"}
-            //     };
-            //
-            //     reject(resultResponse);
-            // }
 
 
             if (everythingArr.length === 0) {

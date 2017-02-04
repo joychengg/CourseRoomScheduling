@@ -35,17 +35,17 @@ export default class QueryClassMeth {
 
         if (!this.checkKey(input.slice(0,6))) throw new Error ("invalid check key");
 
-            if (input === 'courses_avg') {
-                return output = 'Avg';
-            } else if (input === 'courses_pass') {
-                return output = 'Pass';
-            } else if (input === 'courses_fail') {
-                return output = 'Fail';
-            } else if (input === 'courses_audit') {
-                return output = 'Audit';
-            }
+        if (input === 'courses_avg') {
+            return output = 'Avg';
+        } else if (input === 'courses_pass') {
+            return output = 'Pass';
+        } else if (input === 'courses_fail') {
+            return output = 'Fail';
+        } else if (input === 'courses_audit') {
+            return output = 'Audit';
+        }
 
-            throw new Error ("invalid key");
+        throw new Error ("invalid key");
 
     }
 
@@ -113,10 +113,22 @@ export default class QueryClassMeth {
 
     checkTypeMath(input_key:any, input_value:any): boolean{
 
-    if (input_key===("courses_avg"||"courses_pass"||"courses_fail"||"courses_audit")&&isNumber(input_value))
-        return true;
-    else throw new Error;
 
+
+        if ((input_key==="courses_audit")&&(typeof(input_value)==="number")) {
+            return true;
+        }else if ((input_key === "courses_avg")&&(typeof(input_value)==="number")){
+            return true;
+
+        }else if((input_key === "courses_pass")&&(typeof(input_value)==="number")){
+            return true;
+        }else if((input_key === "courses_fail")&&(typeof(input_value)==="number")){
+            return true;
+        }
+        else {
+
+            throw new Error;
+        }
     }
 
     checkTypeString(input_key:any, input_value:any): boolean{
@@ -124,7 +136,22 @@ export default class QueryClassMeth {
         if (input_key===("courses_dept"||"courses_id"||"courses_instructor"||"courses_title"
             ||"courses_uuid")&&isString(input_value))
             return true;
-        else throw new Error;
+
+        if ((input_key==="courses_dept")&&(typeof(input_value)==="string")) {
+            return true;
+        }else if ((input_key === "courses_id")&&(typeof(input_value)==="string")){
+            return true;
+
+        }else if((input_key === "courses_instructor")&&(typeof(input_value)==="string")){
+            return true;
+        }else if((input_key === "courses_title")&&(typeof(input_value)==="string")){
+            return true;
+        }else if((input_key === "courses_uuid")&&(typeof(input_value)==="string")){
+            return true;
+        } else {
+
+            throw new Error;
+        }
     }
 
     checkKey(key:string):boolean {
@@ -138,106 +165,106 @@ export default class QueryClassMeth {
 
         var key = Object.keys(input)[0];
 
-            if (key === "GT") {
+        if (key === "GT") {
 
-                var key1 = Object.keys(input.GT);
+            var key1 = Object.keys(input.GT);
 
-                this.checkKey(key1[0].slice(0, 6));
-                this.checkTypeMath(key1[0], input.GT[key1[0]]);
+            this.checkKey(key1[0].slice(0, 6));
+            this.checkTypeMath(key1[0], input.GT[key1[0]]);
 
-                return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
+            return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
 
-            } else if (key === "LT") {
+        } else if (key === "LT") {
 
-                var key1 = Object.keys(input.LT);
+            var key1 = Object.keys(input.LT);
 
-                this.checkKey(key1[0].slice(0, 6));
-                this.checkTypeMath(key1[0], input.LT[key1[0]]);
-                return this.lt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
+            this.checkKey(key1[0].slice(0, 6));
+            this.checkTypeMath(key1[0], input.LT[key1[0]]);
+            return this.lt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
 
-            } else if (key === "EQ") {
+        } else if (key === "EQ") {
 
-                var key1 = Object.keys(input.EQ);
+            var key1 = Object.keys(input.EQ);
 
-                this.checkKey(key1[0].slice(0, 6));
-                this.checkTypeMath(key1[0], input.EQ[key1[0]]);
-                return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
+            this.checkKey(key1[0].slice(0, 6));
+            this.checkTypeMath(key1[0], input.EQ[key1[0]]);
+            return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
 
-            } else if (key === "IS") {
+        } else if (key === "IS") {
 
-                var key1 = Object.keys(input.IS);
+            var key1 = Object.keys(input.IS);
 
-                this.checkKey(key1[0].slice(0, 6));
-                this.checkTypeString(key1[0], input.IS[key1[0]]);
-                return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]]);
+            this.checkKey(key1[0].slice(0, 6));
+            this.checkTypeString(key1[0], input.IS[key1[0]]);
+            return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]]);
 
-            } else if (key === "AND") {
-                var exprs = input.AND;
+        } else if (key === "AND") {
+            var exprs = input.AND;
 
-                if (input.AND.length === 0) throw new Error;
+            if (input.AND.length === 0) throw new Error;
 
-                for (let key of exprs) {
+            for (let key of exprs) {
 
-                    if (!this.Filter(key, course)) return false;
-
-                }
-                return true;
-
-            } else if (key === "OR") {
-                var exprs = input.OR;
-
-                if (input.OR.length === 0) throw new Error;
-
-                for (let key of exprs) {
-
-                    if (this.Filter(key, course)) return true;
-
-                }
-                return false;
-
-            } else if (key === "NOT") {
-
-                var exprs = input.NOT;
-
-                if (this.Filter(exprs, course)) {
-                    return false;
-                } else {
-                    return true;
-
-                }
-            } else {
-                throw new Error;
+                if (!this.Filter(key, course)) return false;
 
             }
+            return true;
+
+        } else if (key === "OR") {
+            var exprs = input.OR;
+
+            if (input.OR.length === 0) throw new Error;
+
+            for (let key of exprs) {
+
+                if (this.Filter(key, course)) return true;
+
+            }
+            return false;
+
+        } else if (key === "NOT") {
+
+            var exprs = input.NOT;
+
+            if (this.Filter(exprs, course)) {
+                return false;
+            } else {
+                return true;
+
+            }
+        } else {
+            throw new Error;
+
         }
+    }
 
     Combine(course:any, input_option:any) {
 
-            var column = Object.keys(input_option)[0];
+        var column = Object.keys(input_option)[0];
 
-            var order = Object.keys(input_option)[1];
+        var order = Object.keys(input_option)[1];
 
-            var result: any = {};
+        var result: any = {};
 
-            var miss = [];
-
-
-                for (var i = 0; i < input_option[column].length; i++) {
-
-                    for (var c = 0; c < Object.keys(course).length; c++) {
+        var miss = [];
 
 
-                        if (this.methodKey3(input_option[column][i]) === Object.keys(course)[c]) {
+        for (var i = 0; i < input_option[column].length; i++) {
 
-                            result[input_option[column][i]] = course[Object.keys(course)[c]];
-                        }
-
-                    }
+            for (var c = 0; c < Object.keys(course).length; c++) {
 
 
+                if (this.methodKey3(input_option[column][i]) === Object.keys(course)[c]) {
+
+                    result[input_option[column][i]] = course[Object.keys(course)[c]];
                 }
 
-                return result;
+            }
+
+
+        }
+
+        return result;
 
 
     }

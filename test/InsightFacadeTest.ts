@@ -14,6 +14,7 @@ import InsightFacade from "../src/controller/InsightFacade";
 import fs = require("fs");
 var zipStuff: any = null;
 var inValidZip:any = null;
+var wrongZip:any = null;
 var insightFacade: InsightFacade = null;
 var queryRequest: QueryRequest = {
     WHERE: {},
@@ -94,12 +95,132 @@ var LTRequest: QueryRequest = {
     }
 };
 
+var queryRequest10: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var testResult: any = { render: 'TABLE',
+    result:
+        [ { courses_dept: 'epse', courses_avg: 97.09 },
+            { courses_dept: 'math', courses_avg: 97.09 },
+            { courses_dept: 'math', courses_avg: 97.09 },
+            { courses_dept: 'epse', courses_avg: 97.09 },
+            { courses_dept: 'math', courses_avg: 97.25 },
+            { courses_dept: 'math', courses_avg: 97.25 },
+            { courses_dept: 'epse', courses_avg: 97.29 },
+            { courses_dept: 'epse', courses_avg: 97.29 },
+            { courses_dept: 'nurs', courses_avg: 97.33 },
+            { courses_dept: 'nurs', courses_avg: 97.33 },
+            { courses_dept: 'epse', courses_avg: 97.41 },
+            { courses_dept: 'epse', courses_avg: 97.41 },
+            { courses_dept: 'cnps', courses_avg: 97.47 },
+            { courses_dept: 'cnps', courses_avg: 97.47 },
+            { courses_dept: 'math', courses_avg: 97.48 },
+            { courses_dept: 'math', courses_avg: 97.48 },
+            { courses_dept: 'educ', courses_avg: 97.5 },
+            { courses_dept: 'nurs', courses_avg: 97.53 },
+            { courses_dept: 'nurs', courses_avg: 97.53 },
+            { courses_dept: 'epse', courses_avg: 97.67 },
+            { courses_dept: 'epse', courses_avg: 97.69 },
+            { courses_dept: 'epse', courses_avg: 97.78 },
+            { courses_dept: 'crwr', courses_avg: 98 },
+            { courses_dept: 'crwr', courses_avg: 98 },
+            { courses_dept: 'epse', courses_avg: 98.08 },
+            { courses_dept: 'nurs', courses_avg: 98.21 },
+            { courses_dept: 'nurs', courses_avg: 98.21 },
+            { courses_dept: 'epse', courses_avg: 98.36 },
+            { courses_dept: 'epse', courses_avg: 98.45 },
+            { courses_dept: 'epse', courses_avg: 98.45 },
+            { courses_dept: 'nurs', courses_avg: 98.5 },
+            { courses_dept: 'nurs', courses_avg: 98.5 },
+            { courses_dept: 'epse', courses_avg: 98.58 },
+            { courses_dept: 'nurs', courses_avg: 98.58 },
+            { courses_dept: 'nurs', courses_avg: 98.58 },
+            { courses_dept: 'epse', courses_avg: 98.58 },
+            { courses_dept: 'epse', courses_avg: 98.7 },
+            { courses_dept: 'nurs', courses_avg: 98.71 },
+            { courses_dept: 'nurs', courses_avg: 98.71 },
+            { courses_dept: 'eece', courses_avg: 98.75 },
+            { courses_dept: 'eece', courses_avg: 98.75 },
+            { courses_dept: 'epse', courses_avg: 98.76 },
+            { courses_dept: 'epse', courses_avg: 98.76 },
+            { courses_dept: 'epse', courses_avg: 98.8 },
+            { courses_dept: 'spph', courses_avg: 98.98 },
+            { courses_dept: 'spph', courses_avg: 98.98 },
+            { courses_dept: 'cnps', courses_avg: 99.19 },
+            { courses_dept: 'math', courses_avg: 99.78 },
+            { courses_dept: 'math', courses_avg: 99.78 } ] };
+
+var testResult_complex: any = { render: 'TABLE',
+    result:
+        [ { courses_dept: 'adhe', courses_id: '329', courses_avg: 90.02 },
+            { courses_dept: 'adhe', courses_id: '412', courses_avg: 90.16 },
+            { courses_dept: 'adhe', courses_id: '330', courses_avg: 90.17 },
+            { courses_dept: 'adhe', courses_id: '412', courses_avg: 90.18 },
+            { courses_dept: 'adhe', courses_id: '330', courses_avg: 90.5 },
+            { courses_dept: 'adhe', courses_id: '330', courses_avg: 90.72 },
+            { courses_dept: 'adhe', courses_id: '329', courses_avg: 90.82 },
+            { courses_dept: 'adhe', courses_id: '330', courses_avg: 90.85 },
+            { courses_dept: 'adhe', courses_id: '330', courses_avg: 91.29 },
+            { courses_dept: 'adhe', courses_id: '330', courses_avg: 91.33 },
+            { courses_dept: 'adhe', courses_id: '330', courses_avg: 91.33 },
+            { courses_dept: 'adhe', courses_id: '330', courses_avg: 91.48 },
+            { courses_dept: 'adhe', courses_id: '329', courses_avg: 92.54 },
+            { courses_dept: 'adhe', courses_id: '329', courses_avg: 93.33 },
+            { courses_dept: 'rhsc', courses_id: '501', courses_avg: 95 },
+            { courses_dept: 'bmeg', courses_id: '597', courses_avg: 95 },
+            { courses_dept: 'bmeg', courses_id: '597', courses_avg: 95 },
+            { courses_dept: 'cnps', courses_id: '535', courses_avg: 95 },
+            { courses_dept: 'cnps', courses_id: '535', courses_avg: 95 },
+            { courses_dept: 'cpsc', courses_id: '589', courses_avg: 95 },
+            { courses_dept: 'cpsc', courses_id: '589', courses_avg: 95 },
+            { courses_dept: 'crwr', courses_id: '599', courses_avg: 95 },
+            { courses_dept: 'crwr', courses_id: '599', courses_avg: 95 },
+            { courses_dept: 'crwr', courses_id: '599', courses_avg: 95 },
+            { courses_dept: 'crwr', courses_id: '599', courses_avg: 95 },
+            { courses_dept: 'crwr', courses_id: '599', courses_avg: 95 },
+            { courses_dept: 'crwr', courses_id: '599', courses_avg: 95 },
+            { courses_dept: 'crwr', courses_id: '599', courses_avg: 95 },
+            { courses_dept: 'sowk', courses_id: '570', courses_avg: 95 },
+            { courses_dept: 'econ', courses_id: '516', courses_avg: 95 },
+            { courses_dept: 'edcp', courses_id: '473', courses_avg: 95 },
+            { courses_dept: 'edcp', courses_id: '473', courses_avg: 95 },
+            { courses_dept: 'epse', courses_id: '606', courses_avg: 95 },
+            { courses_dept: 'epse', courses_id: '682', courses_avg: 95 },
+            { courses_dept: 'epse', courses_id: '682', courses_avg: 95 },
+            { courses_dept: 'kin', courses_id: '499', courses_avg: 95 },
+            { courses_dept: 'kin', courses_id: '500', courses_avg: 95 },
+            { courses_dept: 'kin', courses_id: '500', courses_avg: 95 },
+            { courses_dept: 'math', courses_id: '532', courses_avg: 95 },
+            { courses_dept: 'math', courses_id: '532', courses_avg: 95 },
+            { courses_dept: 'mtrl', courses_id: '564', courses_avg: 95 },
+            { courses_dept: 'mtrl', courses_id: '564', courses_avg: 95 },
+            { courses_dept: 'mtrl', courses_id: '599', courses_avg: 95 },
+            { courses_dept: 'musc', courses_id: '553', courses_avg: 95 },
+            { courses_dept: 'musc', courses_id: '553', courses_avg: 95 },
+            { courses_dept: 'musc', courses_id: '553', courses_avg: 95 },
+            { courses_dept: 'musc', courses_id: '553', courses_avg: 95 },
+            { courses_dept: 'musc', courses_id: '553', courses_avg: 95 },
+            { courses_dept: 'musc', courses_id: '553', courses_avg: 95 },
+            { courses_dept: 'nurs', courses_id: '424', courses_avg: 95 },
+            { courses_dept: 'nurs', courses_id: '424', courses_avg: 95 },
+            { courses_dept: 'obst', courses_id: '549', courses_avg: 95 },
+            { courses_dept: 'psyc', courses_id: '501', courses_avg: 95 },
+            { courses_dept: 'psyc', courses_id: '501', courses_avg: 95 },
+            { courses_dept: 'econ', courses_id: '516', courses_avg: 95 },
+            { courses_dept: 'adhe', courses_id: '329', courses_avg: 96.11 } ] };
+
+
 describe("InsightFacadeTest", function () {
 
 
     before(function () { //runs once
         Log.test('Before: ' + (<any>this).test.parent.title);
-        zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
+       // zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
         inValidZip = Buffer.from(fs.readFileSync("./invalidJson.zip")).toString('base64');
         // let path = "./courses.zip";
         // zipStuff = JSON.parse(require('fs').readFileSync(path, {String}));
@@ -111,7 +232,8 @@ describe("InsightFacadeTest", function () {
 
         Log.test('BeforeTest: ' + (<any>this).currentTest.title);
         insightFacade = new InsightFacade();
-        //zipStuff = "./courses.zip";
+        zipStuff = "./courses.zip";
+        wrongZip = "./testfile";
         //zipStuff = Buffer.from(fs.readFileSync("courses.zip")).toString('base64');
 
         // var fileExists = fs.existsSync('../courses');
@@ -125,6 +247,17 @@ describe("InsightFacadeTest", function () {
             }
         };
         queryRequest.OPTIONS = {
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest10.WHERE = {
+            "GT":{
+                "courses_audit":2
+            }
+        };
+        queryRequest10.OPTIONS = {
             "COLUMNS":["courses_dept", "courses_avg"],
             "ORDER":"courses_avg",
             "FORM":"TABLE"
@@ -418,6 +551,17 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("cant parse not a zip file - reject 400", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('coursesDIE', wrongZip).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log(JSON.stringify(err.body));
+            expect(err.code).to.equal(400);
+        });
+    });
+
     it("first add of file - resolve in 204", function () {
         this.timeout(10000);
         return insightFacade.addDataset('courses', zipStuff).then(function(value) {
@@ -434,6 +578,19 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
+            expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult));
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query with audit", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest10).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+           // Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -512,6 +669,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest2).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
+           //expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult_complex));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
