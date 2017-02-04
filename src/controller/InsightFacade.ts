@@ -46,23 +46,23 @@ export default class InsightFacade implements IInsightFacade {
 
         return new Promise(function (resolve: any, reject: any) {
 
-            try {
-                var inside = fs.readFileSync(content, 'base64');
-            }catch(err){
-                var cantparseResponse: InsightResponse = {
-                    code : 400,
-                    body : {}
-                };
-                reject(cantparseResponse);
+            // try {
+            //     var inside = fs.readFileSync(content, 'base64');
+            // }catch(err){
+            //     var cantparseResponse: InsightResponse = {
+            //         code : 400,
+            //         body : {}
+            //     };
+            //     reject(cantparseResponse);
+            //
+            // }
 
-            }
-
-            if (!inside)
+            if (!content)
                 reject(emptyResponse);
 
             var promises: Promise<string>[] = [];
 
-            JSZip.loadAsync(inside, {"base64": true})
+            JSZip.loadAsync(content, {"base64": true})
 
                 .then(function (zip: any) {
 

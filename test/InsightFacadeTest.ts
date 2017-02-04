@@ -254,7 +254,7 @@ describe("InsightFacadeTest", function () {
 
         Log.test('BeforeTest: ' + (<any>this).currentTest.title);
         insightFacade = new InsightFacade();
-        zipStuff = "./courses.zip";
+        zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
         wrongZip = "./testfile";
 
         queryRequest.WHERE = {
@@ -339,7 +339,7 @@ describe("InsightFacadeTest", function () {
 
         queryRequest10.WHERE = {
             "GT":{
-                "courses_audit":2
+                "courses_audit":15
             }
         };
         queryRequest10.OPTIONS = {
@@ -450,12 +450,12 @@ describe("InsightFacadeTest", function () {
                     "AND":[
                         {
                             "GT":{
-                                "courses_avg":"hello"
+                                "courses_avg":90
                             }
                         },
                         {
                             "IS":{
-                                "courses_dept":"adhe"
+                                "courses_dept":10
                             }
                         }
                     ]
@@ -652,7 +652,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest10).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            // Log.test("body  " + JSON.stringify(value.body));
+           // Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -676,7 +676,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest12).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-         //   Log.test("body  " + JSON.stringify(value.body));
+           //Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
