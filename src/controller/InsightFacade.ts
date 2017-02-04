@@ -318,7 +318,7 @@ export default class InsightFacade implements IInsightFacade {
                     }
                 }
             }
-
+            //console.log("here is the array of courses "+JSON.stringify(arrOFCourses));
 
             for (var course of arrOFCourses) {
                 try {
@@ -335,12 +335,11 @@ export default class InsightFacade implements IInsightFacade {
                 }
             }
 
-            //console.log("watch here   "+ JSON.stringify(finalCourseArr));
 
             var column = Object.keys(query.OPTIONS)[0];
             var order = query.OPTIONS.ORDER;
 
-            // console.log(query.OPTIONS.COLUMNS);
+
             var count = 0;
             for (var i of query.OPTIONS.COLUMNS) {
 

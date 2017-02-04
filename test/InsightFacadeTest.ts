@@ -63,13 +63,6 @@ var queryRequest6: QueryRequest = {
     }
 };
 
-// var queryRequest7: QueryRequest = {
-//     WHERE: {},
-//     OPTIONS: {COLUMNS: [],
-//         ORDER: '',
-//         FORM:""
-//     }
-// };
 
 var queryRequest8: QueryRequest = {
     WHERE: {},
@@ -96,6 +89,38 @@ var LTRequest: QueryRequest = {
 };
 
 var queryRequest10: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var queryRequest11: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var queryRequest12: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var queryRequest13: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var queryRequest14: QueryRequest = {
     WHERE: {},
     OPTIONS: {COLUMNS: [],
         ORDER: '',
@@ -220,11 +245,8 @@ describe("InsightFacadeTest", function () {
 
     before(function () { //runs once
         Log.test('Before: ' + (<any>this).test.parent.title);
-       // zipStuff = Buffer.from(fs.readFileSync("./courses.zip")).toString('base64');
-        inValidZip = Buffer.from(fs.readFileSync("./invalidJson.zip")).toString('base64');
-        // let path = "./courses.zip";
-        // zipStuff = JSON.parse(require('fs').readFileSync(path, {String}));
 
+        inValidZip = Buffer.from(fs.readFileSync("./invalidJson.zip")).toString('base64');
 
     });
 
@@ -234,19 +256,82 @@ describe("InsightFacadeTest", function () {
         insightFacade = new InsightFacade();
         zipStuff = "./courses.zip";
         wrongZip = "./testfile";
-        //zipStuff = Buffer.from(fs.readFileSync("courses.zip")).toString('base64');
 
-        // var fileExists = fs.existsSync('../courses');
-        // var path = './tmp';
-        // fs.writeFileSync( path+'/courses', JSON.stringify(insightFacade.addDataset('courses', zipStuff)));
-
-        //zipStuff = fs.readFileSync("./courses.zip", "base64");
         queryRequest.WHERE = {
             "GT":{
                 "courses_avg":97
             }
         };
         queryRequest.OPTIONS = {
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest11.WHERE = {
+            "IS":{
+                "courses_title":"med, soci, cultr"
+            }
+        };
+        queryRequest11.OPTIONS = {
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest14.WHERE = {
+            "AND":[
+                {
+                    "NOT":
+                        {
+                            "IS":{
+                                "courses_instructor":"*mckellin*"
+                            }
+                        }
+
+                },
+                {
+                    "IS":{
+                        "courses_dept":"anth"
+                    }
+                }
+            ]
+        };
+        queryRequest14.OPTIONS = {
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest13.WHERE = {
+            "IS":{
+                "courses_instructor":"*william*"
+            }
+        };
+        queryRequest13.OPTIONS = {
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+        queryRequest12.WHERE = {
+            "AND":[{
+                "IS":{"courses_dept":"cpsc"}},
+                {"AND":[
+                    {
+                        "GT":{
+                            "courses_avg":70
+                        }
+                    },
+                    {
+                        "LT":{
+                            "courses_avg":80
+                        }
+                    }
+
+                ]
+                }]
+        };
+        queryRequest12.OPTIONS = {
             "COLUMNS":["courses_dept", "courses_avg"],
             "ORDER":"courses_avg",
             "FORM":"TABLE"
@@ -262,17 +347,6 @@ describe("InsightFacadeTest", function () {
             "ORDER":"courses_avg",
             "FORM":"TABLE"
         };
-
-        // queryRequest9.WHERE = {
-        //     "GT":{
-        //         "courses_avg"
-        //     }
-        // };
-        // queryRequest9.OPTIONS = {
-        //     "COLUMNS":["courses_dept", "courses_avg"],
-        //     "ORDER",
-        //     "FORM":"TABLE"
-        // };
 
         queryRequest2.WHERE = {
             "OR":[
@@ -438,18 +512,6 @@ describe("InsightFacadeTest", function () {
             "FORM":"TABLE"
         };
 
-        // queryRequest7.WHERE = {
-        //     "GT":{
-        //         "courses_avg":97
-        //     }
-        // };
-        // queryRequest7.OPTIONS = {
-        //     "COLUMNS":["courses_dept", "courses_avg"],
-        //     "ORDER":"courses_avg",
-        //
-        // };
-
-
         queryRequest8.WHERE = {
             "GT":{
                 "wrong_avg":97
@@ -463,52 +525,52 @@ describe("InsightFacadeTest", function () {
 
         var LTRequest: QueryRequest = {
             WHERE: {"OR": [{
-                    "AND":[
-                        {
-                            "LT":{
-                                "courses_pass":90
-                            }
-                        },
-                        {
-                            "IS":{
-                                "courses_instructor":"Wolfman"
-                            }
-                        },
-                        {
-                            "IS":{
-                                "courses_pass":50
-                            }
-                        },
-                        {
-                            "IS":{
-                                "courses_fail":5
-                            }
-                        },
-                        {
-                            "IS":{
-                                "courses_audit":10
-                            }
-                        }
-                        ,
-                        {
-                            "IS":{
-                                "invalid_audit":10
-                            }
-                        }
-                        ,
-                        {
-                            "IS":{
-                                "courses_invalid":10
-                            }
-                        }
-                    ]
-                },
+                "AND":[
                     {
-                        "EQ":{
-                            "courses_audit":1
+                        "LT":{
+                            "courses_pass":90
+                        }
+                    },
+                    {
+                        "IS":{
+                            "courses_instructor":"Wolfman"
+                        }
+                    },
+                    {
+                        "IS":{
+                            "courses_pass":50
+                        }
+                    },
+                    {
+                        "IS":{
+                            "courses_fail":5
+                        }
+                    },
+                    {
+                        "IS":{
+                            "courses_audit":10
                         }
                     }
-                ]},
+                    ,
+                    {
+                        "IS":{
+                            "invalid_audit":10
+                        }
+                    }
+                    ,
+                    {
+                        "IS":{
+                            "courses_invalid":10
+                        }
+                    }
+                ]
+            },
+                {
+                    "EQ":{
+                        "courses_audit":1
+                    }
+                }
+            ]},
             OPTIONS: {
                 "COLUMNS":["courses_dept", "courses_avg"],
                 "ORDER":"courses_avg",
@@ -578,7 +640,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult));
+           // expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -590,7 +652,55 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest10).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
+            // Log.test("body  " + JSON.stringify(value.body));
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query with title", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest11).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
            // Log.test("body  " + JSON.stringify(value.body));
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query with gt70 and lt80 and cpsc", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest12).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+         //   Log.test("body  " + JSON.stringify(value.body));
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query with partial names", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest13).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+           // Log.test("body  " + JSON.stringify(value.body));
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query with not is, and is", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest14).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+          //  Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -610,17 +720,6 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("query with no order str", function () {
-
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest9).then(function(value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" +err);
-            expect(err.code).to.equal(400);
-        });
-    });
 
 
     it("query with wrong courses_wrong", function () {
@@ -669,23 +768,12 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest2).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-           //expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult_complex));
+            //expect(JSON.stringify(value.body)).to.equal(JSON.stringify(testResult_complex));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
         });
     });
-
-    // it("query with wrong form", function () {
-    //     this.timeout(10000);
-    //     return insightFacade.performQuery(queryRequest7).then(function(value) {
-    //         Log.test('Value: ' + value.code);
-    //         expect.fail();
-    //     }).catch(function (err) {
-    //         console.log("error" +err);
-    //         expect(err.code).to.equal(400);
-    //     });
-    // });
 
 
     it("query with wrong id", function () {

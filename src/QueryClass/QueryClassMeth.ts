@@ -25,7 +25,14 @@ export default class QueryClassMeth {
     }
 
     is_expr(course:any, key:string, value:string):boolean {
-        return (course[key] === value);
+
+        if (value[1]==="*") {
+
+            var newValue = value.substring(1,value.length-1);
+            return this.checkPartial(course[key], newValue);
+        }else {
+            return (course[key] === value);
+        }
     }
 
 
@@ -133,10 +140,6 @@ export default class QueryClassMeth {
 
     checkTypeString(input_key:any, input_value:any): boolean{
 
-        if (input_key===("courses_dept"||"courses_id"||"courses_instructor"||"courses_title"
-            ||"courses_uuid")&&isString(input_value))
-            return true;
-
         if ((input_key==="courses_dept")&&(typeof(input_value)==="string")) {
             return true;
         }else if ((input_key === "courses_id")&&(typeof(input_value)==="string")){
@@ -158,6 +161,14 @@ export default class QueryClassMeth {
         if (key === "course") return true;
 
         throw new Error("invalid check key");
+    }
+
+    checkPartial(inputA:string, inputB:string):boolean{
+        if( inputA.search(inputB) > -1){
+            return true;
+
+        }
+        return false;
     }
 
 
