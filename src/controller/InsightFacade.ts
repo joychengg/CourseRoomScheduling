@@ -7,6 +7,7 @@ import Log from "../Util";
 
 import QueryClassMeth from "../QueryClass/QueryClassMeth";
 import {stringify} from "querystring";
+import {isNullOrUndefined} from "util";
 
 
 var fs = require("fs");
@@ -78,33 +79,11 @@ export default class InsightFacade implements IInsightFacade {
 
                             for (var i = 0; i < content.length; i++) {
 
-                               // console.log("this is the result" + Object.keys(content[i]));
-                                console.log("this is the result" +content[i][0]);
-
-                                // if (Object.keys(content[i])[0] !== "result") {
-                                //
-                                //     var cantparseResponse: InsightResponse = {
-                                //         code: 400,
-                                //         body: {}
-                                //     };
-                                //     reject(cantparseResponse);
-                                //
-                                // }
-
-
-
-
                                 var json = JSON.parse(content[i]);
-
-                                //console.log("this is the result" +content[i][0]);
-                                //console.log("this is the parse part" +content[0]);
-
-
-
-                                // console.log(JSON.stringify(json));
                                 jsonObjArray.push(json);
                             }
                         })
+
                         .catch (function (err:any) {
 
                             var cantparseResponse: InsightResponse = {
@@ -115,16 +94,25 @@ export default class InsightFacade implements IInsightFacade {
 
                         })
 
-
                         // at this point everything should be in jsonObjArray
 
                         .then(function (content:any) {
 
-                            // var everythingArr: any[] = [];
-                            // console.log(jsonObjArray.length);
                             for (var i = 0; i < jsonObjArray.length; i++) {
 
-                                var arrayOfCourses = jsonObjArray[i].result;   //loop through the jsonObjectList's result node and put everything into an array
+                                if (isNullOrUndefined(jsonObjArray[i].result)){
+
+                                    var cantparseResponse: InsightResponse = {
+                                        code: 400,
+                                        body: {}
+                                    };
+                                    reject(cantparseResponse);
+                                }
+
+                                var arrayOfCourses = jsonObjArray[i].result;
+
+
+                                //loop through the jsonObjectList's result node and put everything into an array
                                 for (var j = 0; j < arrayOfCourses.length; j++) {
                                     everythingArr.push(arrayOfCourses[j]);
 
@@ -191,7 +179,6 @@ export default class InsightFacade implements IInsightFacade {
                         body: {}
                     };
                     reject(removeResponse);
-
 
                 }else{
                     fs.unlink(path,function () {
@@ -277,6 +264,18 @@ export default class InsightFacade implements IInsightFacade {
                 reject(failResponse);
             }
 
+
+
+            if ((query.OPTIONS.FORM !=="TABLE")||(isNullOrUndefined(query.OPTIONS.FORM))){
+
+                var failResponse: InsightResponse = {
+                    code: 400,
+                    body: {}
+                };
+                reject(failResponse);
+
+            }
+
             // if(objforQuery.checkInvalid(query.WHERE)===false){
             //
             //     //check if AND, OR, IS etc...
@@ -310,13 +309,23 @@ export default class InsightFacade implements IInsightFacade {
                     if (objforQuery.Filter(query.WHERE, course)===true)
                         arrOFCourses.push(course);
                 } catch (err) {
-                  //  if (err === "invalid key") {
+
+
+                    if (err.toString() === "Error: invalid check key") {
+                        var failResponse: InsightResponse = {
+                            code: 424,
+                            body: err
+                        };
+                        reject(failResponse);
+
+                    }else{
+
                         var failResponse: InsightResponse = {
                             code: 400,
                             body: err
                         };
                         reject(failResponse);
-                   // }
+                    }
                 }
             }
 
