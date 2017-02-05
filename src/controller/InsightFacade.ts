@@ -358,7 +358,7 @@ export default class InsightFacade implements IInsightFacade {
                     count++;
                     break;
                 }
-            }
+            } 
             if (count === 0) {
                 var failResponse: InsightResponse = {
                     code: 400,
