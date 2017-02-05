@@ -144,22 +144,6 @@ export default class InsightFacade implements IInsightFacade {
                                 resolve(newResponse);
                             }
 
-
-                            /*
-                            try {
-                                //fs.mkdirSync(path);
-                                // try to see if a folder can be made
-                            }catch(err){
-                                if (fileExists) {
-                                    resolve(existsResponse);
-                                }else {
-                                    resolve(newResponse);
-                                }
-                                //if cant be made then check if file exist or not
-                            }*/
-
-
-                            //fs.writeFileSync( path, JSON.stringify(everythingArr));
                         });
 
                 })
@@ -211,49 +195,7 @@ export default class InsightFacade implements IInsightFacade {
 
             });
 
-            //     var promises: Promise<string>[] = [];
-            //
-            //     var path = './'+ id+'.json';
-            //
-            //     var ifExists= fs.existsSync(path);
-            //
-            //     if (ifExists)
-            //         promises.push(fs.unlink(path));
-            //
-            //     Promise.all(promises)
-            //
-            //         .then(function (id: any) {
-            //
-            //             for (var stuff of id){
-            //             try {
-            //
-            //                 var successResponse: InsightResponse = {
-            //                     code: 204,
-            //                     body: {}
-            //                 };
-            //
-            //                 resolve(successResponse);
-            //
-            //             }catch (err){
-            //
-            //                 var removeResponse: InsightResponse = {
-            //                     code: 404,
-            //                     body: {"error":err}
-            //                 };
-            //                 reject(removeResponse);
-            //
-            //             }
-            //         }
-            // })
-            //         .catch(function (err: any)
-            //         {
-            //             var removeResponse: InsightResponse = {
-            //                 code: 404,
-            //                 body: {"error":err}
-            //             };
-            //             reject(removeResponse);
-            //         })
-            //
+
         })
 
 
@@ -281,7 +223,6 @@ export default class InsightFacade implements IInsightFacade {
                 return;
             }
 
-           // console.log("check for where part" + objforQuery.isJson(JSON.stringify(query.WHERE)));
 
 
             if ((query.OPTIONS.FORM !=="TABLE")||(isNullOrUndefined(query.OPTIONS.FORM))){
@@ -328,11 +269,11 @@ export default class InsightFacade implements IInsightFacade {
                     }
                 }
             }
-            //console.log("here is the array of courses "+JSON.stringify(arrOFCourses));
 
             for (var course of arrOFCourses) {
-                /*try {
+                try {
 
+                 finalCourseArr.push(objforQuery.Combine(course, query.OPTIONS));
 
                 } catch (err) {
 
@@ -342,10 +283,9 @@ export default class InsightFacade implements IInsightFacade {
                     };
                     reject(failResponse);
                     return;
-                }*/
+                }
 
 
-                finalCourseArr.push(objforQuery.Combine(course, query.OPTIONS));
             }
 
 
@@ -374,7 +314,16 @@ export default class InsightFacade implements IInsightFacade {
             finalCourseArr.sort(function(a, b) {
                 var orderS = query.OPTIONS['ORDER'];
 
-                return parseFloat(a[orderS]) - parseFloat(b[orderS]);
+                if (orderS ===  "courses_instructor" ||orderS ===   "courses_uuid" ||orderS ===   "courses_id" || orderS ===  "courses_title" || orderS ===  "courses_dept") {
+                    var nameA= a[orderS].toLowerCase(), nameB=b[orderS].toLowerCase();
+                    if (nameA < nameB) //sort string ascending
+                        return -1;
+                    if (nameA > nameB)
+                        return 1;
+
+                    return 0;
+                } else {
+                return parseFloat(a[orderS]) - parseFloat(b[orderS]);}
             });
 
 

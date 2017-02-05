@@ -258,6 +258,7 @@ export default class QueryClassMeth {
         }
     }
 
+
     Combine(course:any, input_option:any) {
 
         var column = Object.keys(input_option)[0];
@@ -266,7 +267,15 @@ export default class QueryClassMeth {
 
         var result: any = {};
 
+        var acc = 0;
+
         var miss = [];
+
+        for (let key of input_option[column]) {
+            if (input_option[order] === key) acc++;
+        }
+
+        if (acc === 0) throw new Error("Order is not in column");
 
 
         for (var i = 0; i < input_option[column].length; i++) {
