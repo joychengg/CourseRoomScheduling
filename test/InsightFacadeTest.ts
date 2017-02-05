@@ -15,6 +15,7 @@ import fs = require("fs");
 var zipStuff: any = null;
 var inValidZip:any = null;
 var wrongZip:any = null;
+var noResultZip:any = Buffer.from(fs.readFileSync("./noResultJson.zip")).toString('base64');
 var insightFacade: InsightFacade = null;
 var queryRequest: QueryRequest = {
     WHERE: {},
@@ -125,6 +126,113 @@ var queryRequest14: QueryRequest = {
     OPTIONS: {COLUMNS: [],
         ORDER: '',
         FORM:"TABLE"
+    }
+};
+
+var notJsonRequest: QueryRequest = {
+    WHERE: null,
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+
+var wrongFormRequest: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"WRONG"
+    }
+};
+
+var nullOptionsRequest: QueryRequest = {
+    WHERE: {},
+    OPTIONS:{COLUMNS:null,
+        ORDER: '',
+        FORM:"WRONG"
+    }
+};
+
+var coursefailRequest: QueryRequest = {
+    WHERE: {"AND":[
+    {
+        "IS":{
+            "courses_id":"504"
+        }
+    },
+    {
+        "LT":{
+            "courses_fail":80
+        }
+    },{
+            "IS":{
+                "courses_uuid":"504"
+            }
+        }]},
+    OPTIONS: {"COLUMNS":[
+        "courses_dept",
+        "courses_id",
+        "courses_avg"
+    ],
+        "ORDER":"courses_avg",
+        "FORM":"TABLE"
+    }
+};
+
+var coverageRequest: QueryRequest = {
+    WHERE: {"AND":[
+        {
+            "IS":{
+                "courses_id":"504"
+            }
+        },
+        {
+            "LT":{
+                "courses_fail":80
+            }
+        },{
+            "IS":{
+                "courses_uuid":"504"
+            }
+        }]},
+    OPTIONS: {"COLUMNS":[
+        "courses_dept",
+        "courses_id",
+        "courses_avg",
+        "courses_instructor",
+        "courses_uuid",
+        "courses_title",
+        "courses_pass",
+        "courses_fail",
+        "courses_audit"
+    ],
+        "ORDER":"courses_avg",
+        "FORM":"TABLE"
+    }
+};
+
+var emptyANDRequest: QueryRequest = {
+    WHERE: {"AND":[]},
+    OPTIONS: {"COLUMNS":[
+        "courses_dept",
+        "courses_id",
+        "courses_avg"
+    ],
+        "ORDER":"courses_avg",
+        "FORM":"TABLE"
+    }
+};
+
+var emptyORRequest: QueryRequest = {
+    WHERE: {"OR":[]},
+    OPTIONS: {"COLUMNS":[
+        "courses_dept",
+        "courses_id",
+        "courses_avg"
+    ],
+        "ORDER":"courses_avg",
+        "FORM":"TABLE"
     }
 };
 
@@ -527,8 +635,7 @@ describe("InsightFacadeTest", function () {
             "FORM":"TABLE"
         };
 
-        var LTRequest: QueryRequest = {
-            WHERE: {"OR": [{
+        LTRequest.WHERE = {"OR": [{
                 "AND":[
                     {
                         "LT":{
@@ -555,18 +662,6 @@ describe("InsightFacadeTest", function () {
                             "courses_audit":10
                         }
                     }
-                    ,
-                    {
-                        "IS":{
-                            "invalid_audit":10
-                        }
-                    }
-                    ,
-                    {
-                        "IS":{
-                            "courses_invalid":10
-                        }
-                    }
                 ]
             },
                 {
@@ -574,12 +669,13 @@ describe("InsightFacadeTest", function () {
                         "courses_audit":1
                     }
                 }
-            ]},
-            OPTIONS: {
-                "COLUMNS":["courses_dept", "courses_avg"],
-                "ORDER":"courses_avg",
-                "FORM":"TABLE"
-            }
+            ]
+        };
+
+        LTRequest.OPTIONS ={
+            "COLUMNS":["courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
         };
 
     });
@@ -606,6 +702,7 @@ describe("InsightFacadeTest", function () {
     });
 
 
+
     it("cant parse file - reject 400", function () {
         this.timeout(10000);
         return insightFacade.addDataset('courses123', inValidZip).then(function(value) {
@@ -613,6 +710,16 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         }).catch(function (err) {
             console.log(JSON.stringify(err.body));
+            expect(err.code).to.equal(400);
+        });
+    });
+
+    it("cant parse file(no result key) - reject 400", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('coursesNO', noResultZip).then(function(value) {
+            Log.test('Value: ' + value.body);
+            expect.fail();
+        }).catch(function (err) {
             expect(err.code).to.equal(400);
         });
     });
@@ -650,6 +757,22 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
+
+
+    it("query1", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(coursefailRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+            //expect(value.body).to.deep.equal(testResult);
+        }).catch(function (err) {
+            console.log("error" +err);
+
+            console.log(err.body);
+            expect.fail();
+        });
+    });
+
 
     it("query with audit", function () {
         this.timeout(10000);
@@ -768,6 +891,19 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("query with null Options", function () {
+
+        this.timeout(10000);
+        return insightFacade.performQuery(nullOptionsRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            Log.test('Value: ' + err.body);
+            expect(err.code).to.equal(400);
+        });
+    });
+
 
     it("query_ complex", function () {
         this.timeout(10000);
@@ -797,10 +933,63 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(LTRequest).then(function(value) {
             Log.test('Value: ' + value.code);
+        }).catch(function (err) {
+            console.log("error" +err);
+        });
+    });
+
+    it("notJsonquery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(notJsonRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
             expect.fail();
         }).catch(function (err) {
             console.log("error" +err);
             expect(err.code).to.equal(400);
+        });
+    });
+
+    it("wrongFormquery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(wrongFormRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect(err.code).to.equal(400);
+        });
+    });
+
+    it("emptyORFormquery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(emptyORRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect(err.code).to.equal(400);
+        });
+    });
+
+    it("emptyANDFormquery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(emptyANDRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect(err.code).to.equal(400);
+        });
+    });
+
+
+    it("coverageQuery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(coverageRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" +err);
         });
     });
 
@@ -847,5 +1036,29 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
+
+
+    it("delete file fail(invalid ID) --- reject(404)", function () {
+        this.timeout(10000);
+        return insightFacade.removeDataset(null).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect(err.code).to.equal(400);
+        });
+    });
+
+    it("add file fail(invalid ID) --- reject(400)", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset(null, zipStuff).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect(err.code).to.equal(400);
+        });
+    });
+
 
 });
