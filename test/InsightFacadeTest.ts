@@ -236,6 +236,22 @@ var emptyORRequest: QueryRequest = {
     }
 };
 
+var doubleNegateRequest: QueryRequest = {
+    WHERE: {"NOT":{"NOT" : {
+    "GT":{
+        "courses_avg":93.5
+    }
+}}},
+    OPTIONS: {"COLUMNS":[
+        "courses_dept",
+        "courses_id",
+        "courses_avg"
+    ],
+        "ORDER":"courses_avg",
+        "FORM":"TABLE"
+    }
+};
+
 var testResult: any = { render: 'TABLE',
     result:
         [ { courses_dept: 'epse', courses_avg: 97.09 },
@@ -979,6 +995,16 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" +err);
             expect(err.code).to.equal(400);
+        });
+    });
+
+    it("doubleNegatequery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(doubleNegateRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
         });
     });
 
