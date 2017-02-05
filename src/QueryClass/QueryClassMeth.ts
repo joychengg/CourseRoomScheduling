@@ -277,7 +277,7 @@ export default class QueryClassMeth {
 
         if (acc === 0) throw new Error("Order is not in column");
 
-
+ 
         for (var i = 0; i < input_option[column].length; i++) {
 
             for (var c = 0; c < Object.keys(course).length; c++) {
