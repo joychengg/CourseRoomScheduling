@@ -26,10 +26,14 @@ export default class QueryClassMeth {
 
     is_expr(course:any, key:string, value:string):boolean {
 
-        if (value[1]==="*") {
+        if (value[0]==="*") {
+
+
 
             var newValue = value.substring(1,value.length-1);
             return this.checkPartial(course[key], newValue);
+
+
         }else {
             return (course[key] === value);
         }
