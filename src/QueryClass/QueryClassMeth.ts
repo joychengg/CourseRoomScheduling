@@ -28,8 +28,6 @@ export default class QueryClassMeth {
 
         if (value[0]==="*") {
 
-
-
             var newValue = value.substring(1,value.length-1);
             return this.checkPartial(course[key], newValue);
 
