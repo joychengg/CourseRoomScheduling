@@ -210,7 +210,13 @@ export default class QueryClassMeth {
 
             this.checkKey(key1[0].slice(0, 6));
             this.checkTypeString(key1[0], input.IS[key1[0]]);
-            return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]]);
+            if (key1[0] === 'courses_uuid'){
+
+                return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]].toString());
+
+            }else {
+                return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]]);
+            }
 
         } else if (key === "AND") {
             var exprs = input.AND;
@@ -270,7 +276,13 @@ export default class QueryClassMeth {
 
                 if (this.methodKey3(input_option[column][i]) === Object.keys(course)[c]) {
 
-                    result[input_option[column][i]] = course[Object.keys(course)[c]];
+                    if (input_option[column][i] === "courses_uuid"){
+                        var str = course[Object.keys(course)[c]].toString();
+                        result[input_option[column][i]] = str;
+
+                    }else {
+                        result[input_option[column][i]] = course[Object.keys(course)[c]];
+                    }
                 }
 
             }

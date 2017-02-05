@@ -129,6 +129,30 @@ var queryRequest14: QueryRequest = {
     }
 };
 
+var queryRequest15: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var queryRequest16: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
+var queryRequest17: QueryRequest = {
+    WHERE: {},
+    OPTIONS: {COLUMNS: [],
+        ORDER: '',
+        FORM:"TABLE"
+    }
+};
+
 var notJsonRequest: QueryRequest = {
     WHERE: null,
     OPTIONS: {COLUMNS: [],
@@ -156,16 +180,16 @@ var nullOptionsRequest: QueryRequest = {
 
 var coursefailRequest: QueryRequest = {
     WHERE: {"AND":[
-    {
-        "IS":{
-            "courses_id":"504"
-        }
-    },
-    {
-        "LT":{
-            "courses_fail":80
-        }
-    },{
+        {
+            "IS":{
+                "courses_id":"504"
+            }
+        },
+        {
+            "LT":{
+                "courses_fail":80
+            }
+        },{
             "IS":{
                 "courses_uuid":"504"
             }
@@ -238,10 +262,10 @@ var emptyORRequest: QueryRequest = {
 
 var doubleNegateRequest: QueryRequest = {
     WHERE: {"NOT":{"NOT" : {
-    "GT":{
-        "courses_avg":93.5
-    }
-}}},
+        "GT":{
+            "courses_avg":93.5
+        }
+    }}},
     OPTIONS: {"COLUMNS":[
         "courses_dept",
         "courses_id",
@@ -437,10 +461,48 @@ describe("InsightFacadeTest", function () {
             }
         };
         queryRequest13.OPTIONS = {
+            "COLUMNS":["courses_uuid","courses_dept", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest15.WHERE = {
+            "IS":{
+                "courses_instructor":"*david*"
+            }
+        };
+        queryRequest15.OPTIONS = {
+            "COLUMNS":["courses_instructor", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest16.WHERE = {
+            "IS":{
+                "courses_dept":"*he*"
+            }
+        };
+        queryRequest16.OPTIONS = {
+            "COLUMNS":["courses_instructor", "courses_avg"],
+            "ORDER":"courses_avg",
+            "FORM":"TABLE"
+        };
+
+        queryRequest17.WHERE = {
+
+            "NOT":{
+                "IS":{
+                    "courses_instructor":"*david*"
+                }
+            }
+
+        };
+        queryRequest17.OPTIONS = {
             "COLUMNS":["courses_dept", "courses_avg"],
             "ORDER":"courses_avg",
             "FORM":"TABLE"
         };
+
         queryRequest12.WHERE = {
             "AND":[{
                 "IS":{"courses_dept":"cpsc"}},
@@ -652,40 +714,40 @@ describe("InsightFacadeTest", function () {
         };
 
         LTRequest.WHERE = {"OR": [{
-                "AND":[
-                    {
-                        "LT":{
-                            "courses_pass":90
-                        }
-                    },
-                    {
-                        "IS":{
-                            "courses_instructor":"Wolfman"
-                        }
-                    },
-                    {
-                        "IS":{
-                            "courses_pass":50
-                        }
-                    },
-                    {
-                        "IS":{
-                            "courses_fail":5
-                        }
-                    },
-                    {
-                        "IS":{
-                            "courses_audit":10
-                        }
-                    }
-                ]
-            },
+            "AND":[
                 {
-                    "EQ":{
-                        "courses_audit":1
+                    "LT":{
+                        "courses_pass":90
+                    }
+                },
+                {
+                    "IS":{
+                        "courses_instructor":"Wolfman"
+                    }
+                },
+                {
+                    "IS":{
+                        "courses_pass":50
+                    }
+                },
+                {
+                    "IS":{
+                        "courses_fail":5
+                    }
+                },
+                {
+                    "IS":{
+                        "courses_audit":10
                     }
                 }
             ]
+        },
+            {
+                "EQ":{
+                    "courses_audit":1
+                }
+            }
+        ]
         };
 
         LTRequest.OPTIONS ={
@@ -795,7 +857,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest10).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-           // Log.test("body  " + JSON.stringify(value.body));
+            // Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -807,7 +869,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest11).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-           // Log.test("body  " + JSON.stringify(value.body));
+            // Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -832,8 +894,47 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest13).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            expect(value.body).to.deep.equal(resultPatial);
-          //Log.test("body  " + JSON.stringify(value.body));
+           // expect(value.body).to.deep.equal(resultPatial);
+            //Log.test("body  " + JSON.stringify(value.body));
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query with partial names, return instructor name", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest15).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+            // expect(value.body).to.deep.equal(resultPatial);
+            //Log.test("body  " + JSON.stringify(value.body));
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query with partial dept, return instructor name", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest16).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+            //expect(value.body).to.deep.equal(resultPatial);
+            //Log.test("body  " + JSON.stringify(value.body));
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query with NOT name, return dept", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryRequest17).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+            //expect(value.body).to.deep.equal(resultPatial);
+            //Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -845,7 +946,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest14).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-          // Log.test("body  " + JSON.stringify(value.body));
+            // Log.test("body  " + JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
