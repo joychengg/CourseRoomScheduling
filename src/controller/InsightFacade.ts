@@ -58,8 +58,8 @@ export default class InsightFacade implements IInsightFacade {
             //
             // }
 
-            if (!content)
-                reject(emptyResponse);
+            if(isNullOrUndefined(id) || isNullOrUndefined(content) || !content) reject(emptyResponse);
+
 
             var promises: Promise<string>[] = [];
 
@@ -139,9 +139,9 @@ export default class InsightFacade implements IInsightFacade {
                             var path = './'+ id+'.json';
                             var fileExists = fs.existsSync(path);
 
+                            fs.writeFileSync( path, JSON.stringify(everythingArr));/*
                             try {
                                 //fs.mkdirSync(path);
-                                fs.writeFileSync( path, JSON.stringify(everythingArr));
                                 // try to see if a folder can be made
                             }catch(err){
                                 if (fileExists) {
@@ -150,7 +150,7 @@ export default class InsightFacade implements IInsightFacade {
                                     resolve(newResponse);
                                 }
                                 //if cant be made then check if file exist or not
-                            }
+                            }*/
 
                             if (fileExists) {
                                 resolve(existsResponse);
@@ -181,7 +181,7 @@ export default class InsightFacade implements IInsightFacade {
 
         return new Promise(function (resolve: any, reject: any) {
 
-            if (!id)
+            if (!id || isNullOrUndefined(id))
                 reject(emptyResponse);
 
             var path = './'+ id+'.json';
