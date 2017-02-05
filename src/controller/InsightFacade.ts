@@ -371,11 +371,14 @@ export default class InsightFacade implements IInsightFacade {
 
             };
 
+            var finalFinal = JSON.parse(JSON.stringify(resultThing));
+
             var resultResponse: InsightResponse = {
                 code : 200,
-                body : resultThing
+                body : finalFinal
             };
 
+            //console.log("FUCKING LOOK HERE MORON  "+ objforQuery.isJson(JSON.stringify(resultResponse.body)));
             resolve(resultResponse);
 
         })
