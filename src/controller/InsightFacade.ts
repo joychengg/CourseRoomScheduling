@@ -82,9 +82,10 @@ export default class InsightFacade implements IInsightFacade {
                             if (content.length===0){
                                 var cantparseResponse: InsightResponse = {
                                     code : 400,
-                                    body : {}
+                                    body : {Error: "Empty jSon"}
                                 };
                                 reject(cantparseResponse);
+                                return;
 
                             }
 
@@ -103,6 +104,7 @@ export default class InsightFacade implements IInsightFacade {
                                 body : {"error": err}
                             };
                             reject(cantparseResponse);
+                            return;
 
                         })
 
@@ -116,9 +118,10 @@ export default class InsightFacade implements IInsightFacade {
 
                                     var cantparseResponse: InsightResponse = {
                                         code: 400,
-                                        body: {}
+                                        body: {Error: "Missing result"}
                                     };
                                     reject(cantparseResponse);
+                                    return;
                                 }
 
                                 var arrayOfCourses = jsonObjArray[i].result;
@@ -168,6 +171,7 @@ export default class InsightFacade implements IInsightFacade {
                         body : {"error": err}
                     };
                     reject(errResponse);
+                    return;
 
                 })
         })
@@ -188,9 +192,10 @@ export default class InsightFacade implements IInsightFacade {
 
                     var removeResponse: InsightResponse = {
                         code: 404,
-                        body: {}
+                        body: {Error: "path doesn't exist"}
                     };
                     reject(removeResponse);
+                    return;
 
                 }else{
                     fs.unlink(path,function () {
@@ -270,9 +275,10 @@ export default class InsightFacade implements IInsightFacade {
 
                 var failResponse: InsightResponse = {
                     code: 400,
-                    body: {}
+                    body: {Error: "Invalid Json"}
                 };
                 reject(failResponse);
+                return;
             }
 
            // console.log("check for where part" + objforQuery.isJson(JSON.stringify(query.WHERE)));
@@ -282,9 +288,10 @@ export default class InsightFacade implements IInsightFacade {
 
                 var failResponse: InsightResponse = {
                     code: 400,
-                    body: {}
+                    body: {Error}
                 };
                 reject(failResponse);
+                return;
 
             }
 
@@ -308,6 +315,7 @@ export default class InsightFacade implements IInsightFacade {
                             body: err
                         };
                         reject(failResponse);
+                        return;
 
                     }else{
 
@@ -316,6 +324,7 @@ export default class InsightFacade implements IInsightFacade {
                             body: err
                         };
                         reject(failResponse);
+                        return;
                     }
                 }
             }
@@ -333,6 +342,7 @@ export default class InsightFacade implements IInsightFacade {
                         body: err
                     };
                     reject(failResponse);
+                    return;
                 }
             }
 
@@ -352,9 +362,10 @@ export default class InsightFacade implements IInsightFacade {
             if (count === 0) {
                 var failResponse: InsightResponse = {
                     code: 400,
-                    body: {}
+                    body: {Error: "empty options"}
                 };
                 reject(failResponse);
+                return;
             }
 
 
@@ -378,7 +389,6 @@ export default class InsightFacade implements IInsightFacade {
                 body : finalFinal
             };
 
-            //console.log("FUCKING LOOK HERE MORON  "+ objforQuery.isJson(JSON.stringify(resultResponse.body)));
             resolve(resultResponse);
 
         })

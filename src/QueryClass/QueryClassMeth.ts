@@ -165,13 +165,16 @@ export default class QueryClassMeth {
         throw new Error("invalid check key");
     }
 
+
     checkPartial(inputA:string, inputB:string):boolean{
         if( inputA.search(inputB) > -1){
             return true;
 
         }
+
         return false;
     }
+
 
 
     Filter (input:any, course:any ): boolean {
