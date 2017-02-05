@@ -296,9 +296,9 @@ export default class InsightFacade implements IInsightFacade {
             }
 
 
-            if (everythingArr.length === 0) {
+            /*if (everythingArr.length === 0) {
                 everythingArr = fs.readFileSync(path);
-            }
+            }*/
 
 
             for (var course of everythingArr) {
@@ -331,9 +331,8 @@ export default class InsightFacade implements IInsightFacade {
             //console.log("here is the array of courses "+JSON.stringify(arrOFCourses));
 
             for (var course of arrOFCourses) {
-                try {
+                /*try {
 
-                    finalCourseArr.push(objforQuery.Combine(course, query.OPTIONS));
 
                 } catch (err) {
 
@@ -343,7 +342,10 @@ export default class InsightFacade implements IInsightFacade {
                     };
                     reject(failResponse);
                     return;
-                }
+                }*/
+
+
+                finalCourseArr.push(objforQuery.Combine(course, query.OPTIONS));
             }
 
 

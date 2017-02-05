@@ -15,6 +15,7 @@ import fs = require("fs");
 var zipStuff: any = null;
 var inValidZip:any = null;
 var wrongZip:any = null;
+var Serv1 = new Server(8888);
 var noResultZip:any = Buffer.from(fs.readFileSync("./noResultJson.zip")).toString('base64');
 var insightFacade: InsightFacade = null;
 var queryRequest: QueryRequest = {
@@ -275,6 +276,45 @@ var doubleNegateRequest: QueryRequest = {
         "FORM":"TABLE"
     }
 };
+
+var fireTruckRequest: QueryRequest = {
+    WHERE: {"AND": [{"IS" : {
+        "courses_dept" : "cpsc"
+    }},
+        {"NOT": {
+        "IS" : {
+            "courses_id" : "121"
+        }
+        }}]},
+    OPTIONS: {"COLUMNS":[
+        "courses_dept",
+        "courses_id"
+    ],
+        "ORDER":"courses_avg",
+        "FORM":"TABLE"
+    }
+};
+
+var fusionRequest: QueryRequest = {
+    WHERE: {"AND":[{"IS" : {
+            "courses_instructor":"wolfman, steve"
+
+    }},{
+    "IS" :{
+    "course_instructor": "nosco, peter"}
+    }]
+    },
+    OPTIONS: {"COLUMNS":[
+        "courses_dept",
+        "courses_id",
+        "courses_instructor"
+    ],
+        "ORDER":"courses_avg",
+        "FORM":"TABLE"
+    }
+};
+
+
 
 var testResult: any = { render: 'TABLE',
     result:
@@ -767,6 +807,10 @@ describe("InsightFacadeTest", function () {
         insightFacade = null;
     });
 
+    it("server", function () {
+        Serv1.start();
+        Serv1.stop();
+    });
 
     it("delete file fail --- reject(404)", function () {
         this.timeout(10000);
@@ -1102,6 +1146,26 @@ describe("InsightFacadeTest", function () {
     it("doubleNegatequery", function () {
         this.timeout(10000);
         return insightFacade.performQuery(doubleNegateRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
+        });
+    });
+
+    it("fusionNegatequery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(fusionRequest).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
+        });
+    });
+
+    it("fireTruckNegatequery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(fireTruckRequest).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
         }).catch(function (err) {

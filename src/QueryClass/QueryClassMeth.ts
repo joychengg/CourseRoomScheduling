@@ -158,7 +158,7 @@ export default class QueryClassMeth {
     }
 
     checkKey(key:string):boolean {
-        if (key === "course") return true;
+        if (key === "courses") return true;
 
         throw new Error("invalid check key");
     }
@@ -183,7 +183,7 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.GT);
 
-            this.checkKey(key1[0].slice(0, 6));
+            this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.GT[key1[0]]);
 
             return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
@@ -192,7 +192,7 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.LT);
 
-            this.checkKey(key1[0].slice(0, 6));
+            this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.LT[key1[0]]);
             return this.lt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
 
@@ -200,7 +200,7 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.EQ);
 
-            this.checkKey(key1[0].slice(0, 6));
+            this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.EQ[key1[0]]);
             return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
 
@@ -208,7 +208,7 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.IS);
 
-            this.checkKey(key1[0].slice(0, 6));
+            this.checkKey(key1[0].slice(0, 7));
             this.checkTypeString(key1[0], input.IS[key1[0]]);
             if (key1[0] === 'courses_uuid'){
 
