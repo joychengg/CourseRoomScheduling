@@ -31,7 +31,6 @@ export default class QueryClassMeth {
             var newValue = value.substring(1,value.length-1);
             return this.checkPartial(course[key], newValue);
 
-
         }else {
             return (course[key] === value);
         }
@@ -121,7 +120,6 @@ export default class QueryClassMeth {
 
 
     checkTypeMath(input_key:any, input_value:any): boolean{
-
 
 
         if ((input_key==="courses_audit")&&(typeof(input_value)==="number")) {

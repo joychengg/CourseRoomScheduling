@@ -47,16 +47,6 @@ export default class InsightFacade implements IInsightFacade {
 
         return new Promise(function (resolve: any, reject: any) {
 
-            // try {
-            //     var inside = fs.readFileSync(content, 'base64');
-            // }catch(err){
-            //     var cantparseResponse: InsightResponse = {
-            //         code : 400,
-            //         body : {}
-            //     };
-            //     reject(cantparseResponse);
-            //
-            // }
 
             if(isNullOrUndefined(id) || isNullOrUndefined(content) || !content) reject(emptyResponse);
 
