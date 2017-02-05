@@ -102,6 +102,7 @@ export default class InsightFacade implements IInsightFacade {
 
                         .then(function (content:any) {
 
+                            everythingArr = [];
                             for (var i = 0; i < jsonObjArray.length; i++) {
 
                                 if (isNullOrUndefined(jsonObjArray[i].result)){
@@ -116,6 +117,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                 var arrayOfCourses = jsonObjArray[i].result;
 
+                               // everythingArr.push(arrayOfCourses);
 
                                 //loop through the jsonObjectList's result node and put everything into an array
                                 for (var j = 0; j < arrayOfCourses.length; j++) {
@@ -125,11 +127,25 @@ export default class InsightFacade implements IInsightFacade {
                             }
                             //everythingArr would contain allllll the courses one by one
 
-
+                           // console.log("here is every array  " + JSON.stringify(everythingArr));
                             var path = './'+ id+'.json';
                             var fileExists = fs.existsSync(path);
 
-                            fs.writeFileSync( path, JSON.stringify(everythingArr));/*
+                            if (fileExists) {
+
+                               // fs.unlinkSync(path);
+                                fs.writeFileSync( path, JSON.stringify(everythingArr));
+
+                                resolve(existsResponse);
+
+                            }else {
+
+                                fs.writeFileSync( path, JSON.stringify(everythingArr));
+                                resolve(newResponse);
+                            }
+
+
+                            /*
                             try {
                                 //fs.mkdirSync(path);
                                 // try to see if a folder can be made
@@ -142,12 +158,6 @@ export default class InsightFacade implements IInsightFacade {
                                 //if cant be made then check if file exist or not
                             }*/
 
-                            if (fileExists) {
-                                resolve(existsResponse);
-                            }
-                            else {
-                                resolve(newResponse);
-                            }
 
                             //fs.writeFileSync( path, JSON.stringify(everythingArr));
                         });
