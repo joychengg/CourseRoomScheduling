@@ -289,6 +289,7 @@ export default class InsightFacade implements IInsightFacade {
             }
 
 
+
             var column = Object.keys(query.OPTIONS)[0];
             var order = query.OPTIONS.ORDER;
 

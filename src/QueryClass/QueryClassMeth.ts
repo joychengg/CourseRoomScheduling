@@ -26,12 +26,26 @@ export default class QueryClassMeth {
 
     is_expr(course:any, key:string, value:string):boolean {
 
-        if (value[0]==="*") {
+        if ((value[0]==="*") && (value[value.length-1] === "*")) {
 
             var newValue = value.substring(1,value.length-1);
             return this.checkPartial(course[key], newValue);
 
-        }else {
+        }else if(value[0] === "*") {
+
+            var newValue = value.substring(1,value.length);
+
+            if (course[key].substring(course[key].length - value.length + 1, course[key].length) === newValue) return true;
+            return false;
+
+        }else if(value[value.length-1] === "*") {
+
+            var newValue = value.substring(0,value.length-1);
+
+            if (course[key].substring(0,newValue.length) === newValue) return true;
+            return false;
+
+        }else{
             return (course[key] === value);
         }
     }
