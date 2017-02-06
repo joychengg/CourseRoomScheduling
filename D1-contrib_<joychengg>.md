@@ -1,5 +1,4 @@
-Final test pass rate:    Coverage rate:
-
+Final test pass rate: 96%   Coverage rate: 89%
 Contribution:
 I participated in writing addDataset, performQuery, and help edited removeDataset.
 There was constant effort for both of us to debug as well.
