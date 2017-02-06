@@ -251,6 +251,18 @@ var emptyANDRequest: QueryRequest = {
     }
 };
 
+var invalidISRequest: QueryRequest = {
+    WHERE: {"IS":[{"courses_dept": "cpsc"},{ "courses_instructor" : "*william*"}]},
+    OPTIONS: {"COLUMNS":[
+        "courses_dept",
+        "courses_id",
+        "courses_avg"
+    ],
+        "ORDER":"courses_avg",
+        "FORM":"TABLE"
+    }
+};
+
 var emptyORRequest: QueryRequest = {
     WHERE: {"OR":[]},
     OPTIONS: {"COLUMNS":[
@@ -869,7 +881,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             expect.fail();
         }).catch(function (err) {
-            console.log(JSON.stringify(err.body));
+           //console.log(JSON.stringify(err.body));
             expect(err.code).to.equal(400);
         });
     });
@@ -888,12 +900,13 @@ describe("InsightFacadeTest", function () {
     it("cant parse file(no result key) - reject 400", function () {
         this.timeout(10000);
         return insightFacade.addDataset('coursesNO', noResultZip).then(function(value) {
-            Log.test('Value: ' + value.body);
+            //Log.test('Value: ' + value.body);
             expect.fail();
         }).catch(function (err) {
             expect(err.code).to.equal(400);
         });
     });
+
 
     it("cant parse not a zip file - reject 400", function () {
         this.timeout(10000);
@@ -917,14 +930,26 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+
+    it("invalid Query( IS) - reject 400", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(invalidISRequest).then(function(value) {
+            Log.test('Value: ' + value.body);
+            expect.fail();
+        }).catch(function (err) {
+            expect(err.code).to.equal(400);
+            console.log(err.body);
+        });
+    });
+
     it("query with partial names", function () {
         this.timeout(10000);
         return insightFacade.performQuery(queryRequest13).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
 
-            //expect(value.body).to.deep.equal(resultPartial);
             //Log.test("body  " + JSON.stringify(value.body));
+            expect(value.body).to.deep.equal(resultPartial);
         }).catch(function (err) {
             console.log("error" +err);
             expect.fail();
@@ -1138,7 +1163,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryRequest2).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            console.log(value.body);
+            //console.log(value.body);
             //expect(value.body).to.deep.equal(testResult_complex);
         }).catch(function (err) {
             console.log("error" +err);

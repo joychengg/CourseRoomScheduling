@@ -183,6 +183,8 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.GT);
 
+            if (isArray(input.GT)) throw new Error;
+
             this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.GT[key1[0]]);
 
@@ -191,6 +193,7 @@ export default class QueryClassMeth {
         } else if (key === "LT") {
 
             var key1 = Object.keys(input.LT);
+            if (isArray(input.LT)) throw new Error;
 
             this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.LT[key1[0]]);
@@ -200,6 +203,8 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.EQ);
 
+            if (isArray(input.EQ)) throw new Error;
+
             this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.EQ[key1[0]]);
             return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
@@ -208,8 +213,10 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.IS);
 
+            if (isArray(input.IS)) throw new Error;
             this.checkKey(key1[0].slice(0, 7));
             this.checkTypeString(key1[0], input.IS[key1[0]]);
+
             if (key1[0] === 'courses_uuid'){
 
                 return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]].toString());
@@ -221,7 +228,7 @@ export default class QueryClassMeth {
         } else if (key === "AND") {
             var exprs = input.AND;
 
-            if (input.AND.length === 0) throw new Error;
+            if ((input.AND.length === 0) || (!isArray(input.AND))) throw new Error;
 
             for (let key of exprs) {
 
@@ -233,7 +240,7 @@ export default class QueryClassMeth {
         } else if (key === "OR") {
             var exprs = input.OR;
 
-            if (input.OR.length === 0) throw new Error;
+            if ((input.OR.length === 0) || (!isArray(input.OR))) throw new Error;
 
             for (let key of exprs) {
 
@@ -245,6 +252,7 @@ export default class QueryClassMeth {
         } else if (key === "NOT") {
 
             var exprs = input.NOT;
+            if(isArray(exprs)) throw new Error;
 
             if (this.Filter(exprs, course)) {
                 return false;
@@ -277,7 +285,7 @@ export default class QueryClassMeth {
 
         if (acc === 0) throw new Error("Order is not in column");
 
- 
+
         for (var i = 0; i < input_option[column].length; i++) {
 
             for (var c = 0; c < Object.keys(course).length; c++) {
@@ -286,8 +294,7 @@ export default class QueryClassMeth {
                 if (this.methodKey3(input_option[column][i]) === Object.keys(course)[c]) {
 
                     if (input_option[column][i] === "courses_uuid"){
-                        var str = course[Object.keys(course)[c]].toString();
-                        result[input_option[column][i]] = str;
+                        result[input_option[column][i]] = course[Object.keys(course)[c]];
 
                     }else {
                         result[input_option[column][i]] = course[Object.keys(course)[c]];

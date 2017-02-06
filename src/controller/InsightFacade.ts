@@ -237,9 +237,9 @@ export default class InsightFacade implements IInsightFacade {
             }
 
 
-            /*if (everythingArr.length === 0) {
+            if (everythingArr.length === 0) {
                 everythingArr = fs.readFileSync(path);
-            }*/
+            }
 
 
             for (var course of everythingArr) {
