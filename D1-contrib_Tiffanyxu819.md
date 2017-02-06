@@ -1,4 +1,4 @@
-Pass Rate: Coverage Rate:
+Pass Rate: 96%  Coverage Rate: 89%
 
 
 Contributions: Implemented functions together and committed on one computer, we splitted work of testing and debugging.
