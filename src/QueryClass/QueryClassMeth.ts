@@ -5,6 +5,8 @@ import {isNumber} from "util";
 import {isString} from "util";
 import {isNullOrUndefined} from "util";
 
+
+
 export default class QueryClassMeth {
 
     constructor() {
@@ -55,7 +57,6 @@ export default class QueryClassMeth {
 
         var output: string = '';
 
-        //if (!this.checkKey(input.slice(0,6))) throw new Error ("invalid check key");
 
         if (input === 'courses_avg') {
             return output = 'Avg';
@@ -67,15 +68,11 @@ export default class QueryClassMeth {
             return output = 'Audit';
         }
 
-        //throw new Error ("invalid key");
-
     }
 
     methodKey2 (input: string):string{
 
         var output: string = '';
-
-        //if (!this.checkKey(input.slice(0,6))) throw new Error ("invalid check key");
 
         if (input === 'courses_dept') {
             return output = 'Subject';
@@ -89,7 +86,6 @@ export default class QueryClassMeth {
             return output = 'id';
         }
 
-        //throw new Error ("invalid key"); 
 
     }
 
@@ -97,7 +93,6 @@ export default class QueryClassMeth {
 
         var output: string = '';
 
-        //if (!this.checkKey(input.slice(0,6))) throw new Error ("invalid check key");
 
         if (input === 'courses_dept') {
             return 'Subject';
@@ -119,7 +114,6 @@ export default class QueryClassMeth {
             return 'Audit';
         }
 
-        //throw new Error ("invalid key");
 
     }
 
@@ -171,10 +165,18 @@ export default class QueryClassMeth {
         }
     }
 
-    checkKey(key:string):boolean {
-        if (key === "courses") return true;
+    checkKey(key:string) {
+        if (key === "courses"){
 
-        throw new Error("invalid check key");
+            return true;
+
+        }else{
+
+            return false;
+
+        }
+
+
     }
 
 
@@ -197,9 +199,6 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.GT);
 
-            if (isArray(input.GT)) throw new Error;
-
-            this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.GT[key1[0]]);
 
             return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
@@ -207,9 +206,7 @@ export default class QueryClassMeth {
         } else if (key === "LT") {
 
             var key1 = Object.keys(input.LT);
-            if (isArray(input.LT)) throw new Error;
 
-            this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.LT[key1[0]]);
             return this.lt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
 
@@ -217,9 +214,6 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.EQ);
 
-            if (isArray(input.EQ)) throw new Error;
-
-            this.checkKey(key1[0].slice(0, 7));
             this.checkTypeMath(key1[0], input.EQ[key1[0]]);
             return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
 
@@ -227,8 +221,6 @@ export default class QueryClassMeth {
 
             var key1 = Object.keys(input.IS);
 
-            if (isArray(input.IS)) throw new Error;
-            this.checkKey(key1[0].slice(0, 7));
             this.checkTypeString(key1[0], input.IS[key1[0]]);
 
             if (key1[0] === 'courses_uuid'){
@@ -242,8 +234,6 @@ export default class QueryClassMeth {
         } else if (key === "AND") {
             var exprs = input.AND;
 
-            if ((input.AND.length === 0) || (!isArray(input.AND))) throw new Error;
-
             for (let key of exprs) {
 
                 if (!this.Filter(key, course)) return false;
@@ -253,8 +243,6 @@ export default class QueryClassMeth {
 
         } else if (key === "OR") {
             var exprs = input.OR;
-
-            if ((input.OR.length === 0) || (!isArray(input.OR))) throw new Error;
 
             for (let key of exprs) {
 
@@ -266,7 +254,6 @@ export default class QueryClassMeth {
         } else if (key === "NOT") {
 
             var exprs = input.NOT;
-            if(isArray(exprs)) throw new Error;
 
             if (this.Filter(exprs, course)) {
                 return false;
@@ -274,9 +261,9 @@ export default class QueryClassMeth {
                 return true;
 
             }
-        } else {
-            throw new Error;
+        } else{
 
+            throw new Error;
         }
     }
 
@@ -285,19 +272,7 @@ export default class QueryClassMeth {
 
         var column = Object.keys(input_option)[0];
 
-        var order = Object.keys(input_option)[1];
-
         var result: any = {};
-
-        var acc = 0;
-
-        var miss = [];
-
-        for (let key of input_option[column]) {
-            if (input_option[order] === key) acc++;
-        }
-
-        if (acc === 0) throw new Error("Order is not in column");
 
 
         for (var i = 0; i < input_option[column].length; i++) {
@@ -314,18 +289,10 @@ export default class QueryClassMeth {
                         result[input_option[column][i]] = course[Object.keys(course)[c]];
                     }
                 }
-
             }
-
-
         }
 
         return result;
 
-
     }
-
-
-
-
 }

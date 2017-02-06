@@ -9,6 +9,7 @@ import QueryClassMeth from "../QueryClass/QueryClassMeth";
 import {stringify} from "querystring";
 import {isNullOrUndefined} from "util";
 import {QueryRequest2} from "../QueryClass/responseInterface";
+import {isArray} from "util";
 
 
 var fs = require("fs");
@@ -42,8 +43,6 @@ export default class InsightFacade implements IInsightFacade {
     addDataset(id: string, content: string): Promise<InsightResponse> {
 
         var jsonObjArray: any[] = [];
-
-        //Buffer.from(fs.readFileSync(content)).toString('base64')
 
         return new Promise(function (resolve: any, reject: any) {
 
@@ -127,13 +126,11 @@ export default class InsightFacade implements IInsightFacade {
                             }
                             //everythingArr would contain allllll the courses one by one
 
-                           // console.log("here is every array  " + JSON.stringify(everythingArr));
                             var path = './'+ id+'.json';
                             var fileExists = fs.existsSync(path);
 
                             if (fileExists) {
 
-                               // fs.unlinkSync(path);
                                 fs.writeFileSync( path, JSON.stringify(everythingArr));
 
                                 resolve(existsResponse);
@@ -190,15 +187,9 @@ export default class InsightFacade implements IInsightFacade {
 
                         resolve(successResponse);
                     });
-
                 }
-
             });
-
-
         })
-
-
     }
 
     performQuery(query: QueryRequest): Promise <InsightResponse> {
@@ -224,8 +215,8 @@ export default class InsightFacade implements IInsightFacade {
             }
 
 
-
-            if ((query.OPTIONS.FORM !=="TABLE")||(isNullOrUndefined(query.OPTIONS.FORM))){
+            if ((query.OPTIONS.FORM !=="TABLE")||(isNullOrUndefined(query.OPTIONS.FORM))||(isNullOrUndefined(query.WHERE)
+                )||(query.OPTIONS.COLUMNS.length===0)){
 
                 var failResponse: InsightResponse = {
                     code: 400,
@@ -241,24 +232,108 @@ export default class InsightFacade implements IInsightFacade {
                 everythingArr = fs.readFileSync(path);
             }
 
+            var acc:any = [];
+
+            function checkKey(input:any):any{
+
+                var failResponse2: InsightResponse = {
+                    code: 400,
+                    body: {Error}
+                };
+
+                var key = Object.keys(input)[0];
+
+                if (key === "GT") {
+
+                    var key1 = Object.keys(input.GT);
+
+                    if (isArray(input.GT)) reject(failResponse2);
+
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))))
+                        acc.push(key1[0].substring(0, key1[0].indexOf("_")));
+
+                } else if (key === "LT") {
+
+                    var key1 = Object.keys(input.LT);
+
+                    if (isArray(input.LT)) reject(failResponse2);
+
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))))
+                        acc.push(key1[0].substring(0, key1[0].indexOf("_")));
+
+                } else if (key === "EQ") {
+
+                    var key1 = Object.keys(input.EQ);
+
+                    if (isArray(input.EQ)) reject(failResponse2);
+
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))))
+                        acc.push(key1[0].substring(0, key1[0].indexOf("_")));
+
+                } else if (key === "IS") {
+
+                    var key1 = Object.keys(input.IS);
+
+                    if (isArray(input.IS)) reject(failResponse2);
+
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))))
+                        acc.push(key1[0].substring(0, key1[0].indexOf("_")));
+
+                } else if (key === "AND") {
+                    var exprs = input.AND;
+
+                    if ((input.AND.length === 0) || (!isArray(input.AND))) reject(failResponse2);
+
+                    for (let key of exprs) {
+
+                        checkKey(key);
+
+                    }
+
+                } else if (key === "OR") {
+                    var exprs = input.OR;
+
+                    if ((input.OR.length === 0) || (!isArray(input.OR))) reject(failResponse2);
+
+                    for (let key of exprs) {
+
+                        checkKey(key);
+
+                    }
+
+                } else if (key === "NOT") {
+
+                    var exprs = input.NOT;
+
+                    if(isArray(exprs)) reject(failResponse2);
+
+                        checkKey(exprs);
+
+                }
+
+            }
+
+            checkKey(query.WHERE);
+
+            if (acc.length!==0){
+                var failllResponse: InsightResponse = {
+                    code: 424,
+                    body: {"missing":acc}
+                };
+
+                reject(failllResponse);
+                return;
+
+            }
+
 
             for (var course of everythingArr) {
+
                 try {
 
                     if (objforQuery.Filter(query.WHERE, course)===true)
                         arrOFCourses.push(course);
                 } catch (err) {
-
-
-                    if (err.toString() === "Error: invalid check key") {
-                        var failResponse: InsightResponse = {
-                            code: 424,
-                            body: err
-                        };
-                        reject(failResponse);
-                        return;
-
-                    }else{
 
                         var failResponse: InsightResponse = {
                             code: 400,
@@ -266,33 +341,18 @@ export default class InsightFacade implements IInsightFacade {
                         };
                         reject(failResponse);
                         return;
-                    }
+
                 }
             }
 
             for (var course of arrOFCourses) {
-                try {
-
                  finalCourseArr.push(objforQuery.Combine(course, query.OPTIONS));
-
-                } catch (err) {
-
-                    var failResponse: InsightResponse = {
-                        code: 400,
-                        body: err
-                    };
-                    reject(failResponse);
-                    return;
-                }
-
-
             }
 
-
+            if (!isNullOrUndefined(query.OPTIONS.ORDER)) {
 
             var column = Object.keys(query.OPTIONS)[0];
             var order = query.OPTIONS.ORDER;
-
 
             var count = 0;
             for (var i of query.OPTIONS.COLUMNS) {
@@ -311,22 +371,22 @@ export default class InsightFacade implements IInsightFacade {
                 return;
             }
 
+                finalCourseArr.sort(function (a, b) {
+                    var orderS = query.OPTIONS['ORDER'];
 
-            finalCourseArr.sort(function(a, b) {
-                var orderS = query.OPTIONS['ORDER'];
+                    if (orderS === "courses_instructor" || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept") {
+                        var nameA = a[orderS].toLowerCase(), nameB = b[orderS].toLowerCase();
+                        if (nameA < nameB) //sort string ascending
+                            return -1;
+                        if (nameA > nameB)
+                            return 1;
 
-                if (orderS ===  "courses_instructor" ||orderS ===   "courses_uuid" ||orderS ===   "courses_id" || orderS ===  "courses_title" || orderS ===  "courses_dept") {
-                    var nameA= a[orderS].toLowerCase(), nameB=b[orderS].toLowerCase();
-                    if (nameA < nameB) //sort string ascending
-                        return -1;
-                    if (nameA > nameB)
-                        return 1;
-
-                    return 0;
-                } else {
-                return parseFloat(a[orderS]) - parseFloat(b[orderS]);}
-            });
-
+                        return 0;
+                    } else {
+                        return parseFloat(a[orderS]) - parseFloat(b[orderS]);
+                    }
+                });
+            }
 
             var resultThing:QueryRequest2 = {
                 render:'TABLE',
@@ -340,11 +400,7 @@ export default class InsightFacade implements IInsightFacade {
                 code : 200,
                 body : finalFinal
             };
-
             resolve(resultResponse);
-
         })
-
-
     }
 }
