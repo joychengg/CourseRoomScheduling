@@ -56,8 +56,43 @@ export default class InsightFacade implements IInsightFacade {
 
                 .then(function (zip: any) {
 
+                    //check if key is empty or zip is no key here
+                    if (isNullOrUndefined(zip) || (isNullOrUndefined(zip.files))){
+                        var cantparseResponse: InsightResponse = {
+                            code : 400,
+                            body : {Error: "Empty zip"}
+                        };
+                        reject(cantparseResponse);
+                        return;
+
+                    }
+
+                    var dirName:any = null;
+                    //loop through to find dir name and then go into second loop to find if dir name is in key
+
+                    for (var i = 0; i<Object.keys(zip.files).length; i++) {
+
+                        var key = Object.keys(zip.files)[i];
+
+                        if (zip.files[key].dir){
+                            dirName = zip.files[key].name;
+                            break;
+                        }
+                            }
+
+                            //console.log("dir name" +dirName);
 
                     for (let key in zip.files) {
+
+                        if (!key.includes(dirName)){
+                            var cantparseResponse: InsightResponse = {
+                                code : 400,
+                                body : {Error: "Empty zip"}
+                            };
+                            reject(cantparseResponse);
+                            return;
+
+                        }
 
                         if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
                             promises.push(zip.file(key).async("string"));
@@ -216,7 +251,7 @@ export default class InsightFacade implements IInsightFacade {
 
 
             if ((query.OPTIONS.FORM !=="TABLE")||(isNullOrUndefined(query.OPTIONS.FORM))||(isNullOrUndefined(query.WHERE)
-                )||(query.OPTIONS.COLUMNS.length===0)){
+                )||(query.OPTIONS.COLUMNS.length===0) || (!isArray(query.OPTIONS.COLUMNS))){
 
                 var failResponse: InsightResponse = {
                     code: 400,
@@ -282,6 +317,8 @@ export default class InsightFacade implements IInsightFacade {
                 } else if (key === "AND") {
                     var exprs = input.AND;
 
+                    if (!isArray(input.AND)) reject(failResponse2);
+
                     if ((input.AND.length === 0) || (!isArray(input.AND))) reject(failResponse2);
 
                     for (let key of exprs) {
@@ -292,6 +329,8 @@ export default class InsightFacade implements IInsightFacade {
 
                 } else if (key === "OR") {
                     var exprs = input.OR;
+
+                    if (!isArray(input.OR)) reject(failResponse2);
 
                     if ((input.OR.length === 0) || (!isArray(input.OR))) reject(failResponse2);
 

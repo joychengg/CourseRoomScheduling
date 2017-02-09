@@ -175,8 +175,6 @@ export default class QueryClassMeth {
             return false;
 
         }
-
-
     }
 
 
