@@ -17,6 +17,7 @@ var inValidZip:any = null;
 var wrongZip:any = null;
 
 var invalidFile =  Buffer.from(fs.readFileSync("./test.png")).toString('base64');
+var roomFile =  Buffer.from(fs.readFileSync("./rooms.zip")).toString('base64');
 var Serv1 = new Server(8888);
 var noResultZip:any = Buffer.from(fs.readFileSync("./noResultJson.zip")).toString('base64');
 var insightFacade: InsightFacade = null;
@@ -1044,6 +1045,17 @@ describe("InsightFacadeTest", function () {
         Serv1.stop();
     });
 
+    it("adding rooms.zip --- resolve(201)", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('rooms', roomFile).then(function(value) {
+            Log.test('Value: ' + value.code);
+        }).catch(function (err) {
+            console.log("error" + JSON.stringify(err));
+            expect.fail();
+        });
+    });
+
+
     it("delete file fail --- reject(404)", function () {
         this.timeout(10000);
         return insightFacade.removeDataset('courses').then(function(value) {
@@ -1649,6 +1661,7 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
+
 
 
 

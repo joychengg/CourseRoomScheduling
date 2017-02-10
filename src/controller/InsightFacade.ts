@@ -14,6 +14,7 @@ import {isArray} from "util";
 
 var fs = require("fs");
 var JSZip = require("jszip");
+var parse5 = require("parse5");
 
 var emptyResponse: InsightResponse = {
     code : 400,
@@ -43,6 +44,8 @@ export default class InsightFacade implements IInsightFacade {
     addDataset(id: string, content: string): Promise<InsightResponse> {
 
         var jsonObjArray: any[] = [];
+        var htmlArray: any[] = [];
+        var index = "";
 
         return new Promise(function (resolve: any, reject: any) {
 
@@ -51,6 +54,173 @@ export default class InsightFacade implements IInsightFacade {
 
 
             var promises: Promise<string>[] = [];
+
+            if (id === "rooms") {
+
+                JSZip.loadAsync(content, {"base64": true})
+
+                    .then(function (zip: any) {
+
+                        var indexKey = Object.keys(zip.files)[Object.keys(zip.files).length - 1];
+
+
+                        //check if key is empty or zip is no key here
+                        if (isNullOrUndefined(zip) || (isNullOrUndefined(zip.files))){
+                            var cantparseResponse: InsightResponse = {
+                                code : 400,
+                                body : {Error: "Empty zip"}
+                            };
+                            reject(cantparseResponse);
+                            return;
+
+                        }
+
+                        var dirName:any = null;
+                        //loop through to find dir name and then go into second loop to find if dir name is in key
+
+                        for (var i = 0; i<Object.keys(zip.files).length; i++) {
+
+                            var key = Object.keys(zip.files)[i];
+
+                            if (zip.files[key].dir){
+                                dirName = zip.files[key].name;
+                                break;
+                            }
+                        }
+
+
+
+                        for (let key in zip.files) {
+
+                            /*if (!key.includes(dirName)){
+                                var cantparseResponse: InsightResponse = {
+                                    code : 400,
+                                    body : {Error: "Empty zip"}
+                                };
+                                reject(cantparseResponse);
+                                return;
+
+                            }*/
+
+                            if (key === indexKey) {
+                                zip.files[indexKey]
+                                    .async("string")
+                                    .then(function success(content:any) {
+                                    index = parse5.parse(content);
+                                    // use the content
+                                }, function error(e:any) {
+                                    // handle the error
+                                });
+                            }else if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
+                                promises.push(zip.file(key).async("string"));
+                            }
+                        }
+
+
+                        Promise.all(promises)
+
+                            .then(function (content: string[]) {
+
+                                if (content.length===0){
+                                    var cantparseResponse: InsightResponse = {
+                                        code : 400,
+                                        body : {Error: "Empty html"}
+                                    };
+                                    reject(cantparseResponse);
+                                    return;
+
+                                }
+
+                                var tempArray = [];
+
+
+                                for (var i = 0; i < content.length; i++) {
+                                    //console.log(content[i]);
+
+                                    var tempBuilding = parse5.parse(content[i]);
+                                    //console.log(tempBuilding.childNodes[1]);
+                                    tempArray.push(tempBuilding);
+                                }
+
+                                for (let building of tempArray) {
+                                        htmlArray.push(building);
+                                }
+
+
+                            })
+
+                            .catch (function (err:any) {
+
+                                var cantparseResponse: InsightResponse = {
+                                    code : 400,
+                                    body : {"error": err}
+                                };
+                                reject(cantparseResponse);
+                                return;
+
+                            })
+
+                            // at this point everything should be in htmlArray
+
+                            .then(function (content:any) {
+
+                                everythingArr = [];
+                                for (var i = 0; i < htmlArray.length; i++) {
+/*
+                                    if (isNullOrUndefined(htmlArray[i].result)){
+
+                                        var cantparseResponse: InsightResponse = {
+                                            code: 400,
+                                            body: {Error: "Missing result"}
+                                        };
+                                        reject(cantparseResponse);
+                                        return;
+                                    }*/
+
+                                    var arrayOfBuildings = htmlArray[i];
+
+
+                                    //loop through the jsonObjectList's result node and put everything into an array
+                                    for (var j = 0; j < arrayOfBuildings.length; j++) {
+                                        everythingArr.push(arrayOfBuildings[j]);
+
+                                    }//loop through each result node's courses and add those to the master list
+                                }
+                                //everythingArr would contain allllll the courses one by one
+
+                                var path = './'+ id+'.html';
+                                var fileExists = fs.existsSync(path);
+
+                                if (fileExists) {
+
+                                    fs.writeFileSync( path, everythingArr);
+
+                                    resolve(existsResponse);
+
+                                }else {
+
+                                    fs.writeFileSync( path, everythingArr);
+                                    resolve(newResponse);
+                                }
+
+                            });
+
+                    })
+
+                    .catch(function (err: any) {
+
+                        var errResponse: InsightResponse = {
+                            code : 400,
+                            body : {"error": err}
+                        };
+                        reject(errResponse);
+                        return;
+
+                    })
+
+            }
+
+            else{
 
             JSZip.loadAsync(content, {"base64": true})
 
@@ -190,8 +360,8 @@ export default class InsightFacade implements IInsightFacade {
                     return;
 
                 })
-        })
-    }
+            }})
+    };
 
     removeDataset(id: string): Promise<InsightResponse> {
 
@@ -263,7 +433,7 @@ export default class InsightFacade implements IInsightFacade {
             }
 
 
-            if (everythingArr.length === 0) {
+            if (everythingArr.length === 0) { // global
                 everythingArr = fs.readFileSync(path);
             }
 
@@ -430,7 +600,6 @@ export default class InsightFacade implements IInsightFacade {
             var resultThing:QueryRequest2 = {
                 render:'TABLE',
                 result: finalCourseArr
-
             };
 
             var finalFinal = JSON.parse(JSON.stringify(resultThing));

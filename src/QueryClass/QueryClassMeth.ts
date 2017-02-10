@@ -139,6 +139,14 @@ export default class QueryClassMeth {
             return true;
         }else if((input_key === "courses_fail")&&(typeof(input_value)==="number")){
             return true;
+        }else if((input_key === "rooms_lat")&&(typeof(input_value)==="number")){
+            return true;
+        }else if((input_key === "rooms_lon")&&(typeof(input_value)==="number")){
+            return true;
+        }else if((input_key === "rooms_seats")&&(typeof(input_value)==="number")){
+            return true;
+        }else if((input_key === "courses_year")&&(typeof(input_value)==="number")){
+            return true;
         }
         else {
 
@@ -159,14 +167,27 @@ export default class QueryClassMeth {
             return true;
         }else if((input_key === "courses_uuid")&&(typeof(input_value)==="string")){
             return true;
-        } else {
-
+        } else if((input_key === "rooms_fullname") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_shortname") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_number") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_name") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_address") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_type") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_furniture") && (typeof(input_value)==="string")) {
+            return true;
+        }else{
             throw new Error;
         }
     }
 
     checkKey(key:string) {
-        if (key === "courses"){
+        if (key === "courses" || key === "rooms"){
 
             return true;
 
@@ -280,15 +301,10 @@ export default class QueryClassMeth {
 
                 if (this.methodKey3(input_option[column][i]) === Object.keys(course)[c]) {
 
-                    if (input_option[column][i] === "courses_uuid"){
-                        result[input_option[column][i]] = course[Object.keys(course)[c]];
-
-                    }else {
-                        result[input_option[column][i]] = course[Object.keys(course)[c]];
-                    }
+                        result[input_option[column][i]] = course[Object.keys(course)[c]];                 }
                 }
             }
-        }
+
 
         return result;
 
