@@ -45,7 +45,7 @@ export default class InsightFacade implements IInsightFacade {
 
         var jsonObjArray: any[] = [];
         var htmlArray: any[] = [];
-        var index = "";
+        var index = null;
 
         return new Promise(function (resolve: any, reject: any) {
 
@@ -107,6 +107,8 @@ export default class InsightFacade implements IInsightFacade {
                                     .async("string")
                                     .then(function success(content:any) {
                                     index = parse5.parse(content);
+                                    console.log(index);
+                                    //console.log(index.getElementsByClassName("views-table cols-5 table"));
                                     // use the content
                                 }, function error(e:any) {
                                     // handle the error
