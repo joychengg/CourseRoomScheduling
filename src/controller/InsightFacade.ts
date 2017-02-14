@@ -257,7 +257,7 @@ export default class InsightFacade implements IInsightFacade {
                         if (!key.includes(dirName)){
                             var cantparseResponse: InsightResponse = {
                                 code : 400,
-                                body : {Error: "Empty zip"}
+                                body : {"Error": "Empty zip"}
                             };
                             reject(cantparseResponse);
                             return;
@@ -313,7 +313,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                     var cantparseResponse: InsightResponse = {
                                         code: 400,
-                                        body: {Error: "Missing result"}
+                                        body: {"Error": "Missing result"}
                                     };
                                     reject(cantparseResponse);
                                     return;
@@ -419,7 +419,7 @@ export default class InsightFacade implements IInsightFacade {
                 return;
             }
 
-            if ((query.OPTIONS===null)||(query.WHERE===null)){
+            if ((isNullOrUndefined(query.OPTIONS))||(isNullOrUndefined(query.WHERE))){
                 var failResponse: InsightResponse = {
                     code: 400,
                     body: {Error: "missing option or where"}
