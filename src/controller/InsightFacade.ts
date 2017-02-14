@@ -15,6 +15,7 @@ import {isArray} from "util";
 var fs = require("fs");
 var JSZip = require("jszip");
 var parse5 = require("parse5");
+var parser = new parse5.SAXParser();
 
 var emptyResponse: InsightResponse = {
     code : 400,
@@ -45,7 +46,7 @@ export default class InsightFacade implements IInsightFacade {
 
         var jsonObjArray: any[] = [];
         var htmlArray: any[] = [];
-        var index = null;
+        var tree = null;
 
         return new Promise(function (resolve: any, reject: any) {
 
@@ -63,7 +64,7 @@ export default class InsightFacade implements IInsightFacade {
 
                         var indexKey = Object.keys(zip.files)[Object.keys(zip.files).length - 1];
 
-
+                      //  var indexthing = Object.keys(zip.files)[];
                         //check if key is empty or zip is no key here
                         if (isNullOrUndefined(zip) || (isNullOrUndefined(zip.files))){
                             var cantparseResponse: InsightResponse = {
@@ -75,43 +76,36 @@ export default class InsightFacade implements IInsightFacade {
 
                         }
 
-                        var dirName:any = null;
                         //loop through to find dir name and then go into second loop to find if dir name is in key
-
-                        for (var i = 0; i<Object.keys(zip.files).length; i++) {
-
-                            var key = Object.keys(zip.files)[i];
-
-                            if (zip.files[key].dir){
-                                dirName = zip.files[key].name;
-                                break;
-                            }
-                        }
-
-
 
                         for (let key in zip.files) {
 
-                            /*if (!key.includes(dirName)){
-                                var cantparseResponse: InsightResponse = {
-                                    code : 400,
-                                    body : {Error: "Empty zip"}
-                                };
-                                reject(cantparseResponse);
-                                return;
-
-                            }*/
 
                             if (key === indexKey) {
                                 zip.files[indexKey]
                                     .async("string")
                                     .then(function success(content:any) {
-                                    index = parse5.parse(content);
-                                    console.log(index);
-                                    //console.log(index.getElementsByClassName("views-table cols-5 table"));
+                                    tree = parse5.parse(content);
+
+                                    parse5.getAttrList(tree);
+
+                                    console.log("herre is list " +tree);
+
+                                    //want to use index to traverse the tree to find the node
+                                    //     parser.on('text', text => {
+                                    //         // Handle page text content
+                                    //
+                                    //
+                                    //     });
+
+
+                                    console.log("here is index:  "+ content);
                                     // use the content
                                 }, function error(e:any) {
-                                    // handle the error
+
+
+
+                                        // handle the error
                                 });
                             }else if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
                                 promises.push(zip.file(key).async("string"));
@@ -144,7 +138,11 @@ export default class InsightFacade implements IInsightFacade {
                                     tempArray.push(tempBuilding);
                                 }
 
+
+                                //below is the filter to get the right building matching the index.htm
                                 for (let building of tempArray) {
+
+
                                         htmlArray.push(building);
                                 }
 
@@ -232,7 +230,7 @@ export default class InsightFacade implements IInsightFacade {
                     if (isNullOrUndefined(zip) || (isNullOrUndefined(zip.files))){
                         var cantparseResponse: InsightResponse = {
                             code : 400,
-                            body : {Error: "Empty zip"}
+                            body : {"error": "Empty zip"}
                         };
                         reject(cantparseResponse);
                         return;
@@ -278,7 +276,7 @@ export default class InsightFacade implements IInsightFacade {
                             if (content.length===0){
                                 var cantparseResponse: InsightResponse = {
                                     code : 400,
-                                    body : {Error: "Empty jSon"}
+                                    body : {"error": "Empty jSon"}
                                 };
                                 reject(cantparseResponse);
                                 return;
@@ -421,6 +419,15 @@ export default class InsightFacade implements IInsightFacade {
                 return;
             }
 
+            if ((query.OPTIONS===null)||(query.WHERE===null)){
+                var failResponse: InsightResponse = {
+                    code: 400,
+                    body: {Error: "missing option or where"}
+                };
+                reject(failResponse);
+                return;
+
+            }
 
             if ((query.OPTIONS.FORM !=="TABLE")||(isNullOrUndefined(query.OPTIONS.FORM))||(isNullOrUndefined(query.WHERE)
                 )||(query.OPTIONS.COLUMNS.length===0) || (!isArray(query.OPTIONS.COLUMNS))){
