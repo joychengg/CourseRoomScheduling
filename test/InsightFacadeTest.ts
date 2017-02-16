@@ -173,21 +173,23 @@ var queryRequestNoOrder: QueryRequest = {
     }
 };
 var testForYear:QueryRequest = {
-
     WHERE: {
-    "EQ": {
-        "courses_year": 1900
-    }
-},
+        "AND":[{"EQ": {
+            "courses_year": 1900
+        }},{
+            "IS":{
+                "courses_dept":"adhe"
+            }
+        }]
+    },
     OPTIONS: {
-    "COLUMNS": [
-        "courses_dept","courses_id"
-    ],
+        "COLUMNS": [
+            "courses_dept","courses_id"
+        ],
 
         "FORM": "TABLE"
-
+    }
 }
-};
 
 var invalidISRequest: QueryRequest = {
     WHERE: {"IS":[{"courses_dept": "cpsc"},{ "courses_instructor" : "*william*"}]},
@@ -482,6 +484,8 @@ var fusionRequest: QueryRequest = {
         "FORM":"TABLE"
     }
 };
+
+var result = {"render":"TABLE","result":[{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"328"},{"courses_dept":"adhe","courses_id":"328"},{"courses_dept":"adhe","courses_id":"328"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"}]};
 
 var queryRequest20: QueryRequest = {
 
@@ -1479,8 +1483,10 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(testForYear).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-
-            console.log(JSON.stringify(value.body));
+            console.log(JSON.stringify(value.body).length);
+            console.log(JSON.stringify(result).length);
+         //   expect(value.body).to.deep.equal(result);
+            //console.log(JSON.stringify(value.body));
 
         }).catch(function (err) {
             console.log("error" + err);
