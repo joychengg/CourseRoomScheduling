@@ -55,43 +55,42 @@ export default class QueryClassMeth {
 
     methodKey1 (input: string):string{
 
-        var output: string = '';
-
 
         if (input === 'courses_avg') {
-            return output = 'Avg';
+            return 'Avg';
         } else if (input === 'courses_pass') {
-            return output = 'Pass';
+            return 'Pass';
         } else if (input === 'courses_fail') {
-            return output = 'Fail';
+            return 'Fail';
         } else if (input === 'courses_audit') {
-            return output = 'Audit';
+            return 'Audit';
+        } else if(input === 'courses_year') {
+            return 'Year';
         }
 
     }
 
     methodKey2 (input: string):string{
 
-        var output: string = '';
 
         if (input === 'courses_dept') {
-            return output = 'Subject';
+            return 'Subject';
         } else if (input === 'courses_id') {
-            return output = 'Course';
+            return 'Course';
         } else if (input === 'courses_instructor') {
-            return output = 'Professor';
+            return 'Professor';
         } else if (input === 'courses_title') {
-            return output = 'Title';
+            return 'Title';
         } else if (input === 'courses_uuid') {
-            return output = 'id';
+            return  'id';
+        } else if(input === 'courses_year') {
+            return 'Year';
         }
 
 
     }
 
     methodKey3 (input: string):string{
-
-        var output: string = '';
 
 
         if (input === 'courses_dept') {
@@ -112,6 +111,8 @@ export default class QueryClassMeth {
             return 'Fail';
         } else if (input === 'courses_audit') {
             return 'Audit';
+        } else if(input === 'courses_year') {
+            return 'Year';
         }
 
 
