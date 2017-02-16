@@ -79,7 +79,7 @@ export default class InsightFacade implements IInsightFacade {
                             return;
 
                         }
-
+                        var treeIndex:any = [];
                         //loop through to find dir name and then go into second loop to find if dir name is in key
 
                         for (let key in zip.files) {
@@ -100,17 +100,15 @@ export default class InsightFacade implements IInsightFacade {
                                          .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3];
 
 
+
                                         function loop(tree:any){
 
                                             for (var key = 1; key<tree.childNodes.length;key++){
 
-                                                var tree2 = tree.childNodes[key].childNodes[3].childNodes[0].value;
+                                                treeIndex.push(tree.childNodes[key].childNodes[3].childNodes[0].value);
                                                 key++;
 
-                                               // console.log("tree 2    "+ tree2);
-
                                             }
-
                                         }
                                     loop(treeTbody);
 
@@ -120,9 +118,11 @@ export default class InsightFacade implements IInsightFacade {
 
                                         // handle the error
                                 });
+
                             }else if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
                                 promises.push(zip.file(key).async("string"));
                             }
+
                         }
 
 
@@ -142,6 +142,8 @@ export default class InsightFacade implements IInsightFacade {
 
                                 var tempArray = [];
 
+                                console.log(content.length);
+                                //problem: should be 364 in content.length, but only 79?
 
                                 for (var i = 0; i < content.length; i++) {
                                    // console.log("looking at content" + content[i]);
@@ -151,7 +153,7 @@ export default class InsightFacade implements IInsightFacade {
                                     tempArray.push(tempBuilding);
                                 }
 
-
+                                console.log("temp array" + tempArray);
                                 //below is the filter to get the right building matching the index.htm
                                 for (let building of tempArray) {
 
