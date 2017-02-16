@@ -172,6 +172,22 @@ var queryRequestNoOrder: QueryRequest = {
         FORM:"TABLE"
     }
 };
+var testForYear:QueryRequest = {
+
+    WHERE: {
+    "EQ": {
+        "courses_year": 1900
+    }
+},
+    OPTIONS: {
+    "COLUMNS": [
+        "courses_dept","courses_id"
+    ],
+
+        "FORM": "TABLE"
+
+}
+};
 
 var invalidISRequest: QueryRequest = {
     WHERE: {"IS":[{"courses_dept": "cpsc"},{ "courses_instructor" : "*william*"}]},
@@ -1453,6 +1469,19 @@ describe("InsightFacadeTest", function () {
             expect(value.code).to.equal(200);
 
             //expect(value.body).to.deep.equal(fireTruckResult);
+        }).catch(function (err) {
+            console.log("error" + err);
+        });
+    });
+
+    it("testing year", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(testForYear).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+
+            console.log(JSON.stringify(value.body));
+
         }).catch(function (err) {
             console.log("error" + err);
         });

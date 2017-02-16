@@ -208,8 +208,10 @@ export default class QueryClassMeth {
             this.checkTypeMath(key1[0], input.GT[key1[0]]);
 
             if(key1[0] === "courses_year"){
+
                if(this.checkSection(course)){
-                   return this.gt_expr(course, this.methodKey1(key1[0]), 1900);
+
+                   return (1900 > input.GT[key1[0]]);
                }else{
                    return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
                }
@@ -222,6 +224,18 @@ export default class QueryClassMeth {
             var key1 = Object.keys(input.LT);
 
             this.checkTypeMath(key1[0], input.LT[key1[0]]);
+
+            if(key1[0] === "courses_year"){
+
+                if(this.checkSection(course)){
+
+                    return (1900 < input.LT[key1[0]]);
+                }else{
+                    return this.gt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
+                }
+
+            }
+
             return this.lt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
 
         } else if (key === "EQ") {
@@ -229,6 +243,17 @@ export default class QueryClassMeth {
             var key1 = Object.keys(input.EQ);
 
             this.checkTypeMath(key1[0], input.EQ[key1[0]]);
+
+            if(key1[0] === "courses_year"){
+
+                if(this.checkSection(course)){
+
+                    return (1900 === input.EQ[key1[0]]);
+                }else{
+                    return this.gt_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
+                }
+
+            }
             return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
 
         } else if (key === "IS") {
