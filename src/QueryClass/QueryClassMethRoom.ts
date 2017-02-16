@@ -1,3 +1,6 @@
+/**
+ * Created by joycheng on 2017-02-15.
+ */
 import Log from "../Util";
 import {QueryRequest} from "../controller/IInsightFacade";
 import {isArray} from "util";
@@ -7,10 +10,10 @@ import {isNullOrUndefined} from "util";
 
 
 
-export default class QueryClassMeth {
+export default class QueryClassMethRoom {
 
     constructor() {
-        Log.trace('QueryClassMeth::init()');
+        Log.trace('QueryClassMethRoom::init()');
     }
 
 
@@ -56,16 +59,29 @@ export default class QueryClassMeth {
     methodKey1 (input: string):string{
 
 
-        if (input === 'courses_avg') {
-            return 'Avg';
-        } else if (input === 'courses_pass') {
-            return 'Pass';
-        } else if (input === 'courses_fail') {
-            return 'Fail';
-        } else if (input === 'courses_audit') {
-            return 'Audit';
-        } else if(input === 'courses_year') {
-            return 'Year';
+        if (input === 'rooms_fullname') {
+            return 'views-field views-field-title';
+
+        } else if (input === 'rooms_shortname') {
+            return 'views-field views-field-field-building-code';
+
+        } else if (input === 'rooms_number') {
+            return 'views-field views-field-field-room-number';
+
+        } else if (input === 'rooms_name') {
+            return 'views-field views-field-field-building-code'+"_"+"views-field views-field-field-room-number";
+
+        } else if(input === 'rooms_address') {
+            return 'views-field views-field-field-building-address';
+
+        } else if(input === 'rooms_type') {
+            return 'views-field views-field-field-room-type';
+
+        } else if(input === 'rooms_furniture') {
+            return 'views-field views-field-field-room-furniture';
+
+        } else if(input === 'rooms_href') {
+            return '';  //need to implement to extract
         }
 
     }
@@ -73,16 +89,14 @@ export default class QueryClassMeth {
     methodKey2 (input: string):string{
 
 
-        if (input === 'courses_dept') {
-            return 'Subject';
-        } else if (input === 'courses_id') {
-            return 'Course';
-        } else if (input === 'courses_instructor') {
-            return 'Professor';
-        } else if (input === 'courses_title') {
-            return 'Title';
-        } else if (input === 'courses_uuid') {
-            return  'id';
+        if (input === 'rooms_lat') {
+            return '';
+
+        } else if (input === 'rooms_lon') {
+            return '';
+
+        } else if (input === 'rooms_seats') {
+            return 'views-field views-field-field-room-capacity';
         }
 
 
@@ -91,26 +105,38 @@ export default class QueryClassMeth {
     methodKey3 (input: string):string{
 
 
-        if (input === 'courses_dept') {
-            return 'Subject';
-        } else if (input === 'courses_id') {
-            return 'Course';
-        } else if (input === 'courses_instructor') {
-            return 'Professor';
-        } else if (input === 'courses_title') {
-            return 'Title';
-        } else if (input === 'courses_uuid') {
-            return 'id';
-        }else if(input === 'courses_avg') {
-            return 'Avg';
-        } else if (input === 'courses_pass') {
-            return 'Pass';
-        } else if (input === 'courses_fail') {
-            return 'Fail';
-        } else if (input === 'courses_audit') {
-            return 'Audit';
-        } else if(input === 'courses_year') {
-            return 'Year';
+        if (input === 'rooms_fullname') {
+            return 'views-field views-field-title';
+
+        } else if (input === 'rooms_shortname') {
+            return 'views-field views-field-field-building-code';
+
+        } else if (input === 'rooms_number') {
+            return 'views-field views-field-field-room-number';
+
+        } else if (input === 'rooms_name') {
+            return 'views-field views-field-field-building-code'+"_"+"views-field views-field-field-room-number";
+
+        } else if(input === 'rooms_address') {
+            return 'views-field views-field-field-building-address';
+
+        } else if(input === 'rooms_type') {
+            return 'views-field views-field-field-room-type';
+
+        } else if(input === 'rooms_furniture') {
+            return 'views-field views-field-field-room-furniture';
+
+        } else if(input === 'rooms_href') {
+            return '';  //need to implement to extract
+
+        } else if (input === 'rooms_lat') {
+            return '';
+
+        } else if (input === 'rooms_lon') {
+            return '';
+
+        } else if (input === 'rooms_seats') {
+            return 'views-field views-field-field-room-capacity';
         }
 
 
@@ -128,15 +154,11 @@ export default class QueryClassMeth {
 
     checkTypeMath(input_key:any, input_value:any): boolean{
 
-
-        if ((input_key==="courses_audit")&&(typeof(input_value)==="number")) {
+        if((input_key === "rooms_lat")&&(typeof(input_value)==="number")){
             return true;
-        }else if ((input_key === "courses_avg")&&(typeof(input_value)==="number")){
+        }else if((input_key === "rooms_lon")&&(typeof(input_value)==="number")){
             return true;
-
-        }else if((input_key === "courses_pass")&&(typeof(input_value)==="number")){
-            return true;
-        }else if((input_key === "courses_fail")&&(typeof(input_value)==="number")){
+        }else if((input_key === "rooms_seats")&&(typeof(input_value)==="number")){
             return true;
         }else if((input_key === "courses_year")&&(typeof(input_value)==="number")){
             return true;
@@ -149,15 +171,19 @@ export default class QueryClassMeth {
 
     checkTypeString(input_key:any, input_value:any): boolean{
 
-        if ((input_key==="courses_dept")&&(typeof(input_value)==="string")) {
+        if((input_key === "rooms_fullname") && (typeof(input_value)==="string")) {
             return true;
-        }else if ((input_key === "courses_id")&&(typeof(input_value)==="string")){
+        }else if((input_key === "rooms_shortname") && (typeof(input_value)==="string")) {
             return true;
-        }else if((input_key === "courses_instructor")&&(typeof(input_value)==="string")){
+        }else if((input_key === "rooms_number") && (typeof(input_value)==="string")) {
             return true;
-        }else if((input_key === "courses_title")&&(typeof(input_value)==="string")){
+        }else if((input_key === "rooms_name") && (typeof(input_value)==="string")) {
             return true;
-        }else if((input_key === "courses_uuid")&&(typeof(input_value)==="string")){
+        }else if((input_key === "rooms_address") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_type") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_furniture") && (typeof(input_value)==="string")) {
             return true;
         }else{
             throw new Error;
@@ -166,13 +192,9 @@ export default class QueryClassMeth {
 
     checkKey(key:string) {
         if (key === "courses" || key === "rooms"){
-
             return true;
-
         }else{
-
             return false;
-
         }
     }
 
@@ -180,19 +202,8 @@ export default class QueryClassMeth {
     checkPartial(inputA:string, inputB:string):boolean{
         if( inputA.search(inputB) > -1){
             return true;
-
         }
-
         return false;
-    }
-
-    checkSection(courses:any):boolean{
-        if (courses['Section']==="overall"){
-            return true;
-        }else{
-            return false;
-        }
-
     }
 
 
@@ -207,14 +218,7 @@ export default class QueryClassMeth {
 
             this.checkTypeMath(key1[0], input.GT[key1[0]]);
 
-            if(key1[0] === "courses_year"){
-               if(this.checkSection(course)){
-                   return this.gt_expr(course, this.methodKey1(key1[0]), 1900);
-               }else{
-                   return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
-               }
 
-            }
             return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
 
         } else if (key === "LT") {
@@ -222,6 +226,8 @@ export default class QueryClassMeth {
             var key1 = Object.keys(input.LT);
 
             this.checkTypeMath(key1[0], input.LT[key1[0]]);
+
+
             return this.lt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
 
         } else if (key === "EQ") {
@@ -229,6 +235,8 @@ export default class QueryClassMeth {
             var key1 = Object.keys(input.EQ);
 
             this.checkTypeMath(key1[0], input.EQ[key1[0]]);
+
+
             return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
 
         } else if (key === "IS") {
@@ -237,13 +245,6 @@ export default class QueryClassMeth {
 
             this.checkTypeString(key1[0], input.IS[key1[0]]);
 
-            if (key1[0] === 'courses_uuid'){
-
-                return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]].toString());
-
-            }else {
-                return this.is_expr(course, this.methodKey2(key1[0]), input.IS[key1[0]]);
-            }
 
         } else if (key === "AND") {
             var exprs = input.AND;
@@ -296,9 +297,9 @@ export default class QueryClassMeth {
 
                 if (this.methodKey3(input_option[column][i]) === Object.keys(course)[c]) {
 
-                        result[input_option[column][i]] = course[Object.keys(course)[c]];                 }
-                }
+                    result[input_option[column][i]] = course[Object.keys(course)[c]];                 }
             }
+        }
 
 
         return result;

@@ -10,12 +10,15 @@ import {stringify} from "querystring";
 import {isNullOrUndefined} from "util";
 import {QueryRequest2} from "../QueryClass/responseInterface";
 import {isArray} from "util";
+import {AST} from "parse5";
+import QueryClassMethRoom from "../QueryClass/QueryClassMethRoom";
 
 
 var fs = require("fs");
 var JSZip = require("jszip");
 var parse5 = require("parse5");
 var parser = new parse5.SAXParser();
+
 
 var emptyResponse: InsightResponse = {
     code : 400,
@@ -47,6 +50,7 @@ export default class InsightFacade implements IInsightFacade {
         var jsonObjArray: any[] = [];
         var htmlArray: any[] = [];
         var tree = null;
+
 
         return new Promise(function (resolve: any, reject: any) {
 
@@ -80,27 +84,36 @@ export default class InsightFacade implements IInsightFacade {
 
                         for (let key in zip.files) {
 
-
                             if (key === indexKey) {
                                 zip.files[indexKey]
-                                    .async("string")
+                                    .async("String")
                                     .then(function success(content:any) {
+
                                     tree = parse5.parse(content);
 
-                                    parse5.getAttrList(tree);
 
-                                    console.log("herre is list " +tree);
+                                     var tree1=   tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
+                                         .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1]
+                                         .childNodes[3].childNodes[1].childNodes[3].childNodes[0].value;
 
-                                    //want to use index to traverse the tree to find the node
-                                    //     parser.on('text', text => {
-                                    //         // Handle page text content
-                                    //
-                                    //
-                                    //     });
+                                     var treeTbody = tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
+                                         .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3];
 
 
-                                    console.log("here is index:  "+ content);
-                                    // use the content
+                                        function loop(tree:any){
+
+                                            for (var key = 1; key<tree.childNodes.length;key++){
+
+                                                var tree2 = tree.childNodes[key].childNodes[3].childNodes[0].value;
+                                                key++;
+
+                                               // console.log("tree 2    "+ tree2);
+
+                                            }
+
+                                        }
+                                    loop(treeTbody);
+
                                 }, function error(e:any) {
 
 
@@ -131,10 +144,10 @@ export default class InsightFacade implements IInsightFacade {
 
 
                                 for (var i = 0; i < content.length; i++) {
-                                    //console.log(content[i]);
+                                   // console.log("looking at content" + content[i]);
 
                                     var tempBuilding = parse5.parse(content[i]);
-                                    //console.log(tempBuilding.childNodes[1]);
+
                                     tempArray.push(tempBuilding);
                                 }
 
@@ -407,7 +420,9 @@ export default class InsightFacade implements IInsightFacade {
 
             var objforQuery = new QueryClassMeth();
 
-            var path = './courses.json';
+            var objforRoomQuery = new QueryClassMethRoom();
+
+            var path = "";
 
             if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
 
@@ -441,11 +456,6 @@ export default class InsightFacade implements IInsightFacade {
 
             }
 
-
-            if (everythingArr.length === 0) { // global
-                everythingArr = fs.readFileSync(path);
-            }
-
             var acc:any = [];
 
             function checkKey(input:any):any{
@@ -463,8 +473,13 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(input.GT)) reject(failResponse2);
 
-                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))))
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))){
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
+
+                    }else{
+                        path = key1[0].substring(0, key1[0].indexOf("_"));
+                    }
+
 
                 } else if (key === "LT") {
 
@@ -472,8 +487,11 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(input.LT)) reject(failResponse2);
 
-                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))))
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
+                    }else{
+                        path = key1[0].substring(0, key1[0].indexOf("_"));
+                    }
 
                 } else if (key === "EQ") {
 
@@ -481,8 +499,11 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(input.EQ)) reject(failResponse2);
 
-                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))))
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
+                    }else{
+                        path = key1[0].substring(0, key1[0].indexOf("_"));
+                    }
 
                 } else if (key === "IS") {
 
@@ -490,8 +511,11 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(input.IS)) reject(failResponse2);
 
-                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))))
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
+                    }else{
+                        path = key1[0].substring(0, key1[0].indexOf("_"));
+                    }
 
                 } else if (key === "AND") {
                     var exprs = input.AND;
@@ -544,13 +568,23 @@ export default class InsightFacade implements IInsightFacade {
 
             }
 
+            if (everythingArr.length === 0) { // global
+                everythingArr = fs.readFileSync('./' + path + '.json');
+            }
 
             for (var course of everythingArr) {
 
                 try {
+                    if (path==="courses") {
 
-                    if (objforQuery.Filter(query.WHERE, course)===true)
-                        arrOFCourses.push(course);
+                        if (objforQuery.Filter(query.WHERE, course) === true)
+                            arrOFCourses.push(course);
+                    }
+                    // }else if(path==="rooms"){
+                    //
+                    //     if (objforRoomQuery.Filter(query.WHERE, course) === true)
+                    //         arrOFCourses.push(course);
+                    // }
                 } catch (err) {
 
                         var failResponse: InsightResponse = {
