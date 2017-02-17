@@ -79,25 +79,27 @@ export default class InsightFacade implements IInsightFacade {
                             return;
 
                         }
+                        var tempIndex:any = [];
+
                         var treeIndex:any = [];
                         //loop through to find dir name and then go into second loop to find if dir name is in key
 
-                        for (let key in zip.files) {
+
+                  /*      for (let key in zip.files) {
 
                             if (key === indexKey) {
-                                zip.files[indexKey]
-                                    .async("String")
-                                    .then(function success(content:any) {
+                                zip.file("index.htm")
+                                    .async("string").then(function success(content:any) {
 
-                                    tree = parse5.parse(content);
+                                        tree = parse5.parse(content);
 
 
-                                     var tree1=   tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
-                                         .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1]
-                                         .childNodes[3].childNodes[1].childNodes[3].childNodes[0].value;
+                                        var tree1=   tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
+                                            .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1]
+                                            .childNodes[3].childNodes[1].childNodes[3].childNodes[0].value;
 
-                                     var treeTbody = tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
-                                         .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3];
+                                        var treeTbody = tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
+                                            .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3];
 
 
 
@@ -105,25 +107,43 @@ export default class InsightFacade implements IInsightFacade {
 
                                             for (var key = 1; key<tree.childNodes.length;key++){
 
-                                                treeIndex.push(tree.childNodes[key].childNodes[3].childNodes[0].value);
+                                                var temp = tree.childNodes[key].childNodes[3].childNodes[0].value;
+                                                temp = temp.substring(temp.indexOf("n"),temp.length);
+                                                temp = temp.trim();
+                                                treeIndex.push(temp);
+
                                                 key++;
 
                                             }
                                         }
-                                    loop(treeTbody);
+                                        loop(treeTbody);
 
-                                }, function error(e:any) {
+                                        console.log(treeIndex);
+
+
+                                    }, function error(e:any) {
 
 
 
                                         // handle the error
-                                });
+                                    });
 
-                            }else if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
-                                promises.push(zip.file(key).async("string"));
+
                             }
+                            else if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
+                                for (let index of treeIndex) {
 
-                        }
+                                    var indexString = "campus/discover/buildings-and-classrooms/" + index;
+                                    console.log(indexString);
+                                    if (zip.file(key).name === indexString){
+                                    promises.push(zip.file(key).async("string"));}
+                            }}
+
+                        }*/
+
+                  for (let key in zip.files) {
+                      if (zip.file(key) !== null && zip.files.hasOwnProperty(key))  promises.push(zip.file(key).async("string"));
+                  };
 
 
                         Promise.all(promises)
@@ -140,26 +160,64 @@ export default class InsightFacade implements IInsightFacade {
 
                                 }
 
-                                var tempArray = [];
+                                tree = parse5.parse(content[content.length -1]);
 
-                                console.log(content.length);
-                                //problem: should be 364 in content.length, but only 79?
+
+                                var treeTbody = tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
+                                    .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3];
+
+
+
+                                function loop(tree:any){
+
+                                    for (var key = 1; key<tree.childNodes.length;key++){
+
+                                        var temp = tree.childNodes[key].childNodes[3].childNodes[0].value;
+                                        temp = temp.substring(temp.indexOf("n"),temp.length);
+                                        temp = temp.trim();
+                                        treeIndex.push(temp);
+
+                                        key++;
+
+                                    }
+                                }
+                                loop(treeTbody);
+
+                                //console.log(treeIndex);
+
+                                var acc = 0;
+
+                                for (let index of treeIndex) {
+                                    for (let building of content){
+                                        var indexString = "campus/discover/buildings-and-classrooms/" + index;
+                                        //console.log(indexString);
+                                        if (!isNullOrUndefined(zip.file(Object.keys(zip.files)[acc]))){
+                                            var temp = zip.file(Object.keys(zip.files)[acc];
+                                            //console.log(zip.file(Object.keys(zip.files)[acc]).name);
+                                        if (indexString === zip.file(Object.keys(zip.files)[acc]).name) {
+                                            htmlArray.push(parse5.parse(building));
+                                        }
+                                        }
+                                        else {acc++}
+
+                                    }
+
+                                }
+
+
+                                console.log(htmlArray);
+
+
+
+
 
                                 for (var i = 0; i < content.length; i++) {
                                    // console.log("looking at content" + content[i]);
 
                                     var tempBuilding = parse5.parse(content[i]);
-
-                                    tempArray.push(tempBuilding);
+                                    htmlArray.push(tempBuilding);
                                 }
 
-                                console.log("temp array" + tempArray);
-                                //below is the filter to get the right building matching the index.htm
-                                for (let building of tempArray) {
-
-
-                                        htmlArray.push(building);
-                                }
 
 
                             })
