@@ -13,6 +13,7 @@ import {isArray} from "util";
 import {AST} from "parse5";
 import QueryClassMethRoom from "../QueryClass/QueryClassMethRoom";
 import {Room} from "../QueryClass/Room";
+import lastIndexOf = require("core-js/fn/array/last-index-of");
 
 
 var fs = require("fs");
@@ -228,26 +229,44 @@ export default class InsightFacade implements IInsightFacade {
                                 everythingArr = [];
                                 for (let building of htmlArray) {
 
-                                    //var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
-                                    if (! isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3])) {
-                                        var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
-                                     };
+                                    // FOR UCLL : var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
+                                    // How can we filter out buildings w/o rooms?? Its throwing an error right now
+                                    var buildingName = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+                                    var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
 
-                                    console.log(roomtBody);
-/*
-                                    var tempRoom: Room = {
-                                        rooms_fullname: building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value,
-                                        rooms_shortname: string,
-                                        rooms_number: string,
-                                        rooms_name: string,
-                                        rooms_address: string,
-                                        rooms_lat: string,
-                                        rooms_lon: string,
-                                        rooms_seats: string,
-                                        rooms_type: string,
-                                        rooms_furniture: string,
-                                        rooms_href: string
-                                    };*/
+
+                                    //console.log(roomtBody);
+                                    //var string = "http://students.ubc.ca/campus/discover/buildings-and-classrooms/room/BUCH-A101";
+                                    // get BUCH-A101 string.substring(68, string.length);
+                                    // get BUCH string.substring(0, indexOf("-"));
+                                    // get A101 string.substring(indexOf("-"), string.length);
+
+                                    for (let i = 1; i < roomtBody.childNodes.length; i++) {
+                                        var roomURL = roomtBody.childNodes[i].childNodes[1].childNodes[1].attrs[0];
+                                        var name = roomURL.substring(68,roomURL.length);
+                                        var shortname = roomURL.substring(0,roomURL.indexOf("-"));
+                                        var number = roomURL.substring(roomURL.indexOf("-"),roomURL.length);
+
+
+                                        var tempRoom: Room = {
+                                            rooms_fullname: buildingName,
+                                            rooms_shortname: shortname,
+                                            rooms_number: number,
+                                            rooms_name: name,
+                                            rooms_address: ,
+                                            rooms_lat: ,
+                                            rooms_lon: ,
+                                            rooms_seats: string,
+                                            rooms_type: string,
+                                            rooms_furniture: string,
+                                            rooms_href: string
+                                        };
+
+                                        everythingArr.push(tempRoom);
+
+
+                                        i++;
+                                    }
 /*
                                     if (isNullOrUndefined(htmlArray[i].result)){
 
@@ -266,7 +285,7 @@ export default class InsightFacade implements IInsightFacade {
                                 }
                                 //everythingArr would contain allllll the courses one by one
 
-                                var path = './'+ id+'.html';
+                                var path = './'+ id+'.json';
                                 var fileExists = fs.existsSync(path);
 
                                 if (fileExists) {
