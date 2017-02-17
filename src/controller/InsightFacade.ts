@@ -12,6 +12,7 @@ import {QueryRequest2} from "../QueryClass/responseInterface";
 import {isArray} from "util";
 import {AST} from "parse5";
 import QueryClassMethRoom from "../QueryClass/QueryClassMethRoom";
+import {Room} from "../QueryClass/Room";
 
 
 var fs = require("fs");
@@ -168,13 +169,12 @@ export default class InsightFacade implements IInsightFacade {
 
 
 
+
                                 function loop(tree:any){
 
                                     for (var key = 1; key<tree.childNodes.length;key++){
 
-                                        var temp = tree.childNodes[key].childNodes[3].childNodes[0].value;
-                                        temp = temp.substring(temp.indexOf("n"),temp.length);
-                                        temp = temp.trim();
+                                        var temp = treeTbody.childNodes[key].childNodes[5].childNodes[1].childNodes[0].value;
                                         treeIndex.push(temp);
 
                                         key++;
@@ -183,40 +183,28 @@ export default class InsightFacade implements IInsightFacade {
                                 }
                                 loop(treeTbody);
 
-                                //console.log(treeIndex);
 
-                                var acc = 0;
+                                for (let i = 3; i < content.length-1; i++) {
+                                    var parsedBuilding = parse5.parse(content[i]);
 
-                                for (let index of treeIndex) {
-                                    for (let building of content){
-                                        var indexString = "campus/discover/buildings-and-classrooms/" + index;
-                                        //console.log(indexString);
-                                        if (!isNullOrUndefined(zip.file(Object.keys(zip.files)[acc]))){
-                                            var temp = zip.file(Object.keys(zip.files)[acc];
-                                            //console.log(zip.file(Object.keys(zip.files)[acc]).name);
-                                        if (indexString === zip.file(Object.keys(zip.files)[acc]).name) {
-                                            htmlArray.push(parse5.parse(building));
-                                        }
-                                        }
-                                        else {acc++}
-
+                                    if (i === 75) {  // FILTERING OUT UCLL
+                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+                                    }else {
+                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+                                    }
+                                    for (let index of treeIndex){
+                                       if (buildingName === index){
+                                           htmlArray.push(parsedBuilding);
+                                       }
                                     }
 
                                 }
 
 
-                                console.log(htmlArray);
+                                console.log(htmlArray.length); //74 BUILDINGS
 
 
 
-
-
-                                for (var i = 0; i < content.length; i++) {
-                                   // console.log("looking at content" + content[i]);
-
-                                    var tempBuilding = parse5.parse(content[i]);
-                                    htmlArray.push(tempBuilding);
-                                }
 
 
 
@@ -238,7 +226,28 @@ export default class InsightFacade implements IInsightFacade {
                             .then(function (content:any) {
 
                                 everythingArr = [];
-                                for (var i = 0; i < htmlArray.length; i++) {
+                                for (let building of htmlArray) {
+
+                                    //var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
+                                    if (! isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3])) {
+                                        var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
+                                     };
+
+                                    console.log(roomtBody);
+/*
+                                    var tempRoom: Room = {
+                                        rooms_fullname: building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value,
+                                        rooms_shortname: string,
+                                        rooms_number: string,
+                                        rooms_name: string,
+                                        rooms_address: string,
+                                        rooms_lat: string,
+                                        rooms_lon: string,
+                                        rooms_seats: string,
+                                        rooms_type: string,
+                                        rooms_furniture: string,
+                                        rooms_href: string
+                                    };*/
 /*
                                     if (isNullOrUndefined(htmlArray[i].result)){
 
@@ -250,14 +259,10 @@ export default class InsightFacade implements IInsightFacade {
                                         return;
                                     }*/
 
-                                    var arrayOfBuildings = htmlArray[i];
 
 
                                     //loop through the jsonObjectList's result node and put everything into an array
-                                    for (var j = 0; j < arrayOfBuildings.length; j++) {
-                                        everythingArr.push(arrayOfBuildings[j]);
-
-                                    }//loop through each result node's courses and add those to the master list
+                                    //loop through each result node's courses and add those to the master list
                                 }
                                 //everythingArr would contain allllll the courses one by one
 

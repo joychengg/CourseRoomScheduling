@@ -250,7 +250,7 @@ export default class QueryClassMeth {
 
                     return (1900 === input.EQ[key1[0]]);
                 }else{
-                    return this.gt_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
+                    return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
                 }
 
             }
