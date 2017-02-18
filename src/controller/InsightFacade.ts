@@ -245,12 +245,12 @@ export default class InsightFacade implements IInsightFacade {
                                     };
 
 
-                                    console.log('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20'));
+                                    //console.log('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20'));
 
-                                    getContent('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20'))
+                                  /*  getContent('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20'))
 
                                         .then((html) => console.log("here is html" + html))
-                                        .catch((err) => console.error(err));
+                                        .catch((err) => console.error(err));*/
 
                                     // var chu = null;
                                     //
@@ -770,7 +770,6 @@ export default class InsightFacade implements IInsightFacade {
 
                         var room = JSON.parse(room);
 
-                        console.log("courses here" +room);
 
                         if (objforRoomQuery.Filter(query.WHERE, room) === true)
 
