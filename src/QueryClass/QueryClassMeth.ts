@@ -165,7 +165,7 @@ export default class QueryClassMeth {
     }
 
     checkKey(key:string) {
-        if (key === "courses" || key === "rooms"){
+        if ((key === "courses" )|| (key === "rooms")){
 
             return true;
 
@@ -231,7 +231,7 @@ export default class QueryClassMeth {
 
                     return (1900 < input.LT[key1[0]]);
                 }else{
-                    return this.gt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
+                    return this.lt_expr(course, this.methodKey1(key1[0]), input.LT[key1[0]]);
                 }
 
             }

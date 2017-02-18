@@ -485,7 +485,20 @@ var fusionRequest: QueryRequest = {
     }
 };
 
-var result = {"render":"TABLE","result":[{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"327"},{"courses_dept":"adhe","courses_id":"328"},{"courses_dept":"adhe","courses_id":"328"},{"courses_dept":"adhe","courses_id":"328"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"329"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"330"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"},{"courses_dept":"adhe","courses_id":"412"}]};
+var queryForRoom: QueryRequest = {
+    WHERE: {
+        "IS": {
+            "rooms_name": "DMP_*"
+        }
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_name"
+        ],
+        "ORDER": "rooms_name",
+        "FORM": "TABLE"
+    }
+}
 
 var queryRequest20: QueryRequest = {
 
@@ -505,6 +518,103 @@ var queryRequest20: QueryRequest = {
         "FORM":"TABLE"
     }
 
+};
+
+var queryForRoomComplex: QueryRequest = {
+    WHERE: {
+        "IS": {
+            "rooms_address": "*Agrono*"
+        }
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_address", "rooms_name"
+        ],
+        "FORM": "TABLE"
+    }
+};
+
+var result = {
+    "render": "TABLE",
+    "result": [{
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4074"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4068"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4058"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4018"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4004"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3074"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3068"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3058"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3018"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3004"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_1001"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4072"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4062"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4052"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4016"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_4002"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3072"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3062"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3052"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3016"
+    }, {
+        "rooms_address": "6363 Agronomy Road",
+        "rooms_name": "ORCH_3002"
+    }, {
+        "rooms_address": "6245 Agronomy Road V6T 1Z4",
+        "rooms_name": "DMP_310"
+    }, {
+        "rooms_address": "6245 Agronomy Road V6T 1Z4",
+        "rooms_name": "DMP_201"
+    }, {
+        "rooms_address": "6245 Agronomy Road V6T 1Z4",
+        "rooms_name": "DMP_101"
+    }, {
+        "rooms_address": "6245 Agronomy Road V6T 1Z4",
+        "rooms_name": "DMP_301"
+    }, {
+        "rooms_address": "6245 Agronomy Road V6T 1Z4",
+        "rooms_name": "DMP_110"
+    }]
 };
 
 
@@ -983,6 +1093,34 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
+
+    it("query for room", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryForRoom).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+          //  console.log(JSON.stringify(value.body));
+          //  expect(value.body).to.deep.equal(testResult);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+    it("query for room complex", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(queryForRoomComplex).then(function(value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+          //  console.log(JSON.stringify(value.body));
+        //     expect(value.body).to.deep.equal(result);
+        }).catch(function (err) {
+            console.log("error" +err);
+            expect.fail();
+        });
+    });
+
+
 
     it("cant parse file(no result key) - reject 400", function () {
         this.timeout(10000);
@@ -1483,8 +1621,8 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(testForYear).then(function(value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            console.log(JSON.stringify(value.body).length);
-            console.log(JSON.stringify(result).length);
+         //   console.log(JSON.stringify(value.body).length);
+           // console.log(JSON.stringify(result).length);
          //   expect(value.body).to.deep.equal(result);
             //console.log(JSON.stringify(value.body));
 
