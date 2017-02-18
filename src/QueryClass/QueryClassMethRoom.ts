@@ -215,7 +215,7 @@ export default class QueryClassMethRoom {
 
 
 
-    Filter (input:any, course:any ): boolean {
+    Filter (input:any, room:any ): boolean {
 
         var key = Object.keys(input)[0];
 
@@ -226,7 +226,7 @@ export default class QueryClassMethRoom {
             this.checkTypeMath(key1[0], input.GT[key1[0]]);
 
 
-            return this.gt_expr(course, key1[0], input.GT[key1[0]]);
+            return this.gt_expr(room, key1[0], input.GT[key1[0]]);
 
         } else if (key === "LT") {
 
@@ -235,7 +235,7 @@ export default class QueryClassMethRoom {
             this.checkTypeMath(key1[0], input.LT[key1[0]]);
 
 
-            return this.lt_expr(course, key1[0], input.LT[key1[0]]);
+            return this.lt_expr(room, key1[0], input.LT[key1[0]]);
 
         } else if (key === "EQ") {
 
@@ -244,7 +244,7 @@ export default class QueryClassMethRoom {
             this.checkTypeMath(key1[0], input.EQ[key1[0]]);
 
 
-            return this.eq_expr(course, key1[0], input.EQ[key1[0]]);
+            return this.eq_expr(room, key1[0], input.EQ[key1[0]]);
 
         } else if (key === "IS") {
 
@@ -257,12 +257,12 @@ export default class QueryClassMethRoom {
                 var front = input.IS[key1[0]].substring( 0, input.IS[key1[0]].indexOf("_"));
                 var back = input.IS[key1[0]].substring(input.IS[key1[0]].indexOf("_")+1);
 
-                //console.log("course  " + course["rooms_shortname"]);
+                //console.log("room  " + room["rooms_shortname"]);
 
-                return ((this.is_expr(course, "rooms_shortname", front))&&(this.is_expr(course, "rooms_number", back)));
+                return ((this.is_expr(room, "rooms_shortname", front))&&(this.is_expr(room, "rooms_number", back)));
             }else {
 
-                return this.is_expr(course, key1[0], input.IS[key1[0]]);
+                return this.is_expr(room, key1[0], input.IS[key1[0]]);
             }
 
 
@@ -271,7 +271,7 @@ export default class QueryClassMethRoom {
 
             for (let key of exprs) {
 
-                if (!this.Filter(key, course)) return false;
+                if (!this.Filter(key, room)) return false;
 
             }
             return true;
@@ -281,7 +281,7 @@ export default class QueryClassMethRoom {
 
             for (let key of exprs) {
 
-                if (this.Filter(key, course)) return true;
+                if (this.Filter(key, room)) return true;
 
             }
             return false;
@@ -290,7 +290,7 @@ export default class QueryClassMethRoom {
 
             var exprs = input.NOT;
 
-            if (this.Filter(exprs, course)) {
+            if (this.Filter(exprs, room)) {
                 return false;
             } else {
                 return true;
@@ -303,7 +303,7 @@ export default class QueryClassMethRoom {
     }
 
 
-    Combine(course:any, input_option:any) {
+    Combine(room:any, input_option:any) {
 
         var column = Object.keys(input_option)[0];
 
@@ -312,12 +312,17 @@ export default class QueryClassMethRoom {
 
         for (var i = 0; i < input_option[column].length; i++) {
 
-            for (var c = 0; c < Object.keys(course).length; c++) {
+            for (var c = 0; c < Object.keys(room).length; c++) {
 
 
-                if (input_option[column][i] === Object.keys(course)[c]) {
+                if (input_option[column][i] === Object.keys(room)[c]) {
+                    if (input_option[column][i] === "courses_year"){
 
-                    result[input_option[column][i]] = course[Object.keys(course)[c]];                 }
+                        result[input_option[column][i]] = parseInt(room[Object.keys(room)[c]]);
+                    }
+                    else{
+                        result[input_option[column][i]] = room[Object.keys(room)[c]];   }
+              }
             }
         }
 

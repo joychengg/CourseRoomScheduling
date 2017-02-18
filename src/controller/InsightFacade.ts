@@ -42,6 +42,7 @@ var existsResponse: InsightResponse = {
 
 
 var everythingArr: any[] = [];
+var allRoomsArr:any[] = [];
 
 
 export default class InsightFacade implements IInsightFacade {
@@ -169,24 +170,6 @@ export default class InsightFacade implements IInsightFacade {
 
                             .then(function (content:any) {
 
-                                // function httpGet(theUrl:any)
-                                // {
-                                //     var xmlHttp = new XMLHttpRequest();
-                                //     xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-                                //     xmlHttp.send( null );
-                                //     return xmlHttp.responseText;
-                                // } //TODO
-
-                                // function httpGetAsync(theUrl:any, callback:any)
-                                // {
-                                //     var xmlHttp = new XMLHttpRequest();
-                                //     xmlHttp.onreadystatechange = function() {
-                                //         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                                //             callback(xmlHttp.responseText);
-                                //     }
-                                //     xmlHttp.open("GET", theUrl, true); // true for asynchronous
-                                //     xmlHttp.send(null);
-                                // }
 
                                 function timeout(delay:any) {
                                     return new Promise(function(resolve, reject) {
@@ -195,7 +178,7 @@ export default class InsightFacade implements IInsightFacade {
                                 }
 
 
-                                everythingArr = [];
+                                allRoomsArr = [];
                                 for (let building of htmlArray) {
 
                                     var acc = 0;
@@ -261,8 +244,10 @@ export default class InsightFacade implements IInsightFacade {
                                         })
                                     };
 
-                                    getContent('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20'))
 
+                                    console.log('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20'));
+
+                                    getContent('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20'))
 
                                         .then((html) => console.log("here is html" + html))
                                         .catch((err) => console.error(err));
@@ -317,11 +302,6 @@ export default class InsightFacade implements IInsightFacade {
                                             var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
                                         }
 
-                                    //console.log(roomtBody);
-                                    //var string = "http://students.ubc.ca/campus/discover/buildings-and-classrooms/room/BUCH-A101";
-                                    // get BUCH-A101 string.substring(68, string.length);
-                                    // get BUCH string.substring(0, indexOf("-"));
-                                    // get A101 string.substring(indexOf("-"), string.length);
 
                                         var promise1: Promise<string>[] = [];
 
@@ -371,7 +351,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                         var parsedRoom = JSON.stringify(tempRoom);
 
-                                        everythingArr.push(parsedRoom);
+                                        allRoomsArr.push(parsedRoom);
                                         i++;
                                     }}}
 
@@ -389,13 +369,13 @@ export default class InsightFacade implements IInsightFacade {
 
                                 if (fileExists) {
 
-                                    fs.writeFileSync( path, JSON.stringify(everythingArr));
+                                    fs.writeFileSync( path, JSON.stringify(allRoomsArr));
 
                                     resolve(existsResponse);
 
                                 }else {
 
-                                    fs.writeFileSync( path, JSON.stringify(everythingArr));
+                                    fs.writeFileSync( path, JSON.stringify(allRoomsArr));
                                     resolve(newResponse);
                                 }
 
@@ -416,7 +396,7 @@ export default class InsightFacade implements IInsightFacade {
 
             }
 
-            else{
+            else if (id === "courses"){
 
             JSZip.loadAsync(content, {"base64": true})
 
@@ -556,6 +536,15 @@ export default class InsightFacade implements IInsightFacade {
                     return;
 
                 })
+            }
+        else{
+
+                var wrongIDResponse: InsightResponse = {
+                    code : 400,
+                    body : {"error": "Wrong ID"}
+                };
+                reject(wrongIDResponse);
+
             }})
     };
 
@@ -598,6 +587,7 @@ export default class InsightFacade implements IInsightFacade {
         return new Promise(function (resolve:any, reject:any) {
 
             var arrOFCourses = [];
+            var arrOFrooms = [];
 
             var finalCourseArr = [];
 
@@ -606,6 +596,15 @@ export default class InsightFacade implements IInsightFacade {
             var objforRoomQuery = new QueryClassMethRoom();
 
             var path = "";
+
+            if (everythingArr.length === 0  && allRoomsArr.length === 0) {
+
+                var failResponse: InsightResponse = {
+                    code: 400,
+                    body: {Error: "No dataset"}
+                };
+                reject(failResponse);
+            }
 
             if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
 
@@ -757,24 +756,26 @@ export default class InsightFacade implements IInsightFacade {
 
            // console.log("in performquery everything  "+everythingArr.length);
 
-            for (var course of everythingArr) {
-
                 try {
                     if (path==="courses") {
+                        for (var course of everythingArr) {
 
-                        if (objforQuery.Filter(query.WHERE, course) === true)
-                            arrOFCourses.push(course);
+                            if (objforQuery.Filter(query.WHERE, course) === true)
+                                arrOFCourses.push(course);
+                        }
 
                     }else if(path==="rooms"){
 
-                        var course1 = JSON.parse(course);
+                        for (var room of allRoomsArr){
 
-                        console.log("courses here" +course);
+                        var room = JSON.parse(room);
 
-                        if (objforRoomQuery.Filter(query.WHERE, course1) === true)
+                        console.log("courses here" +room);
 
-                            arrOFCourses.push(course1);
-                    }
+                        if (objforRoomQuery.Filter(query.WHERE, room) === true)
+
+                            arrOFrooms.push(room);
+                    }}
                 } catch (err) {
 
                         var failResponse: InsightResponse = {
@@ -785,7 +786,7 @@ export default class InsightFacade implements IInsightFacade {
                         return;
 
                 }
-            }
+
 
           //  console.log("arrofcourses " +arrOFCourses.length);
 
@@ -796,7 +797,7 @@ export default class InsightFacade implements IInsightFacade {
                 }
             }else if (path==="rooms"){
 
-                for (var course of arrOFCourses) {
+                for (var course of arrOFrooms) {
                     finalCourseArr.push(objforRoomQuery.Combine(course, query.OPTIONS));
                 }
             }

@@ -320,10 +320,16 @@ export default class QueryClassMeth {
 
 
                 if (this.methodKey3(input_option[column][i]) === Object.keys(course)[c]) {
+                    if (input_option[column][i] === "courses_year"){
 
-                        result[input_option[column][i]] = course[Object.keys(course)[c]];                 }
+                        result[input_option[column][i]] = parseInt(course[Object.keys(course)[c]]);
+                    }
+                    else{
+
+                        result[input_option[column][i]] = course[Object.keys(course)[c]];
+                    }
                 }
-            }
+            }}
 
 
         return result;
