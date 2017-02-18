@@ -88,62 +88,6 @@ export default class InsightFacade implements IInsightFacade {
                         //loop through to find dir name and then go into second loop to find if dir name is in key
 
 
-                  /*      for (let key in zip.files) {
-
-                            if (key === indexKey) {
-                                zip.file("index.htm")
-                                    .async("string").then(function success(content:any) {
-
-                                        tree = parse5.parse(content);
-
-
-                                        var tree1=   tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
-                                            .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1]
-                                            .childNodes[3].childNodes[1].childNodes[3].childNodes[0].value;
-
-                                        var treeTbody = tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
-                                            .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3];
-
-
-
-                                        function loop(tree:any){
-
-                                            for (var key = 1; key<tree.childNodes.length;key++){
-
-                                                var temp = tree.childNodes[key].childNodes[3].childNodes[0].value;
-                                                temp = temp.substring(temp.indexOf("n"),temp.length);
-                                                temp = temp.trim();
-                                                treeIndex.push(temp);
-
-                                                key++;
-
-                                            }
-                                        }
-                                        loop(treeTbody);
-
-                                        console.log(treeIndex);
-
-
-                                    }, function error(e:any) {
-
-
-
-                                        // handle the error
-                                    });
-
-
-                            }
-                            else if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
-                                for (let index of treeIndex) {
-
-                                    var indexString = "campus/discover/buildings-and-classrooms/" + index;
-                                    console.log(indexString);
-                                    if (zip.file(key).name === indexString){
-                                    promises.push(zip.file(key).async("string"));}
-                            }}
-
-                        }*/
-
                   for (let key in zip.files) {
                       if (zip.file(key) !== null && zip.files.hasOwnProperty(key))  promises.push(zip.file(key).async("string"));
                   };
@@ -190,9 +134,15 @@ export default class InsightFacade implements IInsightFacade {
                                     var parsedBuilding = parse5.parse(content[i]);
 
                                     if (i === 75) {  // FILTERING OUT UCLL
-                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[12].childNodes[1].childNodes[3].childNodes[1]
+                                            .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
+                                            .childNodes[1].childNodes[0].childNodes[0].value;
                                     }else {
-                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
+                                            .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
+                                            .childNodes[1].childNodes[0].childNodes[0].value;
                                     }
                                     for (let index of treeIndex){
                                        if (buildingName === index){
@@ -230,14 +180,49 @@ export default class InsightFacade implements IInsightFacade {
                                 everythingArr = [];
                                 for (let building of htmlArray) {
 
+                                    var acc = 0;
+
+
                                     // FOR UCLL : var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
                                     // How can we filter out buildings w/o rooms?? Its throwing an error right now
-                                    var buildingName = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
-                                    var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
-                                        if (building.containsNode(building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3])) {
-                                       console.log("innnn");
-                                        var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
+                                    if (isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[12].childNodes)) {
+                                        var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                            .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
 
+                                        var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                            .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
+
+                                        var beforeRoom = building.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1];
+                                    }else{
+                                        var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                            .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+
+                                        var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                            .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
+
+                                        var beforeRoom = building.childNodes[6].childNodes[3].childNodes[31]
+                                            .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1];
+
+                                        acc++;
+                                    }
+
+
+                                    if (beforeRoom.childNodes.length > 4){
+
+                                        if (acc > 0) {
+                                            var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
+
+                                        }else {
+
+
+                                            var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
+                                        }
 
                                     //console.log(roomtBody);
                                     //var string = "http://students.ubc.ca/campus/discover/buildings-and-classrooms/room/BUCH-A101";
@@ -279,7 +264,10 @@ export default class InsightFacade implements IInsightFacade {
 
 
                                         i++;
-                                    }}
+                                    }}}
+
+
+                                    console.log(everythingArr.length);
 /*
                                     if (isNullOrUndefined(htmlArray[i].result)){
 
@@ -295,7 +283,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                     //loop through the jsonObjectList's result node and put everything into an array
                                     //loop through each result node's courses and add those to the master list
-                                }
+
                                 //everythingArr would contain allllll the courses one by one
 
                                 var path = './'+ id+'.json';
