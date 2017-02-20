@@ -84,6 +84,28 @@ var queryRequest8: QueryRequest = {
     }
 };
 
+var NitroQuery: QueryRequest = {
+
+    WHERE: {"AND":
+    [
+        {
+            "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+        }
+        , {"IS": {"rooms_type" : "*Group*"}}]
+},
+    OPTIONS: {
+    "COLUMNS": [
+        "rooms_name", "rooms_furniture", "rooms_type"
+    ],
+
+    ORDER : "rooms_name",
+        FORM: "TABLE"
+}
+
+}
+
+var NitroResult = {"render":"TABLE","result":[{"rooms_name":"ANGU_098","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_241","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_243","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_343","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_345","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_347","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_350","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_354","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BIOL_2200","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BRKX_2365","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_B315","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D217","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D218","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D219","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"CHBE_101","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"CHBE_102","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_110","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_301","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_310","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ESB_2012","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"FRDM_153","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1001","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1002","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1003","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"PHRM_1101","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"PHRM_1201","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SPPH_143","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Small Group"},{"rooms_name":"SPPH_B108","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Small Group"},{"rooms_name":"SWNG_121","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_122","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_221","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_222","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_1","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_3","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_4","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_5","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"}]}
+
 var queryRequest9: QueryRequest = {
     WHERE: {},
     OPTIONS: {
@@ -211,6 +233,25 @@ var testForYear: QueryRequest = {
         "FORM": "TABLE"
     }
 }
+
+var fluorineQuery: QueryRequest = {
+    WHERE: {
+        "AND":[{"IS": {
+            "courses_dept": "adhe"
+        }},
+            {"IS":{"courses_id": "327"}}]
+
+    },
+    "OPTIONS": {
+        "COLUMNS": [
+            "courses_id", "courses_year"
+        ],
+
+        "FORM": "TABLE"
+    }
+}
+
+var fluorineResult = {"render":"TABLE","result":[{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900}]}
 
 var yearQuery: QueryRequest = {
 
@@ -603,11 +644,27 @@ var argonQuery: QueryRequest = {
         "ORDER": "rooms_name",
         "FORM": "TABLE"
     }
+
+}
+
+
+var metroQuery:QueryRequest = {
+
+    WHERE: {"GT": {"rooms_seats": 150}
+
+},
+    OPTIONS: {
+    "COLUMNS": [
+        "rooms_name", "rooms_seats"
+    ],
+
+        FORM: "TABLE"
+}
+
 }
 
 var argonResult = {"render":"TABLE","result":[{"rooms_name":"DMP_101","rooms_shortname":"DMP"},{"rooms_name":"DMP_110","rooms_shortname":"DMP"},{"rooms_name":"DMP_201","rooms_shortname":"DMP"},{"rooms_name":"DMP_301","rooms_shortname":"DMP"},{"rooms_name":"DMP_310","rooms_shortname":"DMP"}]}
-
-
+var metroResult = {"render":"TABLE","result":[{"rooms_name":"ANGU_098","rooms_seats":260},{"rooms_name":"BIOL_2000","rooms_seats":228},{"rooms_name":"BUCH_A101","rooms_seats":275},{"rooms_name":"BUCH_A201","rooms_seats":181},{"rooms_name":"CHBE_101","rooms_seats":200},{"rooms_name":"CHEM_B150","rooms_seats":265},{"rooms_name":"CHEM_B250","rooms_seats":240},{"rooms_name":"CIRS_1250","rooms_seats":426},{"rooms_name":"DMP_310","rooms_seats":160},{"rooms_name":"ESB_1013","rooms_seats":350},{"rooms_name":"FRDM_153","rooms_seats":160},{"rooms_name":"FSC_1005","rooms_seats":250},{"rooms_name":"GEOG_100","rooms_seats":225},{"rooms_name":"HEBB_100","rooms_seats":375},{"rooms_name":"HENN_200","rooms_seats":257},{"rooms_name":"HENN_201","rooms_seats":155},{"rooms_name":"IBLC_182","rooms_seats":154},{"rooms_name":"LSC_1001","rooms_seats":350},{"rooms_name":"LSC_1002","rooms_seats":350},{"rooms_name":"LSK_200","rooms_seats":205},{"rooms_name":"LSK_201","rooms_seats":183},{"rooms_name":"MATH_100","rooms_seats":224},{"rooms_name":"MCML_166","rooms_seats":200},{"rooms_name":"OSBO_A","rooms_seats":442},{"rooms_name":"PHRM_1101","rooms_seats":236},{"rooms_name":"PHRM_1201","rooms_seats":167},{"rooms_name":"SCRF_100","rooms_seats":280},{"rooms_name":"SRC_220A","rooms_seats":299},{"rooms_name":"SRC_220B","rooms_seats":299},{"rooms_name":"SRC_220C","rooms_seats":299},{"rooms_name":"SWNG_121","rooms_seats":187},{"rooms_name":"SWNG_122","rooms_seats":188},{"rooms_name":"SWNG_221","rooms_seats":190},{"rooms_name":"SWNG_222","rooms_seats":190},{"rooms_name":"WESB_100","rooms_seats":325},{"rooms_name":"WOOD_2","rooms_seats":503},{"rooms_name":"WOOD_6","rooms_seats":181}]}
 var argonQuery1: QueryRequest = {
     WHERE: {
         "IS": {
@@ -1448,9 +1505,48 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(yearQuery).then(function (value) {
             Log.test('Value: ' + value.code);
-            console.log(value.body);
+            //console.log(value.body);
             expect(value.code).to.equal(200);
             expect(value.body).to.deep.equal(yearResult);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("Nitro: Should be able to find all rooms with a certain type of furniture.", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(NitroQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.code).to.equal(200);
+            expect(NitroResult).to.deep.equal(value.body);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("Metro: Should be able to find rooms with more than a certain number of seats", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(metroQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.code).to.equal(200);
+            expect(value.body).to.deep.equal(metroResult);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("Fluorine: Should be able to find the year a course is offered in", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(fluorineQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.code).to.equal(200);
+            expect(value.body).to.deep.equal(fluorineResult);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -1461,7 +1557,7 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(argonQuery).then(function (value) {
             Log.test('Value: ' + value.code);
-            console.log(value.body);
+            //console.log(value.body);
             expect(value.code).to.equal(200);
             expect(value.body).to.deep.equal(argonResult);
         }).catch(function (err) {
@@ -1474,7 +1570,7 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(argonQuery1).then(function (value) {
             Log.test('Value: ' + value.code);
-            console.log(value.body);
+            //console.log(value.body);
             expect(value.code).to.equal(200);
             expect(value.body).to.deep.equal(argonResult);
         }).catch(function (err) {

@@ -129,7 +129,7 @@ export default class InsightFacade implements IInsightFacade {
                                 loop(treeTbody);
 
 
-                                for (let i = 3; i < content.length-1; i++) {
+                                for (let i = 3; i < content.length - 1; i++) {
                                     var parsedBuilding = parse5.parse(content[i]);
 
                                     if (i === 75) {  // FILTERING OUT UCLL
@@ -220,6 +220,7 @@ export default class InsightFacade implements IInsightFacade {
                                     };
                                     var lat:number = 0;
                                     var lon:number = 0;
+/*
 
                                     const getContent = function(url:any) {
                                         // return new pending promise
@@ -243,7 +244,32 @@ export default class InsightFacade implements IInsightFacade {
                                             request.on('error', (err:any) => reject(err))
                                         })
                                     };
+*/
 
+                                   /* http.get(('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20')), (res:any) => {
+                                        const statusCode = res.statusCode;
+                                        const contentType = res.headers['content-type'];
+
+                                        let error;
+                                        if (statusCode !== 200) {
+                                            error = new Error(`Request Failed.\n` +
+                                                `Status Code: ${statusCode}`);
+                                        } else  {
+                                            console.log(res.body);
+                                            lat = res.body[lat];
+                                            lon = res.body[lon];
+                                        }
+                                        if (error) {
+                                            console.log(error);
+                                            // consume response data to free up memory
+                                            res.resume();
+                                            return;
+                                        }
+
+                                    }).on('error', (e:any) => {
+                                        console.log(`Got error: ${e}`);
+                                    });
+*/
 
                                     //console.log('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20'));
 
@@ -828,7 +854,9 @@ export default class InsightFacade implements IInsightFacade {
                 finalCourseArr.sort(function (a, b) {
                     var orderS = query.OPTIONS['ORDER'];
 
-                    if (orderS === "courses_instructor" || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept") {
+                    if (orderS === "courses_instructor" || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
+                       || orderS === "rooms_furniture" ||orderS === "rooms_fullname" ||orderS === "rooms_shortname" ||orderS === "rooms_number" ||orderS === "rooms_name" ||
+                        orderS === "rooms_address" ||orderS === "rooms_type" ||orderS === "rooms_href") {
                         var nameA = a[orderS].toLowerCase(), nameB = b[orderS].toLowerCase();
                         if (nameA < nameB) //sort string ascending
                             return -1;

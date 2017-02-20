@@ -317,10 +317,13 @@ export default class QueryClassMeth {
         for (var i = 0; i < input_option[column].length; i++) {
 
             for (var c = 0; c < Object.keys(course).length; c++) {
-
+                if ((course["Section"] === "overall") && (input_option[column][i] === "courses_year")){
+                    result[input_option[column][i]] = 1900;
+                }
 
                 if (this.methodKey3(input_option[column][i]) === Object.keys(course)[c]) {
                     if (input_option[column][i] === "courses_year"){
+
 
                         result[input_option[column][i]] = parseInt(course[Object.keys(course)[c]]);
                     }
