@@ -72,9 +72,6 @@ export default class InsightFacade implements IInsightFacade {
 
                     .then(function (zip: any) {
 
-                        var indexKey = Object.keys(zip.files)[Object.keys(zip.files).length - 1];
-
-                      //  var indexthing = Object.keys(zip.files)[];
                         //check if key is empty or zip is no key here
                         if (isNullOrUndefined(zip) || (isNullOrUndefined(zip.files))){
                             var cantparseResponse: InsightResponse = {
@@ -85,7 +82,6 @@ export default class InsightFacade implements IInsightFacade {
                             return;
 
                         }
-                        var tempIndex:any = [];
 
                         var treeIndex:any = [];
                         //loop through to find dir name and then go into second loop to find if dir name is in key
@@ -178,7 +174,6 @@ export default class InsightFacade implements IInsightFacade {
                                 }
 
 
-                                allRoomsArr = [];
                                 for (let building of htmlArray) {
 
                                     var acc = 0;
@@ -780,7 +775,6 @@ export default class InsightFacade implements IInsightFacade {
                 everythingArr = fs.readFileSync('./' + path + '.json');
             }
 
-           // console.log("in performquery everything  "+everythingArr.length);
 
                 try {
                     if (path==="courses") {
@@ -795,7 +789,6 @@ export default class InsightFacade implements IInsightFacade {
                         for (var room of allRoomsArr){
 
                         var room = JSON.parse(room);
-
 
                         if (objforRoomQuery.Filter(query.WHERE, room) === true)
 
@@ -813,7 +806,6 @@ export default class InsightFacade implements IInsightFacade {
                 }
 
 
-          //  console.log("arrofcourses " +arrOFCourses.length);
 
             if(path==="courses") {
 
@@ -827,7 +819,6 @@ export default class InsightFacade implements IInsightFacade {
                 }
             }
 
-          //  console.log("fianl " +finalCourseArr.length);
 
             if (!isNullOrUndefined(query.OPTIONS.ORDER)) {
 
@@ -851,6 +842,7 @@ export default class InsightFacade implements IInsightFacade {
                 return;
             }
 
+
                 finalCourseArr.sort(function (a, b) {
                     var orderS = query.OPTIONS['ORDER'];
 
@@ -868,9 +860,10 @@ export default class InsightFacade implements IInsightFacade {
                         return parseFloat(a[orderS]) - parseFloat(b[orderS]);
                     }
                 });
+
+
             }
 
-          //  console.log("check  "+ JSON.stringify(finalCourseArr));
 
             var resultThing:QueryRequest2 = {
                 render:'TABLE',

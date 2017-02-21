@@ -63,92 +63,6 @@ export default class QueryClassMethRoom {
     }
 
 
-    // methodKey1 (input: string):string{
-    //
-    //
-    //     if (input === 'rooms_fullname') {
-    //         return 'views-field views-field-title';
-    //
-    //     } else if (input === 'rooms_shortname') {
-    //         return 'views-field views-field-field-building-code';
-    //
-    //     } else if (input === 'rooms_number') {
-    //         return 'views-field views-field-field-room-number';
-    //
-    //     } else if (input === 'rooms_name') {
-    //         return 'views-field views-field-field-building-code'+"_"+"views-field views-field-field-room-number";
-    //
-    //     } else if(input === 'rooms_address') {
-    //         return 'views-field views-field-field-building-address';
-    //
-    //     } else if(input === 'rooms_type') {
-    //         return 'views-field views-field-field-room-type';
-    //
-    //     } else if(input === 'rooms_furniture') {
-    //         return 'views-field views-field-field-room-furniture';
-    //
-    //     } else if(input === 'rooms_href') {
-    //         return '';  //need to implement to extract
-    //     }
-    //
-    // }
-    //
-    // methodKey2 (input: string):string{
-    //
-    //
-    //     if (input === 'rooms_lat') {
-    //         return '';
-    //
-    //     } else if (input === 'rooms_lon') {
-    //         return '';
-    //
-    //     } else if (input === 'rooms_seats') {
-    //         return 'views-field views-field-field-room-capacity';
-    //     }
-    //
-    //
-    // }
-    //
-    // methodKey3 (input: string):string{
-    //
-    //
-    //     if (input === 'rooms_fullname') {
-    //         return 'views-field views-field-title';
-    //
-    //     } else if (input === 'rooms_shortname') {
-    //         return 'views-field views-field-field-building-code';
-    //
-    //     } else if (input === 'rooms_number') {
-    //         return 'views-field views-field-field-room-number';
-    //
-    //     } else if (input === 'rooms_name') {
-    //         return 'views-field views-field-field-building-code'+"_"+"views-field views-field-field-room-number";
-    //
-    //     } else if(input === 'rooms_address') {
-    //         return 'views-field views-field-field-building-address';
-    //
-    //     } else if(input === 'rooms_type') {
-    //         return 'views-field views-field-field-room-type';
-    //
-    //     } else if(input === 'rooms_furniture') {
-    //         return 'views-field views-field-field-room-furniture';
-    //
-    //     } else if(input === 'rooms_href') {
-    //         return '';  //need to implement to extract
-    //
-    //     } else if (input === 'rooms_lat') {
-    //         return '';
-    //
-    //     } else if (input === 'rooms_lon') {
-    //         return '';
-    //
-    //     } else if (input === 'rooms_seats') {
-    //         return 'views-field views-field-field-room-capacity';
-    //     }
-    //
-    //
-    // }
-
     isJson(str:any):boolean {
         try {
             JSON.parse(str);
@@ -257,7 +171,6 @@ export default class QueryClassMethRoom {
                 var front = input.IS[key1[0]].substring( 0, input.IS[key1[0]].indexOf("_"));
                 var back = input.IS[key1[0]].substring(input.IS[key1[0]].indexOf("_")+1);
 
-                //console.log("room  " + room["rooms_shortname"]);
 
                 return ((this.is_expr(room, "rooms_shortname", front))&&(this.is_expr(room, "rooms_number", back)));
             }else {
@@ -316,12 +229,7 @@ export default class QueryClassMethRoom {
 
 
                 if (input_option[column][i] === Object.keys(room)[c]) {
-                    if (input_option[column][i] === "courses_year"){
-
-                        result[input_option[column][i]] = parseInt(room[Object.keys(room)[c]]);
-                    }
-                    else{
-                        result[input_option[column][i]] = room[Object.keys(room)[c]];   }
+                        result[input_option[column][i]] = room[Object.keys(room)[c]];
               }
             }
         }
