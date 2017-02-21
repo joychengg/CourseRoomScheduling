@@ -110,7 +110,23 @@ export default class InsightFacade implements IInsightFacade {
 
                                 }
 
-                                tree = parse5.parse(content[content.length -1]);
+                                //this is for Irongate. when its the wrong id, then should give 400
+
+                                try {
+
+                                    tree = parse5.parse(content[content.length - 1]);
+
+                                }catch(err){
+
+                                    var wrongIDResponse: InsightResponse = {
+                                        code : 400,
+                                        body : {"Error": "cannot parse, so wrong id"}
+                                    };
+                                    reject(wrongIDResponse);
+                                    return;
+
+                                }
+
 
                                 var treeTbody = tree.childNodes[6].childNodes[3].childNodes[31].childNodes[10]
                                     .childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3];
@@ -159,7 +175,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                 var cantparseResponse: InsightResponse = {
                                     code : 400,
-                                    body : {"error": err}
+                                    body : {"error": "cannot parse error in room"}
                                 };
                                 reject(cantparseResponse);
                                 return;
@@ -413,7 +429,7 @@ export default class InsightFacade implements IInsightFacade {
 
                         var errResponse: InsightResponse = {
                             code : 400,
-                            body : {"error": err}
+                            body : {"error": "final catch of rooms error"}
                         };
                         reject(errResponse);
                         return;
@@ -497,7 +513,7 @@ export default class InsightFacade implements IInsightFacade {
 
                             var cantparseResponse: InsightResponse = {
                                 code : 400,
-                                body : {"error": err}
+                                body : {"error": "cannot parse"}
                             };
                             reject(cantparseResponse);
                             return;
@@ -556,7 +572,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     var errResponse: InsightResponse = {
                         code : 400,
-                        body : {"error": err}
+                        body : {"error": "general"}
                     };
                     reject(errResponse);
                     return;
