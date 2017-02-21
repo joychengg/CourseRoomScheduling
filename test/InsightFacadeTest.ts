@@ -1376,6 +1376,17 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("adding rooms.zip with wrong id --- resolve(400)", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('courses123', roomFile).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + JSON.stringify(err));
+            expect(err.code).to.equal(400);
+        });
+    });
+
 
     it("delete file fail --- reject(404)", function () {
         this.timeout(10000);
@@ -1468,6 +1479,17 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
+        });
+    });
+
+    it("adding wrong id - resolve in 400", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('rooms', zipStuff).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err.body);
+            expect(err.code).to.equal(400);
         });
     });
 
