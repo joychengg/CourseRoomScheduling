@@ -89,9 +89,7 @@ export default class InsightFacade implements IInsightFacade {
 
                   for (let key in zip.files) {
                       if (zip.file(key) !== null && zip.files.hasOwnProperty(key))  promises.push(zip.file(key).async("string"));
-                  };
-
-
+                  }
                         Promise.all(promises)
 
                             .then(function (content: string[]) {
@@ -224,38 +222,116 @@ export default class InsightFacade implements IInsightFacade {
                                         acc++;
                                     }
 
+
                                     var options = {
                                         host: 'skaha.cs.ubc.ca',
                                         path: '/api/v1/team21/'+buildingAddress.split(' ').join('%20'),
                                         port: '11316'
                                     };
+
+                                    var promises2: Promise<string>[] = [];
+
+                                   var thing = http.get("http://skaha.cs.ubc.ca:11316//api/v1/team21/"+buildingAddress.split(' ').join('%20'), (res:any) => {
+                                        const statusCode = res.statusCode;
+                                        const contentType = res.headers['content-type'];
+
+                                        let error;
+                                        if (statusCode !== 200) {
+                                            error = new Error(`Request Failed.\n` +
+                                                `Status Code: ${statusCode}`);
+                                        } else if (!/^application\/json/.test(contentType)) {
+                                            error = new Error(`Invalid content-type.\n` +
+                                                `Expected application/json but received ${contentType}`);
+                                        }
+                                        if (error) {
+                                            console.log(error.message);
+                                            // consume response data to free up memory
+                                            res.resume();
+                                            return;
+                                        }
+
+                                        res.setEncoding('utf8');
+                                        let rawData = '';
+                                        res.on('data', (chunk:any) => rawData += chunk);
+                                        res.on('end', () => {
+                                            try {
+                                                let parsedData = JSON.parse(rawData);
+                                                return parsedData;
+                                               // console.log(parsedData);
+                                            } catch (e) {
+                                                console.log(e.message);
+                                            }
+                                        });
+                                    }).on('error', (e:any) => {
+                                        console.log(`Got error: ${e.message}`);
+                                    });
+
+                                    setTimeout(http.get,300);
+
+                                    timeout(300).then(http.get);
+
+                                    promises2.push(thing);
+
+
+                                    Promise.all(promises2)
+
+                                        .then(function (result:any) {
+
+                                                for (var shit of result) {
+
+                                                    console.log("resutl here " + shit);
+                                                }
+
+                                                resolve(result);
+
+                                                return;
+
+                                            });
+
                                     var lat:number = 0;
                                     var lon:number = 0;
-/*
+                                    // var promises2: Promise<string>[] = [];
+                                    //
+                                    //     // return new pending promise
+                                    //     // select http or https module, depending on reqested url
+                                    //     var request = http.get(options, (response: any) => {
+                                    //         // handle http errors
+                                    //         if (response.statusCode < 200 || response.statusCode > 299) {
+                                    //             reject(new Error('Failed to load page, status code: ' + response.statusCode));
+                                    //         }
+                                    //         // temporary data holder
+                                    //         const body: any = [];
+                                    //         // on every content chunk, push it to the data array
+                                    //         response.on('data', (chunk: any){
+                                    //
+                                    //             body.push(chunk);
+                                    //         };
+                                    //         )
+                                    //         console.log(response);
+                                    //             // we are done, resolve promise with those joined chunks
+                                    //         request.on('error', (err: any) => reject(err));
+                                    //         // handle connection errors of the request
+                                    //         return body.join(' ');
+                                    //
+                                    //     });
+                                    //
+                                    // promises2.push(request);
+                                    //
+                                    //     Promise.all(promises2)
+                                    //
+                                    // .then(function (result:any) {
+                                    //
+                                    //     for (var shit of result) {
+                                    //
+                                    //         console.log("resutl here " + shit);
+                                    //     }
+                                    //
+                                    //     resolve(result);
+                                    //
+                                    //     return;
+                                    //
+                                    // });
 
-                                    const getContent = function(url:any) {
-                                        // return new pending promise
-                                        return new Promise((resolve, reject) => {
-                                            // select http or https module, depending on reqested url
-                                            const lib = url.startsWith('https') ? require('https') : require('http');
-
-                                            const request = lib.get(url, (response:any) => {
-                                                // handle http errors
-                                                if (response.statusCode < 200 || response.statusCode > 299) {
-                                                    reject(new Error('Failed to load page, status code: ' + response.statusCode));
-                                                }
-                                                // temporary data holder
-                                                const body:any = [];
-                                                // on every content chunk, push it to the data array
-                                                response.on('data', (chunk:any) => body.push(chunk));
-                                                // we are done, resolve promise with those joined chunks
-                                                response.on('end', () => resolve(body.join('')));
-                                            });
-                                            // handle connection errors of the request
-                                            request.on('error', (err:any) => reject(err))
-                                        })
-                                    };
-*/
 
                                    /* http.get(('http://skaha.cs.ubc.ca:11316/api/v1/team21/'+buildingAddress.split(' ').join('%20')), (res:any) => {
                                         const statusCode = res.statusCode;
@@ -338,10 +414,6 @@ export default class InsightFacade implements IInsightFacade {
 
                                             var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
                                         }
-
-
-                                        var promise1: Promise<string>[] = [];
-
 
 
 
@@ -788,7 +860,24 @@ export default class InsightFacade implements IInsightFacade {
             }
 
             if (everythingArr.length === 0) { // global
-                everythingArr = fs.readFileSync('./' + path + '.json');
+
+                var pathwithhead = './'+ path+'.json';
+
+                var fileExists = fs.existsSync(pathwithhead);
+
+                if (fileExists) {
+                    everythingArr = fs.readFileSync(pathwithhead);
+                }else{
+
+                    var failResponse: InsightResponse = {
+                        code: 400,
+                        body: {"error" :"no dataset added"}
+                    };
+                    reject(failResponse);
+                    return;
+
+                }
+
             }
 
 
@@ -862,7 +951,7 @@ export default class InsightFacade implements IInsightFacade {
                 finalCourseArr.sort(function (a, b) {
                     var orderS = query.OPTIONS['ORDER'];
 
-                    if (orderS === "courses_instructor" || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
+                    if ((orderS === "courses_instructor") || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
                        || orderS === "rooms_furniture" ||orderS === "rooms_fullname" ||orderS === "rooms_shortname" ||orderS === "rooms_number" ||orderS === "rooms_name" ||
                         orderS === "rooms_address" ||orderS === "rooms_type" ||orderS === "rooms_href") {
                         var nameA = a[orderS].toLowerCase(), nameB = b[orderS].toLowerCase();

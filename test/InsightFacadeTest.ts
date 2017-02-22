@@ -1489,6 +1489,7 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         }).catch(function (err) {
             console.log("error" + err.body);
+            console.log("error" + err.code);
             expect(err.code).to.equal(400);
         });
     });
