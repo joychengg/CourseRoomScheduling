@@ -148,28 +148,30 @@ export default class InsightFacade implements IInsightFacade {
                                 // htmlArray.push(parsedBuildingWood);
 
 
-                                var woods = parse5.parse(content[content.length-2]);
+                                // var woods = parse5.parse(content[content.length-2]);
+                                //
+                                // var buildingName1 = woods.childNodes[6].childNodes[3].childNodes[31]
+                                //     .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
+                                //     .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
+                                //     .childNodes[1].childNodes[0].childNodes[0].value;
+                                //
+                                //     console.log("over here agian this is t body" + woods.childNodes[6].childNodes[3].childNodes[31]
+                                //         .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
+                                //         .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3].value);
+                                //
+                                // for (let index of treeIndex) {
+                                //     if (buildingName1 === index) {
+                                //
+                                //         console.log("name1" +buildingName1);
+                                //
+                                //         htmlArray.push(woods);
+                                //
+                                //     }}
 
-                                var buildingName1 = woods.childNodes[6].childNodes[3].childNodes[31]
-                                    .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
-                                    .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
-                                    .childNodes[1].childNodes[0].childNodes[0].value;
 
-                                    console.log("over here agian this is t body" + woods.childNodes[6].childNodes[3].childNodes[31]
-                                        .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
-                                        .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3].value);
+                                for (let i = 3; i < content.length-1; i++) {
+                                    var buildingName:any = null;
 
-                                for (let index of treeIndex) {
-                                    if (buildingName1 === index) {
-
-                                        console.log("name1" +buildingName1);
-
-                                        htmlArray.push(woods);
-
-                                    }}
-
-
-                                for (let i = 3; i < content.length-2; i++) {
                                     var parsedBuilding = parse5.parse(content[i]);
 
                                     // if (i===content.length-2){
@@ -184,26 +186,26 @@ export default class InsightFacade implements IInsightFacade {
                                     //         .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3].value);
                                     // }
 
-                                    if (i===76){
-
-                                        console.log("over here " +parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
-                                                .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
-                                                .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
-                                                .childNodes[1].childNodes[0].childNodes[0].value);
-
-                                        console.log("over here agian this is t body" + parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
-                                                .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
-                                                .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3]);
-                                    }
+                                    // if (i===76){
+                                    //
+                                    //     console.log("over here " +parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
+                                    //             .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
+                                    //             .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
+                                    //             .childNodes[1].childNodes[0].childNodes[0].value);
+                                    //
+                                    //     console.log("over here agian this is t body" + parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
+                                    //             .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
+                                    //             .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3]);
+                                    // }
 
                                     if (i === 75) {  // FILTERING OUT UCLL
-                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
+                                           buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[12].childNodes[1].childNodes[3].childNodes[1]
                                             .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
                                             .childNodes[1].childNodes[0].childNodes[0].value;
 
                                     } else {
-                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
+                                           buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
                                             .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
                                             .childNodes[1].childNodes[0].childNodes[0].value;
@@ -219,11 +221,11 @@ export default class InsightFacade implements IInsightFacade {
 
                                 }
 
-                                // var first = htmlArray[0];
-                                //
-                                // console.log("first one " + htmlArray[0]);
-                                //resolve();
-                             //   console.log(htmlArray.length); //74 BUILDINGS
+                               // var first = htmlArray[74];
+
+                                console.log("last one " + htmlArray[74]);
+                                resolve();
+                               console.log(htmlArray.length); //74 BUILDINGS
 
                             })
 
@@ -292,42 +294,46 @@ export default class InsightFacade implements IInsightFacade {
 
                                console.log("htmlarray length 2:" + htmlArray.length);
 
-                                for (let building of htmlArray) {
+                                for (var i = 0; i < htmlArray.length; i++) {
+
+                                    var buildingFullName:any = null;
 
                                     var acc = 0;
                                     // FOR UCLL : var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
 
-                                    if (isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31]
+                                    if (isNullOrUndefined(htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[12].childNodes)) {
 
-                                        var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
+                                        console.log("here is i "+i);
+
+                                         buildingFullName = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
                                             .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
 
-                                        var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                        var buildingAddress = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
                                             .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
 
-                                        var beforeRoom = building.childNodes[6].childNodes[3].childNodes[31]
+                                        var beforeRoom = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1];
                                     } else {
 
                                         console.log("blah");
-                                        var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
+                                         buildingFullName = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
                                             .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
 
-                                        var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                        var buildingAddress = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
                                             .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
 
-                                        var beforeRoom = building.childNodes[6].childNodes[3].childNodes[31]
+                                        var beforeRoom = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1];
 
                                         acc++;
                                     }
 
-                                    console.log("build add" + buildingAddress + buildingName);
+                                    console.log("build add" + buildingAddress + buildingFullName);
 
 
                                         var p = request("http://skaha.cs.ubc.ca:11316//api/v1/team21/" + buildingAddress.split(' ').join('%20'), acc)
@@ -342,7 +348,7 @@ export default class InsightFacade implements IInsightFacade {
                                                     if (body.acc > 0) {  //UCLL
                                                         console.log("in the if before");
 
-                                                        var roomtBody = building.childNodes[6].childNodes[3].childNodes[31]
+                                                        var roomtBody = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                                             .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
                                                             .childNodes[1].childNodes[3].childNodes[1].childNodes[3];
 
@@ -351,9 +357,9 @@ export default class InsightFacade implements IInsightFacade {
                                                     } else {
                                                        // console.log("in the else before");
                                                         try {
-                                                            var instant = building;
+                                                            var instant = htmlArray[i];
 
-                                                            var roomtBody = building.childNodes[6].childNodes[3].childNodes[31]
+                                                            var roomtBody = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
                                                                 .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
                                                                 .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3];
 
@@ -361,8 +367,8 @@ export default class InsightFacade implements IInsightFacade {
 
                                                         }catch(err){
                                                             console.log("http://skaha.cs.ubc.ca:11316//api/v1/team21/" + buildingAddress.split(' ').join('%20'));
-                                                            console.log(building);
-                                                            reject(building);
+                                                            console.log(htmlArray[i]);
+                                                            reject(htmlArray[i]);
 
                                                         }
                                                     }
@@ -393,7 +399,7 @@ export default class InsightFacade implements IInsightFacade {
 
 
                                                         var tempRoom: Room = {
-                                                            rooms_fullname: buildingName,
+                                                            rooms_fullname: buildingFullName,
                                                             rooms_shortname: shortname,
                                                             rooms_number: roomNumber,
                                                             rooms_name: shortname + "_" + roomNumber,
@@ -431,7 +437,10 @@ export default class InsightFacade implements IInsightFacade {
 
                                         .then(function (result:any) {
 
+                                            var wood = allRoomsArr[363];
+
                                             console.log("here is length" + allRoomsArr.length);
+                                            console.log("here is 2" + htmlArray.length);
 
                                             var path = './' + id + '.json';
                                             var fileExists = fs.existsSync(path);
