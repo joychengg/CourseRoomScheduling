@@ -1427,7 +1427,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryForRoom).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            //  console.log(JSON.stringify(value.body));
+              console.log(JSON.stringify(value.body));
             //  expect(value.body).to.deep.equal(testResult);
         }).catch(function (err) {
             console.log("error" + err);
@@ -1440,7 +1440,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryForRoomComplex).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            //  console.log(JSON.stringify(value.body));
+              console.log(JSON.stringify(value.body));
             //     expect(value.body).to.deep.equal(result);
         }).catch(function (err) {
             console.log("error" + err);
