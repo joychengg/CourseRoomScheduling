@@ -187,11 +187,96 @@ export default class InsightFacade implements IInsightFacade {
                                     });
                                 }
 
+                                function request(url:any) {
+                                        return http.get(url, (res: any) => {
+                                            const statusCode = res.statusCode;
+                                            const contentType = res.headers['content-type'];
+
+                                            let error;
+                                            if (statusCode !== 200) {
+                                                error = new Error(`Request Failed.\n` +
+                                                    `Status Code: ${statusCode}`);
+                                            } else if (!/^application\/json/.test(contentType)) {
+                                                error = new Error(`Invalid content-type.\n` +
+                                                    `Expected application/json but received ${contentType}`);
+                                            }
+                                            if (error) {
+                                                console.log(error.message);
+                                                // consume response data to free up memory
+                                                res.resume();
+                                                return;
+                                            }
+
+                                            res.setEncoding('utf8');
+                                            let rawData = '';
+                                            res.on('data', (chunk: any) => rawData += chunk);
+                                            res.on('end', () => {
+                                                try {
+                                                    console.log("here");
+                                                    let parsedData = JSON.parse(rawData);
+                                                    return parsedData;
+                                                    // console.log(parsedData);
+                                                } catch (e) {
+                                                    console.log(e.message);
+                                                }
+                                            });
+                                        }).on('error', (e: any) => {
+                                            console.log(`Got error: ${e.message}`);
+                                        });
+                                }
+                                var result = null;
+
+                                function callback(data:any) {
+                                    result = data;
+                                    console.log("here is result" + result);
+                                    // all requests are done, log everything
+
+                                }
+
+                                function processUrl(url:any) {
+                                    var finalData = '';
+                                    http.get(url, function(response:any) {
+                                        response.setEncoding('utf8');
+                                        response.on('data', function(data:any) {
+                                            finalData += data;
+                                        });
+                                        response.on('error', console.error);
+                                        response.on('end', function() {
+                                            // console.log(finalData);
+                                            callback(finalData);
+                                        })
+                                    });
+                                }
+
+                                var addressArr:any = [];
+
+                                function getBuilding() {
+
+                                    for (let building of htmlArray) {
+
+                                        if (isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31]
+                                                .childNodes[12].childNodes)) {
+
+                                            var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                                .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
+                                            addressArr.push(buildingAddress);
+
+                                        } else {
+
+                                            var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                                .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
+                                            addressArr.push(buildingAddress);
+
+                                        }
+                                    }
+                                }
+
 
                                 for (let building of htmlArray) {
 
                                     var acc = 0;
-
                                     // FOR UCLL : var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
 
                                     if (isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31]
@@ -223,73 +308,70 @@ export default class InsightFacade implements IInsightFacade {
                                     }
 
 
-                                    var options = {
-                                        host: 'skaha.cs.ubc.ca',
-                                        path: '/api/v1/team21/'+buildingAddress.split(' ').join('%20'),
-                                        port: '11316'
-                                    };
-
-                                    var promises2: Promise<string>[] = [];
-
-                                   var thing = http.get("http://skaha.cs.ubc.ca:11316//api/v1/team21/"+buildingAddress.split(' ').join('%20'), (res:any) => {
-                                        const statusCode = res.statusCode;
-                                        const contentType = res.headers['content-type'];
-
-                                        let error;
-                                        if (statusCode !== 200) {
-                                            error = new Error(`Request Failed.\n` +
-                                                `Status Code: ${statusCode}`);
-                                        } else if (!/^application\/json/.test(contentType)) {
-                                            error = new Error(`Invalid content-type.\n` +
-                                                `Expected application/json but received ${contentType}`);
-                                        }
-                                        if (error) {
-                                            console.log(error.message);
-                                            // consume response data to free up memory
-                                            res.resume();
-                                            return;
-                                        }
-
-                                        res.setEncoding('utf8');
-                                        let rawData = '';
-                                        res.on('data', (chunk:any) => rawData += chunk);
-                                        res.on('end', () => {
-                                            try {
-                                                let parsedData = JSON.parse(rawData);
-                                                return parsedData;
-                                               // console.log(parsedData);
-                                            } catch (e) {
-                                                console.log(e.message);
-                                            }
-                                        });
-                                    }).on('error', (e:any) => {
-                                        console.log(`Got error: ${e.message}`);
-                                    });
-
-                                    setTimeout(http.get,300);
-
-                                    timeout(300).then(http.get);
-
-                                    promises2.push(thing);
-
-
-                                    Promise.all(promises2)
-
-                                        .then(function (result:any) {
-
-                                                for (var shit of result) {
-
-                                                    console.log("resutl here " + shit);
-                                                }
-
-                                                resolve(result);
-
-                                                return;
-
-                                            });
+                                    // var options = {
+                                    //     host: 'skaha.cs.ubc.ca',
+                                    //     path: '/api/v1/team21/'+buildingAddress.split(' ').join('%20'),
+                                    //     port: '11316'
+                                    // };
 
                                     var lat:number = 0;
                                     var lon:number = 0;
+
+
+                                    request("http://skaha.cs.ubc.ca:11316//api/v1/team21/" + buildingAddress.split(' ').join('%20'));
+
+
+
+
+                                    var promises2: Promise<string>[] = [];
+                                    //
+                                    // var promise = new Promise(function (resolve, reject) {
+                                    //     var answer = request("http://skaha.cs.ubc.ca:11316//api/v1/team21/" + buildingAddress.split(' ').join('%20'));
+                                    //     let rawData:any = null;
+                                    //     let parsedData:any = null;
+                                    //     answer.on('data', (chunk: any) => rawData += chunk);
+                                    //     answer.on('end', () => {
+                                    //         try {
+                                    //             console.log("here");
+                                    //             parsedData = JSON.parse(rawData);
+                                    //           //  return parsedData;
+                                    //             // console.log(parsedData);
+                                    //         } catch (e) {
+                                    //             console.log(e.message);
+                                    //         }
+                                    //     });
+                                    //
+                                    //     resolve(parsedData);
+                                    //
+                                    // })
+                                    //
+                                    // promise.then(function (result:any){
+                                    //
+                                    //     console.log(result);
+                                    //
+                                    // })
+
+
+
+                                   // promises2.push(promise);
+
+
+                                    // Promise.all(promises2)
+                                    //
+                                    //     .then(function (result:any) {
+                                    //
+                                    //             for (var shit of result) {
+                                    //
+                                    //                 console.log("resutl here " + shit);
+                                    //             }
+                                    //
+                                    //             resolve(result);
+                                    //
+                                    //             return;
+                                    //
+                                    //         });
+
+
                                     // var promises2: Promise<string>[] = [];
                                     //
                                     //     // return new pending promise
