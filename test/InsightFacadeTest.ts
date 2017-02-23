@@ -266,6 +266,20 @@ var shortQ: QueryRequest = {
     }
 };
 
+var shortQ2: QueryRequest = {
+
+    WHERE: {"GT": {"rooms_seats": 150}
+
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_name", "rooms_seats"
+        ],
+
+        "FORM": "TABLE"
+    }
+};
+
 var fluorineResult = {"render":"TABLE","result":[{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900}]}
 
 var yearQuery: QueryRequest = {
@@ -2154,7 +2168,7 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("delete file success --- resolve(204)", function () {
+    it("delete courses dataset  success --- resolve(204)", function () {
         this.timeout(10000);
         return insightFacade.removeDataset('courses').then(function (value) {
             Log.test('Value: ' + value.code);
@@ -2165,7 +2179,7 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("query when dataset has been removed, should throw 400", function () {
+    it("query when courses dataset has been removed, should throw 424", function () {
         this.timeout(10000);
         return insightFacade.performQuery(shortQ).then(function (value) {
             Log.test('Value: ' + value.code);
@@ -2174,6 +2188,29 @@ describe("InsightFacadeTest", function () {
             console.log("error" + err);
             expect(err.code).to.equal(424);
            // console.log(err.body);
+        });
+    });
+
+    it("delete room dataset success --- resolve(204)", function () {
+        this.timeout(10000);
+        return insightFacade.removeDataset('rooms').then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(204);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("query when room dataset has been removed, should throw 424", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(shortQ2).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(424);
+          //  console.log(err.body);
         });
     });
 
