@@ -14,7 +14,6 @@ import {AST} from "parse5";
 import QueryClassMethRoom from "../QueryClass/QueryClassMethRoom";
 import {Room} from "../QueryClass/Room";
 import lastIndexOf = require("core-js/fn/array/last-index-of");
-import {GeoResponse} from "../QueryClass/GeoResponse";
 
 
 var fs = require("fs");
@@ -89,7 +88,9 @@ export default class InsightFacade implements IInsightFacade {
 
                   for (let key in zip.files) {
                       if (zip.file(key) !== null && zip.files.hasOwnProperty(key))  promises.push(zip.file(key).async("string"));
-                  }
+                  };
+
+
                         Promise.all(promises)
 
                             .then(function (content: string[]) {
@@ -138,114 +139,47 @@ export default class InsightFacade implements IInsightFacade {
                                 }
                                 loop(treeTbody);
 
-                                // var parsedBuildingWood = parse5.parse(content[78]);
-                                //
-                                // var buildingNamewood = parsedBuildingWood.childNodes[6].childNodes[3].childNodes[31]
-                                //     .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
-                                //     .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
-                                //     .childNodes[1].childNodes[0].childNodes[0].value;
-                                //
-                                // htmlArray.push(parsedBuildingWood);
 
-
-                                // var woods = parse5.parse(content[content.length-2]);
-                                //
-                                // var buildingName1 = woods.childNodes[6].childNodes[3].childNodes[31]
-                                //     .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
-                                //     .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
-                                //     .childNodes[1].childNodes[0].childNodes[0].value;
-                                //
-                                //     console.log("over here agian this is t body" + woods.childNodes[6].childNodes[3].childNodes[31]
-                                //         .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
-                                //         .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3].value);
-                                //
-                                // for (let index of treeIndex) {
-                                //     if (buildingName1 === index) {
-                                //
-                                //         console.log("name1" +buildingName1);
-                                //
-                                //         htmlArray.push(woods);
-                                //
-                                //     }}
-
-
-                                for (let i = 3; i < content.length-1; i++) {
-                                    var buildingName:any = null;
-
+                                for (let i = 3; i < content.length - 1; i++) {
                                     var parsedBuilding = parse5.parse(content[i]);
 
-                                    // if (i===content.length-2){
-                                    //
-                                    //     console.log("over here " +parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
-                                    //         .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
-                                    //         .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
-                                    //         .childNodes[1].childNodes[0].childNodes[0].value);
-                                    //
-                                    //     console.log("over here agian this is t body" + parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
-                                    //         .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
-                                    //         .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3].value);
-                                    // }
-
-                                    // if (i===76){
-                                    //
-                                    //     console.log("over here " +parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
-                                    //             .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
-                                    //             .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
-                                    //             .childNodes[1].childNodes[0].childNodes[0].value);
-                                    //
-                                    //     console.log("over here agian this is t body" + parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
-                                    //             .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
-                                    //             .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3]);
-                                    // }
-
                                     if (i === 75) {  // FILTERING OUT UCLL
-                                           buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
+                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[12].childNodes[1].childNodes[3].childNodes[1]
                                             .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
                                             .childNodes[1].childNodes[0].childNodes[0].value;
-
-                                    } else {
-                                           buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
+                                    }else {
+                                        var buildingName = parsedBuilding.childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[10].childNodes[1].childNodes[3].childNodes[1]
                                             .childNodes[3].childNodes[1].childNodes[1].childNodes[1]
                                             .childNodes[1].childNodes[0].childNodes[0].value;
-
                                     }
-                                    for (let index of treeIndex) {
-                                        if (buildingName === index) {
-                                            console.log("name" +buildingName);
-                                            htmlArray.push(parsedBuilding);
-
-                                        }
+                                    for (let index of treeIndex){
+                                       if (buildingName === index){
+                                           htmlArray.push(parsedBuilding);
+                                       }
                                     }
 
                                 }
 
-                               // var first = htmlArray[74];
-
-                                console.log("last one " + htmlArray[74]);
-                                resolve();
-                               console.log(htmlArray.length); //74 BUILDINGS
+                             //   console.log(htmlArray.length); //74 BUILDINGS
 
                             })
 
-                            // .catch (function (err:any) {
-                            //
-                            //     var cantparseResponse: InsightResponse = {
-                            //         code : 400,
-                            //         body : {"error": "cannot parse error in room"}
-                            //     };
-                            //     reject(cantparseResponse);
-                            //     return;
-                            //
-                            // })
+                            .catch (function (err:any) {
+
+                                var cantparseResponse: InsightResponse = {
+                                    code : 400,
+                                    body : {"error": "cannot parse error in room"}
+                                };
+                                reject(cantparseResponse);
+                                return;
+
+                            })
 
                             // at this point everything should be in htmlArray
 
-
                             .then(function (content:any) {
-
-                                console.log("htmlarray length3:" + htmlArray.length);
 
                                 function request(url: any, acc:any) {
                                     return new Promise((resolve, reject) => {
@@ -273,7 +207,7 @@ export default class InsightFacade implements IInsightFacade {
                                             res.on('data', (chunk: any) => rawData += chunk);
                                             res.on('end', () => {
                                                 try {
-                                                    console.log(rawData);
+                                                    //console.log(rawData);
 
                                                     let parsedData = JSON.parse(rawData);
                                                     parsedData.acc = acc;
@@ -292,174 +226,166 @@ export default class InsightFacade implements IInsightFacade {
 
                                 var promises2: Promise<any>[] = [];
 
-                               console.log("htmlarray length 2:" + htmlArray.length);
 
-                                for (var i = 0; i < htmlArray.length; i++) {
 
-                                    var buildingFullName:any = null;
+
+                                for (let building of htmlArray) {
 
                                     var acc = 0;
+
                                     // FOR UCLL : var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
 
-                                    if (isNullOrUndefined(htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
+                                    if (isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[12].childNodes)) {
 
-                                        console.log("here is i "+i);
-
-                                         buildingFullName = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
-                                            .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
-                                            .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
-
-                                        var buildingAddress = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
+                                        var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
                                             .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
 
-                                        var beforeRoom = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
-                                            .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1];
-                                    } else {
+                                    }else{
 
-                                        console.log("blah");
-                                         buildingFullName = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
-                                            .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
-                                            .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
-
-                                        var buildingAddress = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
+                                        var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
                                             .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
                                             .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
 
-                                        var beforeRoom = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
-                                            .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1];
-
-                                        acc++;
                                     }
 
-                                    console.log("build add" + buildingAddress + buildingFullName);
 
+                                    var p = request("http://skaha.cs.ubc.ca:11316//api/v1/team21/" + buildingAddress.split(' ').join('%20'), acc)
 
-                                        var p = request("http://skaha.cs.ubc.ca:11316//api/v1/team21/" + buildingAddress.split(' ').join('%20'), acc)
+                                        .then((body: any) => {
 
-                                            .then((body: any) => {
+                                        var UCLL = false;
 
-                                        console.log("body "+JSON.stringify(body.acc));
-                                        console.log("htmlarray length:" + htmlArray.length);
+                                        if (!isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31]
+                                                .childNodes[12].childNodes)) UCLL = true;
 
-                                                if (beforeRoom.childNodes.length > 4) {
+                                            if (!UCLL) {
 
-                                                    if (body.acc > 0) {  //UCLL
-                                                        console.log("in the if before");
+                                                var beforeRoom = building.childNodes[6].childNodes[3].childNodes[31]
+                                                    .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1];
+                                            }else{
 
-                                                        var roomtBody = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
-                                                            .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
-                                                            .childNodes[1].childNodes[3].childNodes[1].childNodes[3];
+                                                var beforeRoom = building.childNodes[6].childNodes[3].childNodes[31]
+                                                    .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1];
 
-                                                       // console.log("in the if " + roomtBody);
-
-                                                    } else {
-                                                       // console.log("in the else before");
-                                                        try {
-                                                            var instant = htmlArray[i];
-
-                                                            var roomtBody = htmlArray[i].childNodes[6].childNodes[3].childNodes[31]
-                                                                .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[5]
-                                                                .childNodes[1]   .childNodes[3].childNodes[1].childNodes[3];
-
-                                                           // console.log("in the else " + roomtBody);
-
-                                                        }catch(err){
-                                                            console.log("http://skaha.cs.ubc.ca:11316//api/v1/team21/" + buildingAddress.split(' ').join('%20'));
-                                                            console.log(htmlArray[i]);
-                                                            reject(htmlArray[i]);
-
-                                                        }
-                                                    }
-
-
-                                                    for (let i = 1; i < roomtBody.childNodes.length; i++) {
-
-                                                        var room = roomtBody.childNodes[i];
-                                                        var roomURL = room.childNodes[1].childNodes[1].attrs[0].value;
-                                                        var name = roomURL.substring(69, roomURL.length);
-                                                        var shortname = name.substring(0, name.indexOf("-"));
-
-
-                                                        var Ftemp = room.childNodes[5].childNodes[0].value;
-                                                        Ftemp = Ftemp.substring(Ftemp.indexOf("n"), Ftemp.length);
-                                                        Ftemp = Ftemp.trim();
-
-                                                        var SeatTemp = room.childNodes[3].childNodes[0].value;
-                                                        SeatTemp = SeatTemp.substring(SeatTemp.indexOf("n"), SeatTemp.length);
-                                                        SeatTemp = SeatTemp.trim();
-                                                        SeatTemp = parseInt(SeatTemp);
-
-                                                        var Typetemp = room.childNodes[7].childNodes[0].value;
-                                                        Typetemp = Typetemp.substring(Typetemp.indexOf("n"), Typetemp.length);
-                                                        Typetemp = Typetemp.trim();
-
-                                                        var roomNumber = room.childNodes[1].childNodes[1].childNodes[0].value;
-
-
-                                                        var tempRoom: Room = {
-                                                            rooms_fullname: buildingFullName,
-                                                            rooms_shortname: shortname,
-                                                            rooms_number: roomNumber,
-                                                            rooms_name: shortname + "_" + roomNumber,
-                                                            rooms_address: buildingAddress,
-                                                            rooms_lat: body.lat,
-                                                            rooms_lon: body.lon,
-                                                            rooms_seats: SeatTemp,
-                                                            rooms_type: Typetemp,
-                                                            rooms_furniture: Ftemp,
-                                                            rooms_href: roomURL
-                                                        };
-
-
-                                                        //console.log("here " +tempRoom.rooms_lon);
-
-                                                        var parsedRoom = JSON.stringify(tempRoom);
-
-                                                        allRoomsArr.push(parsedRoom);
-                                                        i++;
-                                                    }
-                                                    resolve();
-                                                }
-                                            }).catch((err: any) => {
-
-                                                var instance = err;
-                                                reject(err);
-
-                                            })
-
-
-                                    promises2.push(p);
-                                }
-
-                                    Promise.all(promises2)
-
-                                        .then(function (result:any) {
-
-                                            var wood = allRoomsArr[363];
-
-                                            console.log("here is length" + allRoomsArr.length);
-                                            console.log("here is 2" + htmlArray.length);
-
-                                            var path = './' + id + '.json';
-                                            var fileExists = fs.existsSync(path);
-
-                                            if (fileExists) {
-
-                                                fs.writeFileSync(path, JSON.stringify(allRoomsArr));
-
-                                                resolve(existsResponse);
-
-                                            } else {
-
-                                                fs.writeFileSync(path, JSON.stringify(allRoomsArr));
-                                                resolve(newResponse);
                                             }
 
-                                        })
-                            })
 
+                                    if (beforeRoom.childNodes.length > 4){
+
+                                        if (UCLL) {  //UCLL
+
+                                            var roomtBody = beforeRoom.childNodes[3].childNodes[1].childNodes[3];
+                                            var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
+                                                .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+
+                                            var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                                .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
+                                        }else {
+
+                                            var roomtBody = beforeRoom.childNodes[3].childNodes[1].childNodes[3];
+                                            var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
+                                                .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+
+                                            var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                                .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
+                                        }
+
+
+
+
+
+                                    for (let i = 1; i < roomtBody.childNodes.length; i++) {
+
+                                        var room = roomtBody.childNodes[i];
+                                        var roomURL = room.childNodes[1].childNodes[1].attrs[0].value;
+                                        var name = roomURL.substring(69,roomURL.length);
+                                        var shortname = name.substring(0,name.indexOf("-"));
+
+
+                                        var Ftemp = room.childNodes[5].childNodes[0].value;
+                                        Ftemp = Ftemp.substring(Ftemp.indexOf("n"),Ftemp.length);
+                                        Ftemp = Ftemp.trim();
+
+                                        var SeatTemp = room.childNodes[3].childNodes[0].value;
+                                        SeatTemp = SeatTemp.substring(SeatTemp.indexOf("n"),SeatTemp.length);
+                                        SeatTemp = SeatTemp.trim();
+                                        SeatTemp = parseInt(SeatTemp);
+
+                                        var Typetemp = room.childNodes[7].childNodes[0].value;
+                                        Typetemp = Typetemp.substring(Typetemp.indexOf("n"),Typetemp.length);
+                                        Typetemp = Typetemp.trim();
+
+                                        var roomNumber = room.childNodes[1].childNodes[1].childNodes[0].value;
+
+
+
+                                        var tempRoom: Room = {
+                                            rooms_fullname: buildingName,
+                                            rooms_shortname: shortname,
+                                            rooms_number: roomNumber,
+                                            rooms_name: shortname + "_" + roomNumber,
+                                            rooms_address: buildingAddress,
+                                            rooms_lat: body.lat,
+                                            rooms_lon: body.lon,
+                                            rooms_seats: SeatTemp,
+                                            rooms_type: Typetemp,
+                                            rooms_furniture: Ftemp,
+                                            rooms_href: roomURL
+                                        };
+
+
+
+                                        var parsedRoom = JSON.stringify(tempRoom);
+
+                                        allRoomsArr.push(parsedRoom);
+                                        i++;
+                                    }
+
+                                    }
+                                        }).catch((err: any) => {
+
+                                            var errResponse: InsightResponse = {
+                                                code : 400,
+                                                body : {"error": err}
+                                            };
+                                            reject(errResponse);
+
+                                        })
+
+
+                                    promises2.push(p);}
+
+                                Promise.all(promises2)
+
+                                    .then(function (result:any) {
+
+                                        var path = './' + id + '.json';
+                                        var fileExists = fs.existsSync(path);
+
+                                        if (fileExists) {
+
+                                            fs.writeFileSync(path, JSON.stringify(allRoomsArr));
+
+                                            resolve(existsResponse);
+
+                                        } else {
+
+                                            fs.writeFileSync(path, JSON.stringify(allRoomsArr));
+                                            resolve(newResponse);
+                                        }
+
+                                    })
+
+
+                            });
+
+                    })
 
                     .catch(function (err: any) {
 
@@ -472,7 +398,6 @@ export default class InsightFacade implements IInsightFacade {
 
                     })
 
-            })
             }
 
             else if (id === "courses"){
@@ -830,27 +755,9 @@ export default class InsightFacade implements IInsightFacade {
             }
 
             if (everythingArr.length === 0) { // global
-
-                var pathwithhead = './'+ path+'.json';
-
-                var fileExists = fs.existsSync(pathwithhead);
-
-                if (fileExists) {
-                    everythingArr = fs.readFileSync(pathwithhead);
-                }else{
-
-                    var failResponse: InsightResponse = {
-                        code: 400,
-                        body: {"error" :"no dataset added"}
-                    };
-                    reject(failResponse);
-                    return;
-
-                }
-
+                everythingArr = fs.readFileSync('./' + path + '.json');
             }
 
-            console.log("room " + allRoomsArr.length);
 
                 try {
                     if (path==="courses") {
@@ -922,7 +829,7 @@ export default class InsightFacade implements IInsightFacade {
                 finalCourseArr.sort(function (a, b) {
                     var orderS = query.OPTIONS['ORDER'];
 
-                    if ((orderS === "courses_instructor") || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
+                    if (orderS === "courses_instructor" || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
                        || orderS === "rooms_furniture" ||orderS === "rooms_fullname" ||orderS === "rooms_shortname" ||orderS === "rooms_number" ||orderS === "rooms_name" ||
                         orderS === "rooms_address" ||orderS === "rooms_type" ||orderS === "rooms_href") {
                         var nameA = a[orderS].toLowerCase(), nameB = b[orderS].toLowerCase();
