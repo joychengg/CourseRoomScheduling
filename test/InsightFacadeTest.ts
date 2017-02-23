@@ -1362,11 +1362,11 @@ describe("InsightFacadeTest", function () {
     });
 
 
-    it("adding rooms.zip --- resolve(201)", function () {
+    it("adding rooms.zip first time --- resolve(204)", function () {
         this.timeout(10000);
         return insightFacade.addDataset('rooms', roomFile).then(function (value) {
             //Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(201);
+            expect(value.code).to.equal(204);
         }).catch(function (err) {
             console.log("error" + JSON.stringify(err));
             expect.fail();
@@ -1430,8 +1430,8 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryForRoom).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            //  console.log(JSON.stringify(value.body));
-            //  expect(value.body).to.deep.equal(testResult);
+            // console.log(JSON.stringify(value.body));
+           //   expect(value.body).to.deep.equal(testResult);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -1443,7 +1443,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryForRoomComplex).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            //  console.log(JSON.stringify(value.body));
+             // console.log(JSON.stringify(value.body));
             //     expect(value.body).to.deep.equal(result);
         }).catch(function (err) {
             console.log("error" + err);
@@ -1479,6 +1479,17 @@ describe("InsightFacadeTest", function () {
         return insightFacade.addDataset('courses', zipStuff).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(204);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("second add of file - resolve in 201", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('rooms', roomFile).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(201);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();

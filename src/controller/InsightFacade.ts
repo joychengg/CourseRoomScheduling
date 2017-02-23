@@ -231,6 +231,8 @@ export default class InsightFacade implements IInsightFacade {
 
                                 for (let building of htmlArray) {
 
+                                    allRoomsArr = [];
+
                                     var acc = 0;
 
                                     // FOR UCLL : var roomtBody = building.childNodes[6].childNodes[3].childNodes[31].childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[5].childNodes[1].childNodes[3].childNodes[1].childNodes[3];
@@ -339,7 +341,7 @@ export default class InsightFacade implements IInsightFacade {
                                             rooms_href: roomURL
                                         };
 
-
+                                        //console.log("lat and lon " + tempRoom.rooms_lat + tempRoom.rooms_lon);
 
                                         var parsedRoom = JSON.stringify(tempRoom);
 
@@ -364,6 +366,8 @@ export default class InsightFacade implements IInsightFacade {
                                 Promise.all(promises2)
 
                                     .then(function (result:any) {
+
+                                     //   console.log("length of room arr"  + allRoomsArr.length);
 
                                         var path = './' + id + '.json';
                                         var fileExists = fs.existsSync(path);
