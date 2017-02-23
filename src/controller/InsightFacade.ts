@@ -86,9 +86,9 @@ export default class InsightFacade implements IInsightFacade {
                         //loop through to find dir name and then go into second loop to find if dir name is in key
 
 
-                  for (let key in zip.files) {
-                      if (zip.file(key) !== null && zip.files.hasOwnProperty(key))  promises.push(zip.file(key).async("string"));
-                  };
+                        for (let key in zip.files) {
+                            if (zip.file(key) !== null && zip.files.hasOwnProperty(key))  promises.push(zip.file(key).async("string"));
+                        };
 
 
                         Promise.all(promises)
@@ -155,14 +155,14 @@ export default class InsightFacade implements IInsightFacade {
                                             .childNodes[1].childNodes[0].childNodes[0].value;
                                     }
                                     for (let index of treeIndex){
-                                       if (buildingName === index){
-                                           htmlArray.push(parsedBuilding);
-                                       }
+                                        if (buildingName === index){
+                                            htmlArray.push(parsedBuilding);
+                                        }
                                     }
 
                                 }
 
-                             //   console.log(htmlArray.length); //74 BUILDINGS
+                                //   console.log(htmlArray.length); //74 BUILDINGS
 
                             })
 
@@ -257,10 +257,10 @@ export default class InsightFacade implements IInsightFacade {
 
                                         .then((body: any) => {
 
-                                        var UCLL = false;
+                                            var UCLL = false;
 
-                                        if (!isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31]
-                                                .childNodes[12].childNodes)) UCLL = true;
+                                            if (!isNullOrUndefined(building.childNodes[6].childNodes[3].childNodes[31]
+                                                    .childNodes[12].childNodes)) UCLL = true;
 
                                             if (!UCLL) {
 
@@ -274,82 +274,82 @@ export default class InsightFacade implements IInsightFacade {
                                             }
 
 
-                                    if (beforeRoom.childNodes.length > 4){
+                                            if (beforeRoom.childNodes.length > 4){
 
-                                        if (UCLL) {  //UCLL
+                                                if (UCLL) {  //UCLL
 
-                                            var roomtBody = beforeRoom.childNodes[3].childNodes[1].childNodes[3];
-                                            var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
-                                                .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
-                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+                                                    var roomtBody = beforeRoom.childNodes[3].childNodes[1].childNodes[3];
+                                                    var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
+                                                        .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                        .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
 
-                                            var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
-                                                .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
-                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
-                                        }else {
+                                                    var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                                        .childNodes[12].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                        .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
+                                                }else {
 
-                                            var roomtBody = beforeRoom.childNodes[3].childNodes[1].childNodes[3];
-                                            var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
-                                                .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
-                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
+                                                    var roomtBody = beforeRoom.childNodes[3].childNodes[1].childNodes[3];
+                                                    var buildingName = building.childNodes[6].childNodes[3].childNodes[31]
+                                                        .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                        .childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[0].childNodes[0].value;
 
-                                            var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
-                                                .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
-                                                .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
-                                        }
-
-
+                                                    var buildingAddress = building.childNodes[6].childNodes[3].childNodes[31]
+                                                        .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
+                                                        .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
+                                                }
 
 
 
-                                    for (let i = 1; i < roomtBody.childNodes.length; i++) {
-
-                                        var room = roomtBody.childNodes[i];
-                                        var roomURL = room.childNodes[1].childNodes[1].attrs[0].value;
-                                        var name = roomURL.substring(69,roomURL.length);
-                                        var shortname = name.substring(0,name.indexOf("-"));
 
 
-                                        var Ftemp = room.childNodes[5].childNodes[0].value;
-                                        Ftemp = Ftemp.substring(Ftemp.indexOf("n"),Ftemp.length);
-                                        Ftemp = Ftemp.trim();
+                                                for (let i = 1; i < roomtBody.childNodes.length; i++) {
 
-                                        var SeatTemp = room.childNodes[3].childNodes[0].value;
-                                        SeatTemp = SeatTemp.substring(SeatTemp.indexOf("n"),SeatTemp.length);
-                                        SeatTemp = SeatTemp.trim();
-                                        SeatTemp = parseInt(SeatTemp);
-
-                                        var Typetemp = room.childNodes[7].childNodes[0].value;
-                                        Typetemp = Typetemp.substring(Typetemp.indexOf("n"),Typetemp.length);
-                                        Typetemp = Typetemp.trim();
-
-                                        var roomNumber = room.childNodes[1].childNodes[1].childNodes[0].value;
+                                                    var room = roomtBody.childNodes[i];
+                                                    var roomURL = room.childNodes[1].childNodes[1].attrs[0].value;
+                                                    var name = roomURL.substring(69,roomURL.length);
+                                                    var shortname = name.substring(0,name.indexOf("-"));
 
 
+                                                    var Ftemp = room.childNodes[5].childNodes[0].value;
+                                                    Ftemp = Ftemp.substring(Ftemp.indexOf("n"),Ftemp.length);
+                                                    Ftemp = Ftemp.trim();
 
-                                        var tempRoom: Room = {
-                                            rooms_fullname: buildingName,
-                                            rooms_shortname: shortname,
-                                            rooms_number: roomNumber,
-                                            rooms_name: shortname + "_" + roomNumber,
-                                            rooms_address: buildingAddress,
-                                            rooms_lat: body.lat,
-                                            rooms_lon: body.lon,
-                                            rooms_seats: SeatTemp,
-                                            rooms_type: Typetemp,
-                                            rooms_furniture: Ftemp,
-                                            rooms_href: roomURL
-                                        };
+                                                    var SeatTemp = room.childNodes[3].childNodes[0].value;
+                                                    SeatTemp = SeatTemp.substring(SeatTemp.indexOf("n"),SeatTemp.length);
+                                                    SeatTemp = SeatTemp.trim();
+                                                    SeatTemp = parseInt(SeatTemp);
 
-                                        //console.log("lat and lon " + tempRoom.rooms_lat + tempRoom.rooms_lon);
+                                                    var Typetemp = room.childNodes[7].childNodes[0].value;
+                                                    Typetemp = Typetemp.substring(Typetemp.indexOf("n"),Typetemp.length);
+                                                    Typetemp = Typetemp.trim();
 
-                                        var parsedRoom = JSON.stringify(tempRoom);
+                                                    var roomNumber = room.childNodes[1].childNodes[1].childNodes[0].value;
 
-                                        allRoomsArr.push(parsedRoom);
-                                        i++;
-                                    }
 
-                                    }
+
+                                                    var tempRoom: Room = {
+                                                        rooms_fullname: buildingName,
+                                                        rooms_shortname: shortname,
+                                                        rooms_number: roomNumber,
+                                                        rooms_name: shortname + "_" + roomNumber,
+                                                        rooms_address: buildingAddress,
+                                                        rooms_lat: body.lat,
+                                                        rooms_lon: body.lon,
+                                                        rooms_seats: SeatTemp,
+                                                        rooms_type: Typetemp,
+                                                        rooms_furniture: Ftemp,
+                                                        rooms_href: roomURL
+                                                    };
+
+                                                    //console.log("lat and lon " + tempRoom.rooms_lat + tempRoom.rooms_lon);
+
+                                                    var parsedRoom = JSON.stringify(tempRoom);
+
+                                                    allRoomsArr.push(parsedRoom);
+                                                    i++;
+                                                }
+
+                                            }
                                         }).catch((err: any) => {
 
                                             var errResponse: InsightResponse = {
@@ -367,7 +367,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                     .then(function (result:any) {
 
-                                     //   console.log("length of room arr"  + allRoomsArr.length);
+                                        //   console.log("length of room arr"  + allRoomsArr.length);
 
                                         var path = './' + id + '.json';
                                         var fileExists = fs.existsSync(path);
@@ -406,146 +406,146 @@ export default class InsightFacade implements IInsightFacade {
 
             else if (id === "courses"){
 
-            JSZip.loadAsync(content, {"base64": true})
+                JSZip.loadAsync(content, {"base64": true})
 
-                .then(function (zip: any) {
+                    .then(function (zip: any) {
 
-                    //check if key is empty or zip is no key here
-                    if (isNullOrUndefined(zip) || (isNullOrUndefined(zip.files))){
-                        var cantparseResponse: InsightResponse = {
-                            code : 400,
-                            body : {"error": "Empty zip"}
-                        };
-                        reject(cantparseResponse);
-                        return;
-
-                    }
-
-                    var dirName:any = null;
-                    //loop through to find dir name and then go into second loop to find if dir name is in key
-
-                    for (var i = 0; i<Object.keys(zip.files).length; i++) {
-
-                        var key = Object.keys(zip.files)[i];
-
-                        if (zip.files[key].dir){
-                            dirName = zip.files[key].name;
-                            break;
-                        }
-                            }
-
-                            //console.log("dir name" +dirName);
-
-                    for (let key in zip.files) {
-
-                        if (!key.includes(dirName)){
+                        //check if key is empty or zip is no key here
+                        if (isNullOrUndefined(zip) || (isNullOrUndefined(zip.files))){
                             var cantparseResponse: InsightResponse = {
                                 code : 400,
-                                body : {"Error": "Empty zip"}
+                                body : {"error": "Empty zip"}
                             };
                             reject(cantparseResponse);
                             return;
 
                         }
 
-                        if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
-                            promises.push(zip.file(key).async("string"));
+                        var dirName:any = null;
+                        //loop through to find dir name and then go into second loop to find if dir name is in key
+
+                        for (var i = 0; i<Object.keys(zip.files).length; i++) {
+
+                            var key = Object.keys(zip.files)[i];
+
+                            if (zip.files[key].dir){
+                                dirName = zip.files[key].name;
+                                break;
+                            }
                         }
-                    }
 
-                    Promise.all(promises)
+                        //console.log("dir name" +dirName);
 
-                        .then(function (content: string[]) {
+                        for (let key in zip.files) {
 
-                            if (content.length===0){
+                            if (!key.includes(dirName)){
                                 var cantparseResponse: InsightResponse = {
                                     code : 400,
-                                    body : {"error": "Empty jSon"}
+                                    body : {"Error": "Empty zip"}
                                 };
                                 reject(cantparseResponse);
                                 return;
 
                             }
 
-
-                            for (var i = 0; i < content.length; i++) {
-
-                                var json = JSON.parse(content[i]);
-                                jsonObjArray.push(json);
+                            if (zip.file(key) !== null && zip.files.hasOwnProperty(key)) {
+                                promises.push(zip.file(key).async("string"));
                             }
-                        })
+                        }
 
-                        .catch (function (err:any) {
+                        Promise.all(promises)
 
-                            var cantparseResponse: InsightResponse = {
-                                code : 400,
-                                body : {"error": "cannot parse"}
-                            };
-                            reject(cantparseResponse);
-                            return;
+                            .then(function (content: string[]) {
 
-                        })
-
-                        // at this point everything should be in jsonObjArray
-
-                        .then(function (content:any) {
-
-                            everythingArr = [];
-                            for (var i = 0; i < jsonObjArray.length; i++) {
-
-                                if (isNullOrUndefined(jsonObjArray[i].result)){
-
+                                if (content.length===0){
                                     var cantparseResponse: InsightResponse = {
-                                        code: 400,
-                                        body: {"Error": "Missing result"}
+                                        code : 400,
+                                        body : {"error": "Empty jSon"}
                                     };
                                     reject(cantparseResponse);
                                     return;
+
                                 }
 
-                                var arrayOfCourses = jsonObjArray[i].result;
 
-                               // everythingArr.push(arrayOfCourses);
+                                for (var i = 0; i < content.length; i++) {
 
-                                //loop through the jsonObjectList's result node and put everything into an array
-                                for (var j = 0; j < arrayOfCourses.length; j++) {
-                                    everythingArr.push(arrayOfCourses[j]);
+                                    var json = JSON.parse(content[i]);
+                                    jsonObjArray.push(json);
+                                }
+                            })
 
-                                }//loop through each result node's courses and add those to the master list
-                            }
-                            //everythingArr would contain allllll the courses one by one
+                            .catch (function (err:any) {
 
-                            var path = './'+ id+'.json';
-                            var fileExists = fs.existsSync(path);
+                                var cantparseResponse: InsightResponse = {
+                                    code : 400,
+                                    body : {"error": "cannot parse"}
+                                };
+                                reject(cantparseResponse);
+                                return;
 
-                            if (fileExists) {
+                            })
 
-                                fs.writeFileSync( path, JSON.stringify(everythingArr));
+                            // at this point everything should be in jsonObjArray
 
-                                resolve(existsResponse);
+                            .then(function (content:any) {
 
-                            }else {
+                                everythingArr = [];
+                                for (var i = 0; i < jsonObjArray.length; i++) {
 
-                                fs.writeFileSync( path, JSON.stringify(everythingArr));
-                                resolve(newResponse);
-                            }
+                                    if (isNullOrUndefined(jsonObjArray[i].result)){
 
-                        });
+                                        var cantparseResponse: InsightResponse = {
+                                            code: 400,
+                                            body: {"Error": "Missing result"}
+                                        };
+                                        reject(cantparseResponse);
+                                        return;
+                                    }
 
-                })
+                                    var arrayOfCourses = jsonObjArray[i].result;
 
-                .catch(function (err: any) {
+                                    // everythingArr.push(arrayOfCourses);
 
-                    var errResponse: InsightResponse = {
-                        code : 400,
-                        body : {"error": "general"}
-                    };
-                    reject(errResponse);
-                    return;
+                                    //loop through the jsonObjectList's result node and put everything into an array
+                                    for (var j = 0; j < arrayOfCourses.length; j++) {
+                                        everythingArr.push(arrayOfCourses[j]);
 
-                })
+                                    }//loop through each result node's courses and add those to the master list
+                                }
+                                //everythingArr would contain allllll the courses one by one
+
+                                var path = './'+ id+'.json';
+                                var fileExists = fs.existsSync(path);
+
+                                if (fileExists) {
+
+                                    fs.writeFileSync( path, JSON.stringify(everythingArr));
+
+                                    resolve(existsResponse);
+
+                                }else {
+
+                                    fs.writeFileSync( path, JSON.stringify(everythingArr));
+                                    resolve(newResponse);
+                                }
+
+                            });
+
+                    })
+
+                    .catch(function (err: any) {
+
+                        var errResponse: InsightResponse = {
+                            code : 400,
+                            body : {"error": "general"}
+                        };
+                        reject(errResponse);
+                        return;
+
+                    })
             }
-        else{
+            else{
 
                 var wrongIDResponse: InsightResponse = {
                     code : 400,
@@ -605,14 +605,6 @@ export default class InsightFacade implements IInsightFacade {
 
             var path = "";
 
-            if (everythingArr.length === 0  && allRoomsArr.length === 0) {
-
-                var failResponse: InsightResponse = {
-                    code: 400,
-                    body: {Error: "No dataset"}
-                };
-                reject(failResponse);
-            }
 
             if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
 
@@ -644,6 +636,29 @@ export default class InsightFacade implements IInsightFacade {
                 reject(failResponse);
                 return;
 
+            }
+
+            if (!isNullOrUndefined(query.OPTIONS.ORDER)) {
+
+                var column = Object.keys(query.OPTIONS)[0];
+                var order = query.OPTIONS.ORDER;
+
+                var count = 0;
+                for (var i of query.OPTIONS.COLUMNS) {
+
+                    if (i === order) {
+                        count++;
+                        break;
+                    }
+                }
+                if (count === 0) {
+                    var failResponse: InsightResponse = {
+                        code: 400,
+                        body: {Error: "empty options"}
+                    };
+                    reject(failResponse);
+                    return;
+                }
             }
 
             var acc:any = [];
@@ -739,7 +754,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     if(isArray(exprs)) reject(failResponse2);
 
-                        checkKey(exprs);
+                    checkKey(exprs);
 
                 }
 
@@ -758,22 +773,60 @@ export default class InsightFacade implements IInsightFacade {
 
             }
 
-            if (everythingArr.length === 0) { // global
-                everythingArr = fs.readFileSync('./' + path + '.json');
+            everythingArr = [];
+            allRoomsArr = [];
+
+            if (path==="courses"){
+
+                if (everythingArr.length === 0) {
+
+                    var pathWithEnds = './' + path + '.json';
+                    var fileExists = fs.existsSync(pathWithEnds);
+
+                    if (fileExists) {
+                        everythingArr = JSON.parse(fs.readFileSync(pathWithEnds, 'utf8'));
+                    } else {
+
+                        var failResponse: InsightResponse = {
+                            code: 424,
+                            body: {"missing": ["courses"]}
+                        };
+                        reject(failResponse);
+
+                    }
+                }
+            }else if (path==="rooms"){
+
+                if(allRoomsArr.length === 0) {
+                    var pathWithEnds = './' + path + '.json';
+                    var fileExists = fs.existsSync(pathWithEnds);
+
+                    if (fileExists) {
+                        allRoomsArr = JSON.parse(fs.readFileSync(pathWithEnds, 'utf8'));
+                    } else {
+
+                        var failResponse: InsightResponse = {
+                            code: 424,
+                            body: {"missing": ["rooms"]}
+                        };
+                        reject(failResponse);
+                    }
+                }
+
             }
 
 
-                try {
-                    if (path==="courses") {
-                        for (var course of everythingArr) {
+            try {
+                if (path==="courses") {
+                    for (var course of everythingArr) {
 
-                            if (objforQuery.Filter(query.WHERE, course) === true)
-                                arrOFCourses.push(course);
-                        }
+                        if (objforQuery.Filter(query.WHERE, course) === true)
+                            arrOFCourses.push(course);
+                    }
 
-                    }else if(path==="rooms"){
+                }else if(path==="rooms"){
 
-                        for (var room of allRoomsArr){
+                    for (var room of allRoomsArr){
 
                         var room = JSON.parse(room);
 
@@ -781,16 +834,16 @@ export default class InsightFacade implements IInsightFacade {
 
                             arrOFrooms.push(room);
                     }}
-                } catch (err) {
+            } catch (err) {
 
-                        var failResponse: InsightResponse = {
-                            code: 400,
-                            body: err
-                        };
-                        reject(failResponse);
-                        return;
+                var failResponse: InsightResponse = {
+                    code: 400,
+                    body: err
+                };
+                reject(failResponse);
+                return;
 
-                }
+            }
 
 
 
@@ -807,34 +860,12 @@ export default class InsightFacade implements IInsightFacade {
             }
 
 
-            if (!isNullOrUndefined(query.OPTIONS.ORDER)) {
-
-            var column = Object.keys(query.OPTIONS)[0];
-            var order = query.OPTIONS.ORDER;
-
-            var count = 0;
-            for (var i of query.OPTIONS.COLUMNS) {
-
-                if (i === order) {
-                    count++;
-                    break;
-                }
-            } 
-            if (count === 0) {
-                var failResponse: InsightResponse = {
-                    code: 400,
-                    body: {Error: "empty options"}
-                };
-                reject(failResponse);
-                return;
-            }
-
 
                 finalCourseArr.sort(function (a, b) {
                     var orderS = query.OPTIONS['ORDER'];
 
                     if (orderS === "courses_instructor" || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
-                       || orderS === "rooms_furniture" ||orderS === "rooms_fullname" ||orderS === "rooms_shortname" ||orderS === "rooms_number" ||orderS === "rooms_name" ||
+                        || orderS === "rooms_furniture" ||orderS === "rooms_fullname" ||orderS === "rooms_shortname" ||orderS === "rooms_number" ||orderS === "rooms_name" ||
                         orderS === "rooms_address" ||orderS === "rooms_type" ||orderS === "rooms_href") {
                         var nameA = a[orderS].toLowerCase(), nameB = b[orderS].toLowerCase();
                         if (nameA < nameB) //sort string ascending
@@ -848,8 +879,6 @@ export default class InsightFacade implements IInsightFacade {
                     }
                 });
 
-
-            }
 
 
             var resultThing:QueryRequest2 = {

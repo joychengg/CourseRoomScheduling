@@ -87,21 +87,21 @@ var queryRequest8: QueryRequest = {
 var NitroQuery: QueryRequest = {
 
     WHERE: {"AND":
-    [
-        {
-            "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
-        }
-        , {"IS": {"rooms_type" : "*Group*"}}]
-},
+        [
+            {
+                "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+            }
+            , {"IS": {"rooms_type" : "*Group*"}}]
+    },
     OPTIONS: {
-    "COLUMNS": [
-        "rooms_lat", "rooms_furniture", "rooms_type"
-    ],
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
 
         "ORDER" : "rooms_type",
 
         "FORM": "TABLE"
-}
+    }
 
 }
 
@@ -243,14 +243,28 @@ var fluorineQuery: QueryRequest = {
             {"IS":{"courses_id": "327"}}]
 
     },
-    "OPTIONS": {
+    OPTIONS: {
         "COLUMNS": [
             "courses_id", "courses_year"
         ],
 
         "FORM": "TABLE"
     }
-}
+};
+
+var shortQ: QueryRequest = {
+    WHERE: {
+        "IS":{"courses_id": "327"}
+
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "courses_id", "courses_year"
+        ],
+
+        "FORM": "TABLE"
+    }
+};
 
 var fluorineResult = {"render":"TABLE","result":[{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900}]}
 
@@ -567,6 +581,41 @@ var laterWildRequest = {
     }
 };
 
+var newTestwithLatlong = {
+    WHERE:{
+        "OR":[
+            {
+                "AND":[
+                    {
+                        "EQ":{
+                            "rooms_lat": 49.26486
+                        }
+                    },
+                    {
+                        "IS":{
+                            "rooms_address":"*2053*"
+                        }
+                    }
+                ]
+            },
+            {
+                "IS":{
+                    "rooms_shortname": 'ANGU'
+                }
+            }
+        ]
+    },
+    OPTIONS:{
+        "COLUMNS":[
+            "rooms_name",
+            "rooms_href",
+            "rooms_lat",
+            "rooms_fullname"
+        ],
+        "FORM":"TABLE"
+    }
+};
+
 var bothWildRequest = {
     WHERE: {
         "IS": {
@@ -653,14 +702,14 @@ var metroQuery:QueryRequest = {
 
     WHERE: {"GT": {"rooms_seats": 150}
 
-},
+    },
     OPTIONS: {
         "COLUMNS": [
-        "rooms_name", "rooms_seats"
+            "rooms_name", "rooms_seats"
         ],
 
         "FORM": "TABLE"
-}
+    }
 
 }
 
@@ -1431,7 +1480,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
             // console.log(JSON.stringify(value.body));
-           //   expect(value.body).to.deep.equal(testResult);
+            //   expect(value.body).to.deep.equal(testResult);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -1443,7 +1492,20 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(queryForRoomComplex).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-             // console.log(JSON.stringify(value.body));
+            // console.log(JSON.stringify(value.body));
+            //     expect(value.body).to.deep.equal(result);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("query lat lon", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(newTestwithLatlong).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+           // console.log(JSON.stringify(value.body));
             //     expect(value.body).to.deep.equal(result);
         }).catch(function (err) {
             console.log("error" + err);
@@ -1507,7 +1569,7 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("EQ array - reject 424", function () {
+    it("EQ array - reject 400", function () {
         this.timeout(10000);
         return insightFacade.performQuery(EQarrayRequest).then(function (value) {
             Log.test('Value: ' + value.code);
@@ -1517,7 +1579,7 @@ describe("InsightFacadeTest", function () {
             // console.log(err.body);
         });
     });
-    it("GT array - reject 424", function () {
+    it("GT array - reject 400", function () {
         this.timeout(10000);
         return insightFacade.performQuery(GTarrayRequest).then(function (value) {
             Log.test('Value: ' + value.code);
@@ -1527,7 +1589,7 @@ describe("InsightFacadeTest", function () {
             // console.log(err.body);
         });
     });
-    it("LT array - reject 424", function () {
+    it("LT array - reject 400", function () {
         this.timeout(10000);
         return insightFacade.performQuery(LTarrayRequest).then(function (value) {
             Log.test('Value: ' + value.code);
@@ -1583,7 +1645,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
             expect(value.code).to.equal(200);
-            expect(value.body).to.deep.equal(fluorineResult);
+           // expect(value.body).to.deep.equal(fluorineResult);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -1717,6 +1779,7 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect(err.code).to.equal(424);
+           // console.log(err.body);
 
         });
     });
@@ -2099,6 +2162,18 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
+        });
+    });
+
+    it("query when dataset has been removed, should throw 400", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(shortQ).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(424);
+           // console.log(err.body);
         });
     });
 
