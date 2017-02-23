@@ -106,6 +106,8 @@ export default class QueryClassMethRoom {
             return true;
         }else if((input_key === "rooms_furniture") && (typeof(input_value)==="string")) {
             return true;
+        }else if((input_key === "rooms_href") && (typeof(input_value)==="string")) {
+            return true;
         }else{
             throw new Error;
         }
