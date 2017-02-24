@@ -311,16 +311,16 @@ export default class InsightFacade implements IInsightFacade {
 
 
                                                     var Ftemp = room.childNodes[5].childNodes[0].value;
-                                                    Ftemp = Ftemp.substring(Ftemp.indexOf("n"),Ftemp.length);
+                                                    Ftemp = Ftemp.substring(1,Ftemp.length);
                                                     Ftemp = Ftemp.trim();
 
                                                     var SeatTemp = room.childNodes[3].childNodes[0].value;
-                                                    SeatTemp = SeatTemp.substring(SeatTemp.indexOf("n"),SeatTemp.length);
+                                                    SeatTemp = SeatTemp.substring(1,SeatTemp.length);
                                                     SeatTemp = SeatTemp.trim();
                                                     SeatTemp = parseInt(SeatTemp);
 
                                                     var Typetemp = room.childNodes[7].childNodes[0].value;
-                                                    Typetemp = Typetemp.substring(Typetemp.indexOf("n"),Typetemp.length);
+                                                    Typetemp = Typetemp.substring(1,Typetemp.length);
                                                     Typetemp = Typetemp.trim();
 
                                                     var roomNumber = room.childNodes[1].childNodes[1].childNodes[0].value;
