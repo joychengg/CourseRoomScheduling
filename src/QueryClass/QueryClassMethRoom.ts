@@ -63,15 +63,6 @@ export default class QueryClassMethRoom {
     }
 
 
-    isJson(str:any):boolean {
-        try {
-            JSON.parse(str);
-        } catch (e) {
-            return false;
-        }
-        return true;
-    }
-
 
     checkTypeMath(input_key:any, input_value:any): boolean{
 
@@ -108,14 +99,6 @@ export default class QueryClassMethRoom {
             return true;
         }else{
             throw new Error;
-        }
-    }
-
-    checkKey(key:string) {
-        if (key === "courses" || key === "rooms"){
-            return true;
-        }else{
-            return false;
         }
     }
 
@@ -209,9 +192,6 @@ export default class QueryClassMethRoom {
                 return true;
 
             }
-        } else{
-
-            throw new Error;
         }
     }
 

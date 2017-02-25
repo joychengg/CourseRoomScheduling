@@ -166,7 +166,7 @@ export default class InsightFacade implements IInsightFacade {
 
                             })
 
-                            .catch (function (err:any) {
+                            .catch ((err:any) => {
 
                                 var cantparseResponse: InsightResponse = {
                                     code : 400,
@@ -358,7 +358,7 @@ export default class InsightFacade implements IInsightFacade {
                                             };
                                             reject(errResponse);
 
-                                        })
+                                        });
 
 
                                     promises2.push(p);}
@@ -606,13 +606,13 @@ export default class InsightFacade implements IInsightFacade {
             var path = "";
 
 
-            if (((objforQuery.isJson(JSON.stringify(query.WHERE))) || (objforQuery.isJson(JSON.stringify(query.OPTIONS)))) === false) {
+            if (((objforQuery.isJson(JSON.stringify(query.WHERE))) && (objforQuery.isJson(JSON.stringify(query.OPTIONS)))) === false) {
 
-                var failResponse: InsightResponse = {
+                var failResponse4: InsightResponse = {
                     code: 400,
                     body: {Error: "Invalid Json"}
                 };
-                reject(failResponse);
+                reject(failResponse4);
                 return;
             }
 
@@ -667,7 +667,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 var failResponse2: InsightResponse = {
                     code: 400,
-                    body: {Error}
+                    body: {Error:"error"}
                 };
 
                 var key = Object.keys(input)[0];
@@ -756,6 +756,8 @@ export default class InsightFacade implements IInsightFacade {
 
                     checkKey(exprs);
 
+                }else{
+                    reject(failResponse2);
                 }
 
             }

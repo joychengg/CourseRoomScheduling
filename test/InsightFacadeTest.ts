@@ -103,7 +103,175 @@ var NitroQuery: QueryRequest = {
         "FORM": "TABLE"
     }
 
-}
+};
+
+var roomforCover: QueryRequest = {
+
+    WHERE: {"AND":
+        [
+            {
+                "IS": {"rooms_furniture": "*Classroom-Fixed Tables/Movable Chairs"}
+            }
+            , {"IS": {"rooms_number" : "301"}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
+
+        "ORDER" : "rooms_type",
+
+        "FORM": "TABLE"
+    }
+
+};
+
+var roomforCover2: QueryRequest = {
+
+    WHERE: {"AND":
+        [
+            {
+                "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+            }
+            , {"IS": {"rooms_type" : "Small*"}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
+
+        "ORDER" : "rooms_type",
+
+        "FORM": "TABLE"
+    }
+
+};
+
+var roomforcover3: QueryRequest = {
+
+    WHERE: {"AND":
+        [
+            {
+                "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+            }
+            , {"LT": {"rooms_seats" : 80}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+};
+
+var roomforcover4: QueryRequest = {
+
+    WHERE: {"AND":
+        [
+            {
+                "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+            }
+            , {"LT": {"rooms_seats" : "80"}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+};
+
+var roomforcover5: QueryRequest = {
+
+    WHERE: {"AND":
+        [
+            {
+                "IS": {"rooms_furniture": 70}
+            }
+            , {"LT": {"rooms_seats" : 80}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+};
+
+var roomforcover6: QueryRequest = {
+
+    WHERE: {
+        "wrong": [
+            {
+                "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+            }
+            , {"LT": {"rooms_seats": 80}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
+
+        "FORM": "TABLE"
+    }
+};
+
+var roomforcover7: QueryRequest = {
+
+    WHERE: {
+        "AND":
+            {
+                "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+            }
+
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
+
+        "FORM": "TABLE"
+    }
+};
+
+var roomforcover8: QueryRequest = {
+
+    WHERE: {
+        "OR":
+            {
+                "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+            }
+
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_lat", "rooms_furniture", "rooms_type"
+        ],
+
+        "FORM": "TABLE"
+    }
+};
+
+var roomforcover9: QueryRequest = {
+
+    WHERE: {"AND":
+        [
+            {
+                "IS": {"rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"}
+            }
+            , {"LT": {"rooms_seats" : 80}}]
+    },
+    OPTIONS: null
+
+};
+
+
 
 var NitroResult = {"render":"TABLE","result":[{"rooms_name":"SPPH_143","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Small Group"},{"rooms_name":"SPPH_B108","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Small Group"},{"rooms_name":"ANGU_350","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_4","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_221","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_121","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_222","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_122","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_5","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_1","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"PHRM_1101","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"PHRM_1201","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1003","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1001","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1002","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_310","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_301","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_110","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_3","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_345","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_243","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_098","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_354","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_347","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_343","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_241","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"FRDM_153","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ESB_2012","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"CHBE_101","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"CHBE_102","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D219","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D217","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_B315","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D218","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BRKX_2365","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BIOL_2200","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"}]}
 
@@ -317,7 +485,27 @@ var yearQuery: QueryRequest = {
         "FORM": "TABLE"
     }
 
-}
+};
+
+var yearQueryLT: QueryRequest = {
+
+    WHERE: {
+        "AND": [{
+            "LT": {
+                "courses_year": 2014
+            }
+        },
+            {"IS": {"courses_dept": "cpsc"}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "courses_dept", "courses_year"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+};
 
 var invalidISRequest: QueryRequest = {
     WHERE: {"IS": [{"courses_dept": "cpsc"}, {"courses_instructor": "*william*"}]},
@@ -1513,7 +1701,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             expect.fail();
         }).catch(function (err) {
-            console.log("error" + JSON.stringify(err));
+           // console.log("error" + JSON.stringify(err));
             expect(err.code).to.equal(400);
         });
     });
@@ -1831,6 +2019,17 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
             //  expect(value.body).to.deep.equal(testResult);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("query with LT year", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(yearQueryLT).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -2220,6 +2419,111 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
+        });
+    });
+
+    it("roomCoverageQuery1", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforCover).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("roomCoverageQuery2", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforCover2).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("roomCoverageQuery3", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforcover3).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("roomCoverageQuery4", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforcover4).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
+
+        });
+    });
+
+    it("roomCoverageQuery5", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforcover5).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
+
+        });
+    });
+
+    it("roomCoverageQuery6", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforcover6).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
+
+        });
+    });
+
+    it("roomCoverageQuery7", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforcover7).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
+
+        });
+    });
+
+    it("roomCoverageQuery8", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforcover8).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
+
+        });
+    });
+
+    it("roomCoverageQuery9", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomforcover9).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
+
         });
     });
 
