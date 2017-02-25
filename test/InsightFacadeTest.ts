@@ -8,10 +8,13 @@
 import Server from "../src/rest/Server";
 import {expect} from 'chai';
 import Log from "../src/Util";
+import warn from "../src/Util";
+import error from "../src/Util";
 import {InsightResponse, QueryRequest} from "../src/controller/IInsightFacade";
 import InsightFacade from "../src/controller/InsightFacade";
 
 import fs = require("fs");
+import {Response} from "restify";
 var zipStuff: any = null;
 var inValidZip: any = null;
 var wrongZip: any = null;
@@ -507,6 +510,26 @@ var yearQueryLT: QueryRequest = {
 
 };
 
+var LTyearQuery: QueryRequest = {
+
+    WHERE: {
+        "AND": [{
+            "LT": {
+                "courses_year": 2014
+            }
+        },
+            {"IS": {"courses_dept": "cpsc"}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "courses_dept", "courses_year"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+}
+
 var invalidISRequest: QueryRequest = {
     WHERE: {"IS": [{"courses_dept": "cpsc"}, {"courses_instructor": "*william*"}]},
     OPTIONS: {
@@ -945,6 +968,21 @@ var argonQuery: QueryRequest = {
     }
 
 }
+var latQuery: QueryRequest = {
+    WHERE: {
+        "IS": {
+            "rooms_lat": 23.4
+        }
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_name","rooms_lat"
+        ],
+        "ORDER": "rooms_name",
+        "FORM": "TABLE"
+    }
+
+}
 
 var heliumQuery: QueryRequest = {
     WHERE: {
@@ -979,10 +1017,86 @@ var metroQuery:QueryRequest = {
 
 }
 
+var errANDQuery:QueryRequest = {
+
+    WHERE: {"AND": {"rooms_seats": 150}
+
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_name", "rooms_seats"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+}
+
+var errORQuery:QueryRequest = {
+
+    WHERE: {"OR": {"rooms_seats": 150}
+
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_name", "rooms_seats"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+}
+
 var nautilusQuery:QueryRequest = {
 
     WHERE: {"IS": {"rooms_type": "Small Group"}
 
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_name", "rooms_type"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+}
+
+var LTroomQuery:QueryRequest = {
+
+    WHERE: {"AND":[
+{
+    "IS"
+:
+    {
+        "rooms_type"
+    :
+        "*Group"
+    }
+}, {"LT": {"rooms_seats": 50}}]
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_name", "rooms_type"
+        ],
+
+        "FORM": "TABLE"
+    }
+
+}
+
+var laterStarQuery:QueryRequest = {
+
+    WHERE: {"AND":[
+        {
+            "IS"
+                :
+                {
+                    "rooms_type"
+                        :
+                        "S*"
+                }
+        }, {"IS": {"rooms_number": "G65"}}]
     },
     OPTIONS: {
         "COLUMNS": [
@@ -1611,6 +1725,18 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("latQuery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(latQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.code).to.equal(200);
+            //expect(value.body).to.deep.equal(argonResult);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
 
     it("Knuth: Find all studio type rooms without some furniture.", function () {
         this.timeout(10000);
@@ -1652,6 +1778,28 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("LTroomQuery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(LTroomQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("laterStarQuery", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(laterStarQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
     it("Helium: Filter by partial href", function () {
         this.timeout(10000);
         return insightFacade.performQuery(heliumQuery).then(function (value) {
@@ -1675,6 +1823,28 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
+        });
+    });
+
+    it("errAND", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(errANDQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
+        });
+    });
+
+    it("errOR", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(errORQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
         });
     });
 
@@ -1874,6 +2044,17 @@ describe("InsightFacadeTest", function () {
             //console.log(value.body);
             expect(value.code).to.equal(200);
             //expect(value.body).to.deep.equal(yearResult);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("Gallium: Filter by courses year. LT", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(LTyearQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();

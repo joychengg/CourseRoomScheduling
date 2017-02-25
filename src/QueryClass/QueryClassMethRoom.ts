@@ -64,6 +64,7 @@ export default class QueryClassMethRoom {
 
 
 
+
     checkTypeMath(input_key:any, input_value:any): boolean{
 
         if((input_key === "rooms_lat")&&(typeof(input_value)==="number")){
@@ -94,6 +95,12 @@ export default class QueryClassMethRoom {
         }else if((input_key === "rooms_type") && (typeof(input_value)==="string")) {
             return true;
         }else if((input_key === "rooms_furniture") && (typeof(input_value)==="string")) {
+            return true;
+        }else if((input_key === "rooms_lat") && (typeof(input_value)==="number")) {
+            return true;
+        }else if((input_key === "rooms_lon") && (typeof(input_value)==="number")) {
+            return true;
+        }else if((input_key === "rooms_seats") && (typeof(input_value)==="number")) {
             return true;
         }else if((input_key === "rooms_href") && (typeof(input_value)==="string")) {
             return true;
@@ -192,7 +199,9 @@ export default class QueryClassMethRoom {
                 return true;
 
             }
-        }
+        } else{
+
+            throw new Error;        }
     }
 
 

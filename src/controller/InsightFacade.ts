@@ -54,7 +54,7 @@ export default class InsightFacade implements IInsightFacade {
 
         var jsonObjArray: any[] = [];
         var htmlArray: any[] = [];
-        var tree = null;
+        var tree:any = null;
 
 
         return new Promise(function (resolve: any, reject: any) {
@@ -78,7 +78,7 @@ export default class InsightFacade implements IInsightFacade {
                                 body : {"error": "Empty zip"}
                             };
                             reject(cantparseResponse);
-                            return;
+
 
                         }
 
@@ -101,7 +101,7 @@ export default class InsightFacade implements IInsightFacade {
                                         body : {"error": "Empty html"}
                                     };
                                     reject(cantparseResponse);
-                                    return;
+
 
                                 }
 
@@ -118,7 +118,7 @@ export default class InsightFacade implements IInsightFacade {
                                         body : {"error": "cannot parse, so wrong id"}
                                     };
                                     reject(wrongIDResponse);
-                                    return;
+
 
                                 }
 
@@ -173,7 +173,7 @@ export default class InsightFacade implements IInsightFacade {
                                     body : {"error": "cannot parse error in room"}
                                 };
                                 reject(cantparseResponse);
-                                return;
+
 
                             })
 
@@ -398,7 +398,6 @@ export default class InsightFacade implements IInsightFacade {
                             body : {"error": "final catch of rooms error"}
                         };
                         reject(errResponse);
-                        return;
 
                     })
 
@@ -417,7 +416,6 @@ export default class InsightFacade implements IInsightFacade {
                                 body : {"error": "Empty zip"}
                             };
                             reject(cantparseResponse);
-                            return;
 
                         }
 
@@ -444,7 +442,7 @@ export default class InsightFacade implements IInsightFacade {
                                     body : {"error": "Empty zip"}
                                 };
                                 reject(cantparseResponse);
-                                return;
+
 
                             }
 
@@ -463,7 +461,7 @@ export default class InsightFacade implements IInsightFacade {
                                         body : {"error": "Empty jSon"}
                                     };
                                     reject(cantparseResponse);
-                                    return;
+
 
                                 }
 
@@ -482,7 +480,7 @@ export default class InsightFacade implements IInsightFacade {
                                     body : {"error": "cannot parse"}
                                 };
                                 reject(cantparseResponse);
-                                return;
+
 
                             })
 
@@ -497,10 +495,10 @@ export default class InsightFacade implements IInsightFacade {
 
                                         var cantparseResponse: InsightResponse = {
                                             code: 400,
-                                            body: {"Error": "Missing result"}
+                                            body: {"error": "Missing result"}
                                         };
                                         reject(cantparseResponse);
-                                        return;
+
                                     }
 
                                     var arrayOfCourses = jsonObjArray[i].result;
@@ -541,7 +539,7 @@ export default class InsightFacade implements IInsightFacade {
                             body : {"error": "general"}
                         };
                         reject(errResponse);
-                        return;
+
 
                     })
             }
@@ -574,7 +572,7 @@ export default class InsightFacade implements IInsightFacade {
                         body: {"error": "path doesn't exist"}
                     };
                     reject(removeResponse);
-                    return;
+
 
                 }else{
                     fs.unlink(path,function () {
@@ -606,14 +604,13 @@ export default class InsightFacade implements IInsightFacade {
             var path = "";
 
 
-            if (((objforQuery.isJson(JSON.stringify(query.WHERE))) && (objforQuery.isJson(JSON.stringify(query.OPTIONS)))) === false) {
+            if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
 
                 var failResponse4: InsightResponse = {
                     code: 400,
                     body: {"error": "Invalid Json"}
                 };
                 reject(failResponse4);
-                return;
             }
 
             if ((isNullOrUndefined(query.OPTIONS))||(isNullOrUndefined(query.WHERE))){
@@ -622,7 +619,7 @@ export default class InsightFacade implements IInsightFacade {
                     body: {"error": "missing option or where"}
                 };
                 reject(failResponse);
-                return;
+
 
             }
 
@@ -634,7 +631,7 @@ export default class InsightFacade implements IInsightFacade {
                     body: {"error":"wrong form"}
                 };
                 reject(failResponse);
-                return;
+
 
             }
 
@@ -657,7 +654,7 @@ export default class InsightFacade implements IInsightFacade {
                         body: {"error": "empty options"}
                     };
                     reject(failResponse);
-                    return;
+
                 }
             }
 
@@ -771,7 +768,7 @@ export default class InsightFacade implements IInsightFacade {
                 };
 
                 reject(failllResponse);
-                return;
+
 
             }
 
@@ -843,7 +840,7 @@ export default class InsightFacade implements IInsightFacade {
                     body: {"error" : "not room or course"}
                 };
                 reject(failResponse);
-                return;
+
 
             }
 
