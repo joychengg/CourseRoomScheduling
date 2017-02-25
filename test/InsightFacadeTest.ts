@@ -252,6 +252,23 @@ var fluorineQuery: QueryRequest = {
     }
 };
 
+var testforcoverage: QueryRequest = {
+    WHERE: {
+        "AND":[{"IS": {
+            "courses_dept": "adhe"
+        }},
+            {"IS":{"courses_id": "327"}}]
+
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "courses_title", "courses_uuid", "courses_pass", "courses_fail", "courses_audit"
+        ],
+
+        "FORM": "TABLE"
+    }
+};
+
 var shortQ: QueryRequest = {
     WHERE: {
         "IS":{"courses_id": "327"}
@@ -1490,6 +1507,17 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("adding rooms.zip with courses id --- resolve(400)", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('courses', roomFile).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + JSON.stringify(err));
+            expect(err.code).to.equal(400);
+        });
+    });
+
 
     it("delete file fail --- reject(404)", function () {
         this.timeout(10000);
@@ -2180,6 +2208,18 @@ describe("InsightFacadeTest", function () {
             expect(value.code).to.equal(200);
         }).catch(function (err) {
             console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("coverageQuery2", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(testforcoverage).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
         });
     });
 
@@ -2202,6 +2242,17 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
+        });
+    });
+
+    it("add courses with rooms id - resolve in 400", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('rooms', zipStuff).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
         });
     });
 

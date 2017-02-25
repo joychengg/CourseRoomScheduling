@@ -606,7 +606,7 @@ export default class InsightFacade implements IInsightFacade {
             var path = "";
 
 
-            if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
+            if (((objforQuery.isJson(JSON.stringify(query.WHERE))) || (objforQuery.isJson(JSON.stringify(query.OPTIONS)))) === false) {
 
                 var failResponse: InsightResponse = {
                     code: 400,

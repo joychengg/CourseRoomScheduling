@@ -81,8 +81,6 @@ export default class QueryClassMethRoom {
             return true;
         }else if((input_key === "rooms_seats")&&(typeof(input_value)==="number")){
             return true;
-        }else if((input_key === "courses_year")&&(typeof(input_value)==="number")){
-            return true;
         }
         else {
 
