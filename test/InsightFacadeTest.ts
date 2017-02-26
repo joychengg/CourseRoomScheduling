@@ -970,7 +970,7 @@ var argonQuery: QueryRequest = {
 }
 var latQuery: QueryRequest = {
     WHERE: {
-        "IS": {
+        "EQ": {
             "rooms_lat": 23.4
         }
     },
