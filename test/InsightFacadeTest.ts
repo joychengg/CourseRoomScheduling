@@ -953,6 +953,24 @@ var queryForRoom: QueryRequest = {
     }
 }
 
+var quantumQuery: QueryRequest = {
+    WHERE: {
+        "EQ": {
+            "courses_year": 2007
+        }
+    },
+
+    OPTIONS: {
+        "COLUMNS": [
+            "courses_dept",
+            "courses_id",
+            "courses_year"
+        ],
+        "ORDER": "courses_id",
+        "FORM": "TABLE"
+    }
+}
+
 var argonQuery: QueryRequest = {
     WHERE: {
         "IS": {
@@ -1924,6 +1942,7 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+
     it("query for room complex", function () {
         this.timeout(10000);
         return insightFacade.performQuery(queryForRoomComplex).then(function (value) {
@@ -1984,6 +2003,19 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("quantum", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(quantumQuery).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+            console.log(value.body);
+            //   expect(value.body).to.deep.equal(testResult);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
     it("second add of file - resolve in 201", function () {
         this.timeout(10000);
         return insightFacade.addDataset('rooms', roomFile).then(function (value) {
@@ -1994,6 +2026,8 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
+
+
 
     it("adding wrong id - resolve in 400", function () {
         this.timeout(10000);
@@ -2049,6 +2083,8 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
+
+
 
     it("Gallium: Filter by courses year. LT", function () {
         this.timeout(10000);

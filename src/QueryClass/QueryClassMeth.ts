@@ -23,7 +23,11 @@ export default class QueryClassMeth {
     }
 
     eq_expr (course:any, key:string, number:number):boolean {
-        return (course[key] === number);
+        if (key === "Year") {
+            return (parseInt(course[key]) === number);
+        }
+        else{
+        return (course[key] === number);}
     }
 
     is_expr(course:any, key:string, value:string):boolean {
