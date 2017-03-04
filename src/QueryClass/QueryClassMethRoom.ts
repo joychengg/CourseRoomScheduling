@@ -221,4 +221,28 @@ export default class QueryClassMethRoom {
         return result;
 
     }
+
+
+    CombinewithApply(room:any, input_option:any) {
+
+        var column = Object.keys(input_option)[0];
+
+        var result: any = {};
+
+
+        for (var i = 0; i < input_option[column].length; i++) {
+
+            for (var c = 0; c < Object.keys(room).length; c++) {
+
+
+                if (input_option[column][i] === Object.keys(room)[c]) {
+                    result[input_option[column][i]] = room[Object.keys(room)[c]];
+                }
+            }
+        }
+
+
+        return result;
+
+    }
 }

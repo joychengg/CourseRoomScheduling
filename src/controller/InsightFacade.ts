@@ -658,13 +658,14 @@ export default class InsightFacade implements IInsightFacade {
                 }
             }
 
-            var acc:any = [];
 
-            function checkKey(input:any):any{
+            var acc: any = [];
+
+            function checkKey(input: any): any {
 
                 var failResponse2: InsightResponse = {
                     code: 400,
-                    body: {"error":"error"}
+                    body: {"error": "error"}
                 };
 
                 var key = Object.keys(input)[0];
@@ -675,10 +676,10 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(input.GT)) reject(failResponse2);
 
-                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))){
+                    if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
 
-                    }else{
+                    } else {
                         path = key1[0].substring(0, key1[0].indexOf("_"));
                     }
 
@@ -691,7 +692,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
-                    }else{
+                    } else {
                         path = key1[0].substring(0, key1[0].indexOf("_"));
                     }
 
@@ -703,7 +704,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
-                    }else{
+                    } else {
                         path = key1[0].substring(0, key1[0].indexOf("_"));
                     }
 
@@ -715,7 +716,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
-                    }else{
+                    } else {
                         path = key1[0].substring(0, key1[0].indexOf("_"));
                     }
 
@@ -749,28 +750,18 @@ export default class InsightFacade implements IInsightFacade {
 
                     var exprs = input.NOT;
 
-                    if(isArray(exprs)) reject(failResponse2);
+                    if (isArray(exprs)) reject(failResponse2);
 
                     checkKey(exprs);
 
-                }else{
+                } else {
                     reject(failResponse2);
                 }
 
             }
 
-            checkKey(query.WHERE);
-
-            if (acc.length!==0){
-                var failllResponse: InsightResponse = {
-                    code: 424,
-                    body: {"missing":acc}
-                };
-
-                reject(failllResponse);
-
-
-            }
+            var key_column = query.OPTIONS.COLUMNS[0];
+            path = key_column.substring(0, key_column.indexOf("_"));
 
             everythingArr = [];
             allRoomsArr = [];
@@ -814,50 +805,162 @@ export default class InsightFacade implements IInsightFacade {
 
             }
 
-
-            try {
-                if (path==="courses") {
+            if(Object.keys(query.WHERE).length===0){
+                if (path === "courses"){
                     for (var course of everythingArr) {
-
-                        if (objforQuery.Filter(query.WHERE, course) === true)
                             arrOFCourses.push(course);
                     }
 
-                }else if(path==="rooms"){
-
+                }else if (path === "rooms"){
                     for (var room of allRoomsArr){
-
                         var room = JSON.parse(room);
-
-                        if (objforRoomQuery.Filter(query.WHERE, room) === true)
-
                             arrOFrooms.push(room);
-                    }}
-            } catch (err) {
+                    }
+                }
 
-                var failResponse: InsightResponse = {
-                    code: 400,
-                    body: {"error" : "not room or course"}
-                };
-                reject(failResponse);
+            }else {
 
+                checkKey(query.WHERE);
+
+                if (acc.length !== 0) {
+                    var failllResponse: InsightResponse = {
+                        code: 424,
+                        body: {"missing": acc}
+                    };
+
+                    reject(failllResponse);
+                    return;
+
+                }
+
+
+                try {
+                    if (path === "courses") {
+                        for (var course of everythingArr) {
+
+                            if (objforQuery.Filter(query.WHERE, course) === true)
+                                arrOFCourses.push(course);
+
+                        }
+
+                        console.log("arry of courses" + arrOFCourses.length);
+                    } else if (path === "rooms") {
+
+                        for (var room of allRoomsArr) {
+
+                            var room = JSON.parse(room);
+
+                            if (objforRoomQuery.Filter(query.WHERE, room) === true)
+
+                                arrOFrooms.push(room);
+                        }
+                    }
+                } catch (err) {
+
+                    var failResponse: InsightResponse = {
+                        code: 400,
+                        body: {"error": "not room or course"}
+                    };
+                    reject(failResponse);
+                    return;
+
+                }
 
             }
 
-
-
-            if(path==="courses") {
-
-                for (var course of arrOFCourses) {
-                    finalCourseArr.push(objforQuery.Combine(course, query.OPTIONS));
+            function contains(obj:any, array:any[]) {
+                var i = array.length;
+                while (i--) {
+                    if (this[i] == obj) {
+                        return true;
+                    }
                 }
-            }else if (path==="rooms"){
-
-                for (var course of arrOFrooms) {
-                    finalCourseArr.push(objforRoomQuery.Combine(course, query.OPTIONS));
-                }
+                return false;
             }
 
+            if (!isNullOrUndefined(query.TRANSFORMATIONS)){
+
+                if (query.TRANSFORMATIONS.GROUP.length === 0){
+                    var failResponseForGroup: InsightResponse = {
+                        code: 400,
+                        body: {"error": "Group cannot be empty"}
+                    };
+                    reject(failResponseForGroup);
+
+                }
+
+                if (query.TRANSFORMATIONS.APPLY.length === 0) {
+
+                    for (var element of query.OPTIONS.COLUMNS) {
+                        if (!objforQuery.checkPartial(element, "_")) {
+                            var failResponseForApply: InsightResponse = {
+                                code: 400,
+                                body: {"error": element + " is not a valid key"}
+                            };
+                            reject(failResponseForApply);
+
+                        }
+                            if (!contains(element, query.TRANSFORMATIONS.GROUP)){
+                                var failResponseNotinGroup: InsightResponse = {
+                                    code: 400,
+                                    body: {"error": "All COLUMNS keys need to be either in GROUP or in APPLY"}
+                                };
+                                reject(failResponseNotinGroup);
+                            }
+                    }
+                        if (path === "courses") {
+
+                            for (var course of arrOFCourses) {
+                                finalCourseArr.push(objforQuery.Combine(course, query.TRANSFORMATIONS));
+                            }
+                        } else if (path === "rooms") {
+
+                            for (var course of arrOFrooms) {
+                                finalCourseArr.push(objforRoomQuery.Combine(course, query.TRANSFORMATIONS));
+                            }
+                        }
+                    }else{
+
+                    for (var element of query.OPTIONS.COLUMNS) {
+                        if ((!contains(element, query.TRANSFORMATIONS.GROUP)) && (!contains(element, Object.keys(query.TRANSFORMATIONS.APPLY)))) {
+                            var failResponseNotinGroup: InsightResponse = {
+                                code: 400,
+                                body: {"error": "All COLUMNS keys need to be either in GROUP or in APPLY"}
+                            };
+                            reject(failResponseNotinGroup);
+                        }
+                    }
+
+                    if (path === "courses") {
+
+                        for (var course of arrOFCourses) {
+
+                            finalCourseArr.push(objforQuery.CombinewithApply(course, query.TRANSFORMATIONS));
+                        }
+
+                    } else if (path === "rooms") {
+
+                        for (var course of arrOFrooms) {
+                            finalCourseArr.push(objforRoomQuery.CombinewithApply(course, query.TRANSFORMATIONS));
+                        }
+                    }
+
+                }
+
+            }else {
+
+                if (path === "courses") {
+
+                    for (var course of arrOFCourses) {
+                        finalCourseArr.push(objforQuery.Combine(course, query.OPTIONS));
+                    }
+                } else if (path === "rooms") {
+
+                    for (var course of arrOFrooms) {
+                        finalCourseArr.push(objforRoomQuery.Combine(course, query.OPTIONS));
+                    }
+                }
+            }
 
 
                 finalCourseArr.sort(function (a, b) {

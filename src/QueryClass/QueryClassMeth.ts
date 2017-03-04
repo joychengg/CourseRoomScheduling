@@ -184,7 +184,6 @@ export default class QueryClassMeth {
     checkPartial(inputA:string, inputB:string):boolean{
         if( inputA.search(inputB) > -1){
             return true;
-
         }
 
         return false;
@@ -252,7 +251,7 @@ export default class QueryClassMeth {
 
                 if(this.checkSection(course)){
 
-                    return (1900 === input.EQ[key1[0]]);
+                    return (input.EQ[key1[0]]===1900);
                 }else{
                     return this.eq_expr(course, this.methodKey1(key1[0]), input.EQ[key1[0]]);
                 }
@@ -337,6 +336,78 @@ export default class QueryClassMeth {
                     }
                 }
             }}
+
+
+        return result;
+
+    }
+
+
+    CombinewithApply(course:any, input_option:any) {
+
+        var group = Object.keys(input_option)[0];
+
+        var result: any = {};
+
+        var finalResult: any = {};
+
+
+        for (var i = 0; i < input_option[group].length; i++) {
+
+            for (var c = 0; c < Object.keys(course).length; c++) {
+                if ((course["Section"] === "overall") && (input_option[group][i] === "courses_year")){
+                    result[input_option[group][i]] = 1900;
+                }
+
+                if (this.methodKey3(input_option[group][i]) === Object.keys(course)[c]) {
+                    if (input_option[group][i] === "courses_year"){
+
+
+                        result[input_option[group][i]] = parseInt(course[Object.keys(course)[c]]);
+                    }
+                    else{
+
+                        result[input_option[group][i]] = course[Object.keys(course)[c]];
+                    }
+                }
+            }
+        }
+
+
+        //result = [result1,result2...etc]
+        //each result in result = {group1:value, group2:value...etc}
+
+        for (var r of result){
+
+
+
+
+        }
+
+        var apply = Object.keys(input_option)[1];
+
+        for (var i = 0; i < input_option[apply].length; i++) {
+
+            var keyinApply = input_option[apply][i];
+
+            if (Object.keys(keyinApply)[0] === "MAX"){
+
+
+            }else if (Object.keys(keyinApply)[0] === "MIN"){
+
+
+            }else if (Object.keys(keyinApply)[0] === "AVG"){
+
+
+            }else if (Object.keys(keyinApply)[0] === "SUM"){
+
+
+            }else if (Object.keys(keyinApply)[0] === "COUNT"){
+
+
+            }
+
+        }
 
 
         return result;

@@ -454,6 +454,23 @@ var shortQ: QueryRequest = {
     }
 };
 
+
+var quantum: QueryRequest = {
+    WHERE: {
+        "EQ":{"courses_year": 2014}
+
+    },
+    OPTIONS: {
+        "COLUMNS": [
+            "courses_title", "courses_year"
+        ],
+
+        "ORDER": "courses_title",
+
+        "FORM": "TABLE"
+    }
+};
+
 var shortQ2: QueryRequest = {
 
     WHERE: {"GT": {"rooms_seats": 150}
@@ -466,6 +483,22 @@ var shortQ2: QueryRequest = {
 
         "FORM": "TABLE"
     }
+};
+
+var testfornoApply:QueryRequest= {
+    WHERE: {},
+    OPTIONS: {
+    COLUMNS: [
+        "rooms_furniture",
+        "maxseat"
+    ],
+        ORDER: "rooms_furniture",
+        FORM: "TABLE"
+},
+    TRANSFORMATIONS: {
+    GROUP: ["rooms_furniture"],
+        APPLY: []
+}
 };
 
 var fluorineResult = {"render":"TABLE","result":[{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900}]}
@@ -1769,6 +1802,18 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("apply is empty but column contain maxseat - should give 400", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(testfornoApply).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(400);
+            console.log(err.body);
+        });
+    });
+
 
     it("Nautilus: Should be able to find all rooms of a certain type", function () {
         this.timeout(10000);
@@ -1889,7 +1934,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             expect.fail();
         }).catch(function (err) {
-           // console.log("error" + JSON.stringify(err));
+           console.log("error" + JSON.stringify(err.body));
             expect(err.code).to.equal(400);
         });
     });
@@ -2008,7 +2053,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(quantumQuery).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            console.log(value.body);
+           // console.log(value.body);
             //   expect(value.body).to.deep.equal(testResult);
         }).catch(function (err) {
             console.log("error" + err);
@@ -2035,7 +2080,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             expect.fail();
         }).catch(function (err) {
-            console.log("error" + err.body);
+            console.log("error" + JSON.stringify(err.body));
             expect(err.code).to.equal(400);
         });
     });
@@ -2071,13 +2116,25 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("Gallium: Filter by courses year.", function () {
+    // it("Gallium: Filter by courses year.", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(yearQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         //expect(value.body).to.deep.equal(yearResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+
+    it("quantum", function () {
         this.timeout(10000);
-        return insightFacade.performQuery(yearQuery).then(function (value) {
+        return insightFacade.performQuery(quantum).then(function (value) {
             Log.test('Value: ' + value.code);
-            //console.log(value.body);
             expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(yearResult);
+            console.log(value.body);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -2127,7 +2184,7 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(fluorineQuery).then(function (value) {
             Log.test('Value: ' + value.code);
-            //console.log(value.body);
+           // console.log(JSON.stringify(value.body));
             expect(value.code).to.equal(200);
            // expect(value.body).to.deep.equal(fluorineResult);
         }).catch(function (err) {
@@ -2185,6 +2242,7 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
+
 
 
     it("query with later *", function () {

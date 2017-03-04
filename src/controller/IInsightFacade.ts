@@ -19,6 +19,11 @@ export interface QueryRequest {
         ORDER?: string;
         FORM: string;
     }
+
+    TRANSFORMATIONS?: {
+        GROUP: any[];
+        APPLY: any[];
+    }
 }
 
 export interface IInsightFacade {
