@@ -1815,43 +1815,43 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("latQuery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(latQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(argonResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("latQuery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(latQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         //expect(value.body).to.deep.equal(argonResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("Knuth: Find all studio type rooms without some furniture.", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(knuthQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         expect(knuthResult).to.deep.equal(value.body);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
-    it("Knuth: Find all studio type rooms without some furniture.", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(knuthQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            expect(knuthResult).to.deep.equal(value.body);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("apply is empty but column contain maxseat - should give 400", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(testfornoApply).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-            console.log(err.body);
-        });
-    });
+    // it("apply is empty but column contain maxseat - should give 400", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(testfornoApply).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //         console.log(err.body);
+    //     });
+    // });
 
     it("apply with maxseat and avgseat", function () {
         this.timeout(10000);

@@ -267,16 +267,12 @@ export default class QueryClassMethRoom {
 
             valueinMain = MainkeyInApply[Object.keys(MainkeyInApply)[0]];//this should be {"MAX":"name2"}
 
-            console.log(valueinMain);
-
             innderValue = valueinMain[Object.keys(valueinMain)[0]];
-
-            console.log(innderValue);
 
             for (var b = 0; b < Object.keys(room).length; b++) {
 
                 if (innderValue === Object.keys(room)[b]) {
-                    result[innderValue] = room[Object.keys(room)[b]];
+                    result[Object.keys(input_option[apply][a])[0]] = room[Object.keys(room)[b]];
 
                 }
             }
