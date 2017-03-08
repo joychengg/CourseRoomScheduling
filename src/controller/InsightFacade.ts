@@ -603,6 +603,9 @@ export default class InsightFacade implements IInsightFacade {
 
             var path = "";
 
+            everythingArr = [];
+            allRoomsArr = [];
+
 
             if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
 
@@ -763,8 +766,6 @@ export default class InsightFacade implements IInsightFacade {
             var key_column = query.OPTIONS.COLUMNS[0];
             path = key_column.substring(0, key_column.indexOf("_"));
 
-            everythingArr = [];
-            allRoomsArr = [];
 
             if (path==="courses"){
 
@@ -843,7 +844,7 @@ export default class InsightFacade implements IInsightFacade {
 
                         }
 
-                        console.log("arry of courses" + arrOFCourses.length);
+                       // console.log("arry of courses" + arrOFCourses.length);
                     } else if (path === "rooms") {
 
                         for (var room of allRoomsArr) {
@@ -889,7 +890,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 }
 
-                console.log("is it here ");
+               // console.log("is it here ");
 
 
                 if (query.TRANSFORMATIONS.APPLY.length === 0) {
@@ -976,23 +977,6 @@ export default class InsightFacade implements IInsightFacade {
 
                         counter++;
                     }
-
-                  //   for (var keyinResult = 0; keyinResult<Object.keys(resultObj).length; keyinResult++){
-                  //
-                  //       for (var keyinInput = 0; keyinInput<Object.keys(inputObj).length; keyinInput++){
-                  //
-                  //           if((item===Object.keys(resultObj)[keyinResult])&&(item===Object.keys(inputObj)[keyinInput])){
-                  //
-                  //               if (resultObj[Object.keys(resultObj)[keyinResult]]===inputObj[Object.keys(inputObj)[keyinInput]]) {
-                  //                   counter++;
-                  //
-                  //                   console.log("inside the adding counter");
-                  //               }
-                  //
-                  //       }
-                  //   }
-                  //
-                  // }
                 }
                 if (counter===group.length){
                     return true;
@@ -1001,104 +985,70 @@ export default class InsightFacade implements IInsightFacade {
                 return false;
 
             }
+            var newObj: any = [];
 
+            if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
+                newObj = [];
 
-         //   console.log("final courses array  "+ JSON.stringify(finalCourseArr));
+                //   console.log("final courses array  "+ JSON.stringify(finalCourseArr));
 
-            var lengthApply = query.TRANSFORMATIONS.APPLY.length;
+                var lengthApply = query.TRANSFORMATIONS.APPLY.length;
 
-          //  console.log("lengthof apply" + lengthApply);
+                //  console.log("lengthof apply" + lengthApply);
 
-            var newObj:any = [];
+                if (lengthApply !== 0) {
 
-            if (lengthApply!==0) {
+                  //  console.log("in here");
 
-                console.log("in here");
-
-                for (var e = 0; e < lengthApply; e++) {
-
-//                    console.log("first for loop");
-
-                 //   for (var item of finalCourseArr) {
+                    for (var e = 0; e < lengthApply; e++) {
 
                         var beforeOp = Object.keys(query.TRANSFORMATIONS.APPLY[e])[0];
                         var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
 
-                        //var va = query.TRANSFORMATIONS.APPLY[e][Operation];
 
                         var groupInTrans = query.TRANSFORMATIONS.GROUP;
 
-                        if (newObj.length ===0){
+                        if (newObj.length === 0) {
 
-                            // var ApplyName = query.TRANSFORMATIONS.APPLY;
-                            //
-                            // for (var z = 0; z < query.TRANSFORMATIONS.APPLY.length; z++) {
-                            //
-                            //    // console.log("for loop for apply");
-                            //
-                            //     // console.log("finallarra [0]" + Object.keys(finalCourseArr[0])[0]);
-                            //     // console.log("applyname [z]" +Object.keys(ApplyName[z])[0]);
-                            //
-                            //     for (var y = 0; y < Object.keys(finalCourseArr[0]).length; y++) {
-                            //
-                            //         if (Object.keys(ApplyName[z])[0] === Object.keys(finalCourseArr[0])[y]) {
-                            //
-                            //             valueinKey = finalCourseArr[0][Object.keys(finalCourseArr[0])[y]];
-                            //
-                            //             finalCourseArr[0][Object.keys(finalCourseArr[0])[y]] = [];
-                            //
-                            //             finalCourseArr[0][Object.keys(finalCourseArr[0])[y]].push(valueinKey);
-                            //
-                            //            // console.log("here is obj2" + finalCourseArr[0]);
-                            //
-                            //         }
-                            //     }
-                            //
-                            // }
-                            console.log("here is finalarr[0]" + JSON.stringify(finalCourseArr[0]));
+                            //   console.log("here is finalarr[0]" + JSON.stringify(finalCourseArr[0]));
                             newObj.push(finalCourseArr[0]);
 
-                            console.log("here is newobj" + JSON.stringify(newObj));
-                        }
+                            //  console.log("here is newobj" + JSON.stringify(newObj));
+                        } else {
 
-                        // for (var obj=0; obj< newObj.length; obj++){
-
-                            for (var b = 1; b< finalCourseArr.length; b++) {
+                            for (var b = 1; b < finalCourseArr.length; b++) {
 
                                 var obj2 = finalCourseArr[b];
 
-                                var obj = newObj.length-1;
+                                var obj = newObj.length - 1;
 
                                 if (GroupLoop(groupInTrans, newObj[obj], obj2)) {
 
-                                   // console.log("in the true part of grouploop");
-
-                                    //if the same then add the thing into the apply array
                                     if (Operation === "SUM") {
 
                                         newObj[obj][beforeOp] += obj2[beforeOp];
 
                                     } else if (Operation === "MAX") {
 
-                                        if (newObj[obj][beforeOp]<=obj2[beforeOp]){
+                                        if (newObj[obj][beforeOp] <= obj2[beforeOp]) {
                                             newObj[obj][beforeOp] = obj2[beforeOp];
                                         }
 
-                                    }else if (Operation==="AVG"){
+                                    } else if (Operation === "AVG") {
 
                                         newObj[obj][beforeOp] += obj2[beforeOp];
 
-                                        newObj[obj][beforeOp] = (newObj[obj][beforeOp]/2);
+                                        newObj[obj][beforeOp] = Math.round((newObj[obj][beforeOp] / 2)*100)/100;
 
-                                    }else if(Operation==="MIN"){
+                                    } else if (Operation === "MIN") {
 
-                                        if (newObj[obj][beforeOp]>=obj2[beforeOp]){
+                                        if (newObj[obj][beforeOp] >= obj2[beforeOp]) {
                                             newObj[obj][beforeOp] = obj2[beforeOp];
                                         }
 
 
-                                    }else if(Operation==="COUNT"){
+                                    } else if (Operation === "COUNT") {
 
                                         //need to implement this special case
 
@@ -1106,135 +1056,119 @@ export default class InsightFacade implements IInsightFacade {
                                     }
 
 
-                                    } else {
+                                } else {
 
-                                   // console.log("inside the else to push");
-
-                                        // var valueinKey = null;
-                                        //
-                                        // var ApplyName = query.TRANSFORMATIONS.APPLY;
-                                        //
-                                        // for (var z = 0; z < query.TRANSFORMATIONS.APPLY.length; z++) {
-                                        //
-                                        //     console.log("for loop for apply");
-                                        //
-                                        //     for (var y = 0; y < Object.keys(obj2).length; y++) {
-                                        //
-                                        //         if (ApplyName[z] === Object.keys(obj2)[y]) {
-                                        //
-                                        //             valueinKey = obj2[Object.keys(obj2)[y]];
-                                        //
-                                        //             obj2[Object.keys(obj2)[y]] = [];
-                                        //
-                                        //             obj2[Object.keys(obj2)[y]].push(valueinKey);
-                                        //
-                                        //            // console.log("here is obj2" + obj2);
-                                        //
-                                        //         }
-                                        //     }
-                                        //
-                                        // }
-
-                                        newObj.push(obj2);
-                                    }
+                                    newObj.push(obj2);
+                                }
 
                             }
                         }
+                    }
 
+                }
 
-                    //}
-
-              //  }
             }
-console.log("new object array" + JSON.stringify(newObj));
+
+           // console.log(finalCourseArr.length);
+            if (newObj.length!==0) {
+                finalCourseArr = newObj;
+            }
+
+            //console.log(finalCourseArr.length);
+
+//console.log("new object array" + JSON.stringify(finalCourseArr));
 
             // need to implement sorting the strings in apply
-            finalCourseArr.sort(function (a, b) {
-                var orderS = query.OPTIONS.ORDER;
 
-                if (Object.keys(orderS)[0] === "dir") {
+            if (!isNullOrUndefined(query.OPTIONS.ORDER)) {
+                finalCourseArr.sort(function (a: any, b: any) {
+                    var orderS = query.OPTIONS['ORDER'];
 
-                    if (Object.keys(orderS)[1] !== "keys"){
-                        var failResponseWrongKey: InsightResponse = {
-                            code: 400,
-                            body: {"error": "key in ORDER is wrong"}
-                        };
-                        reject(failResponseWrongKey);
+                    if (Object.keys(orderS)[0] === "dir") {
 
-                    }
-
-                    var keysInOrder = orderS[Object.keys(orderS)[1]];
-
-                    for (var i = 0; i < keysInOrder.length; i++ ){
-
-                        //console.log(orderS[Object.keys(orderS)[0]]);
-
-                        if (orderS[Object.keys(orderS)[0]] === "UP") {
-
-                            if (keysInOrder[i] === "courses_instructor" || keysInOrder[i] === "courses_uuid" ||
-                                keysInOrder[i] === "courses_id" || keysInOrder[i] === "courses_title" || keysInOrder[i] === "courses_dept"
-                                || keysInOrder[i] === "rooms_furniture" || keysInOrder[i] === "rooms_fullname" ||
-                                keysInOrder[i] === "rooms_shortname" || keysInOrder[i] === "rooms_number" || keysInOrder[i] === "rooms_name" ||
-                                keysInOrder[i] === "rooms_address" || keysInOrder[i] === "rooms_type" || keysInOrder[i] === "rooms_href") {
-                                var nameA = a[keysInOrder[i]].toLowerCase(), nameB = b[keysInOrder[i]].toLowerCase();
-                                if (nameA < nameB) //sort string ascending
-                                    return -1;
-                                if (nameA > nameB)
-                                    return 1;
-
-                                return 0;
-                            } else {
-                                return parseFloat(a[keysInOrder[i]]) - parseFloat(b[keysInOrder[i]]);
-                            }
-
-
-                        } else if (orderS[Object.keys(orderS)[0]] === "DOWN") {
-
-                            if (keysInOrder[i] === "courses_instructor" || keysInOrder[i] === "courses_uuid"
-                                || keysInOrder[i] === "courses_id" || keysInOrder[i] === "courses_title" || keysInOrder[i] === "courses_dept"
-                                || keysInOrder[i] === "rooms_furniture" || keysInOrder[i] === "rooms_fullname"
-                                || keysInOrder[i] === "rooms_shortname" || keysInOrder[i] === "rooms_number" || keysInOrder[i] === "rooms_name" ||
-                                keysInOrder[i] === "rooms_address" || keysInOrder[i] === "rooms_type" || keysInOrder[i] === "rooms_href") {
-                                var nameA = a[keysInOrder[i]].toLowerCase(), nameB = b[keysInOrder[i]].toLowerCase();
-                                if (nameA > nameB) //sort string ascending
-                                    return -1;
-                                if (nameA < nameB)
-                                    return 1;
-
-                                return 0;
-                            } else {
-                                return parseFloat(b[keysInOrder[i]]) - parseFloat(a[keysInOrder[i]]);
-                            }
-                        }else {
-                            var failResponseForDir: InsightResponse = {
+                        if (Object.keys(orderS)[1] !== "keys") {
+                            var failResponseWrongKey: InsightResponse = {
                                 code: 400,
-                                body: {"error": "dir in ORDER is wrong"}
+                                body: {"error": "key in ORDER is wrong"}
                             };
-                            reject(failResponseForDir);
+                            reject(failResponseWrongKey);
 
                         }
-                    }
-                }else {
 
-                    if (orderS === "courses_instructor" || orderS === "courses_uuid" ||
-                        orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
-                        || orderS === "rooms_furniture" || orderS === "rooms_fullname" ||
-                        orderS === "rooms_shortname" || orderS === "rooms_number" || orderS === "rooms_name" ||
-                        orderS === "rooms_address" || orderS === "rooms_type" || orderS === "rooms_href") {
-                        var nameA = a[orderS].toLowerCase(), nameB = b[orderS].toLowerCase();
-                        if (nameA < nameB) //sort string ascending
-                            return -1;
-                        if (nameA > nameB)
-                            return 1;
+                        var keysInOrder = orderS[Object.keys(orderS)[1]];
 
-                        return 0;
+                        for (var i = 0; i < keysInOrder.length; i++) {
+
+                            //console.log(orderS[Object.keys(orderS)[0]]);
+
+                            if (orderS[Object.keys(orderS)[0]] === "UP") {
+
+                                if (keysInOrder[i] === "courses_instructor" || keysInOrder[i] === "courses_uuid" ||
+                                    keysInOrder[i] === "courses_id" || keysInOrder[i] === "courses_title" || keysInOrder[i] === "courses_dept"
+                                    || keysInOrder[i] === "rooms_furniture" || keysInOrder[i] === "rooms_fullname" ||
+                                    keysInOrder[i] === "rooms_shortname" || keysInOrder[i] === "rooms_number" || keysInOrder[i] === "rooms_name" ||
+                                    keysInOrder[i] === "rooms_address" || keysInOrder[i] === "rooms_type" || keysInOrder[i] === "rooms_href") {
+                                    var nameA = a[keysInOrder[i]].toLowerCase(), nameB = b[keysInOrder[i]].toLowerCase();
+                                    if (nameA < nameB) //sort string ascending
+                                        return -1;
+                                    if (nameA > nameB)
+                                        return 1;
+
+                                    return 0;
+                                } else {
+                                    return parseFloat(a[keysInOrder[i]]) - parseFloat(b[keysInOrder[i]]);
+                                }
+
+
+                            } else if (orderS[Object.keys(orderS)[0]] === "DOWN") {
+
+                                if (keysInOrder[i] === "courses_instructor" || keysInOrder[i] === "courses_uuid"
+                                    || keysInOrder[i] === "courses_id" || keysInOrder[i] === "courses_title" || keysInOrder[i] === "courses_dept"
+                                    || keysInOrder[i] === "rooms_furniture" || keysInOrder[i] === "rooms_fullname"
+                                    || keysInOrder[i] === "rooms_shortname" || keysInOrder[i] === "rooms_number" || keysInOrder[i] === "rooms_name" ||
+                                    keysInOrder[i] === "rooms_address" || keysInOrder[i] === "rooms_type" || keysInOrder[i] === "rooms_href") {
+                                    var nameA = a[keysInOrder[i]].toLowerCase(), nameB = b[keysInOrder[i]].toLowerCase();
+                                    if (nameA > nameB) //sort string ascending
+                                        return -1;
+                                    if (nameA < nameB)
+                                        return 1;
+
+                                    return 0;
+                                } else {
+                                    return parseFloat(b[keysInOrder[i]]) - parseFloat(a[keysInOrder[i]]);
+                                }
+                            } else {
+                                var failResponseForDir: InsightResponse = {
+                                    code: 400,
+                                    body: {"error": "dir in ORDER is wrong"}
+                                };
+                                reject(failResponseForDir);
+
+                            }
+                        }
                     } else {
-                        return parseFloat(a[orderS]) - parseFloat(b[orderS]);
+
+                        if (orderS === "courses_instructor" || orderS === "courses_uuid" ||
+                            orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
+                            || orderS === "rooms_furniture" || orderS === "rooms_fullname" ||
+                            orderS === "rooms_shortname" || orderS === "rooms_number" || orderS === "rooms_name" ||
+                            orderS === "rooms_address" || orderS === "rooms_type" || orderS === "rooms_href") {
+                            var nameA = a[orderS].toLowerCase(), nameB = b[orderS].toLowerCase();
+                            if (nameA < nameB) //sort string ascending
+                                return -1;
+                            if (nameA > nameB)
+                                return 1;
+
+                            return 0;
+                        } else {
+                            return parseFloat(a[orderS]) - parseFloat(b[orderS]);
+                        }
                     }
-                }
-            });
+                });
+            }
 
-
+            // console.log(JSON.stringify(finalCourseArr));
+            // console.log(finalCourseArr.length);
 
             var resultThing:QueryRequest2 = {
                 render:'TABLE',
@@ -1243,10 +1177,15 @@ console.log("new object array" + JSON.stringify(newObj));
 
             var finalFinal = JSON.parse(JSON.stringify(resultThing));
 
+            console.log(JSON.stringify(finalFinal));
+           // console.log("here");
+
             var resultResponse: InsightResponse = {
                 code : 200,
                 body : finalFinal
             };
+
+            //console.log("here");
             resolve(resultResponse);
         })
     }

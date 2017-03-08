@@ -206,13 +206,13 @@ export default class QueryClassMethRoom {
         var result: any = {};
 
 
-        for (var i = 0; i < input_option[column].length; i++) {
+        for (var w = 0; w < input_option[column].length; w++) {
 
-            for (var c = 0; c < Object.keys(room).length; c++) {
+            for (var q = 0; q < Object.keys(room).length; q++) {
 
 
-                if (input_option[column][i] === Object.keys(room)[c]) {
-                        result[input_option[column][i]] = room[Object.keys(room)[c]];
+                if (input_option[column][w] === Object.keys(room)[q]) {
+                        result[input_option[column][w]] = room[Object.keys(room)[q]];
               }
             }
         }
@@ -226,16 +226,6 @@ export default class QueryClassMethRoom {
     CombinewithApply(room:any, input_option:any) {
 
         var group = Object.keys(input_option)[0];
-
-        // "APPLY": [{
-        //     "maxSeats": {
-        //         "MAX": "rooms_seats"
-        //     }
-        // },
-        //     {"avgSeats":{
-        //         "AVG":"rooms_seats"
-        //     }
-        //     }]
 
         var result: any = {};
 
