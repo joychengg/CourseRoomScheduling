@@ -347,6 +347,18 @@ export default class QueryClassMeth {
 
         var group = Object.keys(input_option)[0];
 
+        var apply = Object.keys(input_option)[1];
+
+        // "APPLY": [{
+        //     "maxSeats": {
+        //         "MAX": "rooms_seats"
+        //     }
+        // },
+        //     {"avgSeats":{
+        //         "AVG":"rooms_seats"
+        //     }
+        //     }]
+
         var result: any = {};
 
         var finalResult: any = {};
@@ -373,22 +385,45 @@ export default class QueryClassMeth {
             }
         }
 
+        for (var z = 0; z < input_option[apply].length; z++) {
+
+            if ((course["Section"] === "overall") && (input_option[group][z] === "courses_year")){
+                result[input_option[group][z]] = 1900;
+            }
+
+            var MainkeyInApply = apply[z][0][0];
+
+            if (this.methodKey3(MainkeyInApply) === Object.keys(course)[z]) {
+
+                if (MainkeyInApply ==="courses_year"){
+
+                    result[MainkeyInApply] = parseInt(course[Object.keys(course)[z]]);
+                }
+            else{
+
+                    result[MainkeyInApply] = course[Object.keys(course)[z]];
+                }
+
+            }
+
+        }
+
 
         //result = [result1,result2...etc]
         //each result in result = {group1:value, group2:value...etc}
 
-        for (var r of result){
+        // for (var r of result){
+        //
+        //
+        //
+        //
+        // }
 
+        var applyMeth = Object.keys(input_option)[1];
 
+        for (var i = 0; i < input_option[applyMeth].length; i++) {
 
-
-        }
-
-        var apply = Object.keys(input_option)[1];
-
-        for (var i = 0; i < input_option[apply].length; i++) {
-
-            var keyinApply = input_option[apply][i];
+            var keyinApply = input_option[applyMeth][i];
 
             if (Object.keys(keyinApply)[0] === "MAX"){
 

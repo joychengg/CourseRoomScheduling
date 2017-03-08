@@ -169,6 +169,45 @@ var roomforcover3: QueryRequest = {
 
 };
 
+var roomWithApply: QueryRequest = {
+
+    WHERE: {
+    "AND": [{
+        "IS": {
+            "rooms_furniture": "*Tables*"
+        }
+    }, {
+        "GT": {
+            "rooms_seats": 100
+        }
+    }]
+},
+    OPTIONS: {
+    COLUMNS: [
+        "rooms_fullname",
+        "maxSeats", "avgSeats"
+    ],
+        ORDER: {
+        "dir": "DOWN",
+            "keys": ["rooms_fullname"]
+    },
+    FORM: "TABLE"
+},
+    TRANSFORMATIONS: {
+    GROUP: ["rooms_fullname"],
+        APPLY: [{
+        "maxSeats": {
+            "MAX": "rooms_seats"
+        }
+    },
+        {"avgSeats":{
+            "AVG":"rooms_seats"
+        }
+        }]
+}
+
+};
+
 var roomforcover4: QueryRequest = {
 
     WHERE: {"AND":
@@ -1813,6 +1852,20 @@ describe("InsightFacadeTest", function () {
             console.log(err.body);
         });
     });
+
+    it("apply with maxseat and avgseat", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomWithApply).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+            console.log(value.body);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+
+        });
+    });
+
 
 
     it("Nautilus: Should be able to find all rooms of a certain type", function () {

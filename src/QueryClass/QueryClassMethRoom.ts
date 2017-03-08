@@ -225,20 +225,62 @@ export default class QueryClassMethRoom {
 
     CombinewithApply(room:any, input_option:any) {
 
-        var column = Object.keys(input_option)[0];
+        var group = Object.keys(input_option)[0];
+
+        // "APPLY": [{
+        //     "maxSeats": {
+        //         "MAX": "rooms_seats"
+        //     }
+        // },
+        //     {"avgSeats":{
+        //         "AVG":"rooms_seats"
+        //     }
+        //     }]
 
         var result: any = {};
 
 
-        for (var i = 0; i < input_option[column].length; i++) {
+        for (var i = 0; i < input_option[group].length; i++) {
 
             for (var c = 0; c < Object.keys(room).length; c++) {
 
-
-                if (input_option[column][i] === Object.keys(room)[c]) {
-                    result[input_option[column][i]] = room[Object.keys(room)[c]];
+                if (input_option[group][i] === Object.keys(room)[c]) {
+                    result[input_option[group][i]] = room[Object.keys(room)[c]];
                 }
             }
+        }
+
+        var apply = Object.keys(input_option)[1];
+
+        var lengthApply = input_option[apply].length;
+
+        for (var a = 0; a < lengthApply; a++) {
+
+           // console.log(input_option[apply][1]);
+            var MainkeyInApply = null;
+            var valueinMain = null;
+            var innderValue = null;
+
+            MainkeyInApply = input_option[apply][a];// this should be {"name":{"MAX":"name2"}}
+
+            //console.log(Object.keys(MainkeyInApply)[0]);
+
+            valueinMain = MainkeyInApply[Object.keys(MainkeyInApply)[0]];//this should be {"MAX":"name2"}
+
+            console.log(valueinMain);
+
+            innderValue = valueinMain[Object.keys(valueinMain)[0]];
+
+            console.log(innderValue);
+
+            for (var b = 0; b < Object.keys(room).length; b++) {
+
+                if (innderValue === Object.keys(room)[b]) {
+                    result[innderValue] = room[Object.keys(room)[b]];
+
+                }
+            }
+
         }
 
 

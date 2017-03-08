@@ -808,13 +808,13 @@ export default class InsightFacade implements IInsightFacade {
             if(Object.keys(query.WHERE).length===0){
                 if (path === "courses"){
                     for (var course of everythingArr) {
-                            arrOFCourses.push(course);
+                        arrOFCourses.push(course);
                     }
 
                 }else if (path === "rooms"){
                     for (var room of allRoomsArr){
                         var room = JSON.parse(room);
-                            arrOFrooms.push(room);
+                        arrOFrooms.push(room);
                     }
                 }
 
@@ -869,9 +869,9 @@ export default class InsightFacade implements IInsightFacade {
             }
 
             function contains(obj:any, array:any[]) {
-                var i = array.length;
-                while (i--) {
-                    if (this[i] == obj) {
+                //var i = array.length;
+                for (var i = 0; i <array.length; i++) {
+                    if (array[i] == obj) {
                         return true;
                     }
                 }
@@ -889,6 +889,9 @@ export default class InsightFacade implements IInsightFacade {
 
                 }
 
+                console.log("is it here ");
+
+
                 if (query.TRANSFORMATIONS.APPLY.length === 0) {
 
                     for (var element of query.OPTIONS.COLUMNS) {
@@ -900,26 +903,26 @@ export default class InsightFacade implements IInsightFacade {
                             reject(failResponseForApply);
 
                         }
-                            if (!contains(element, query.TRANSFORMATIONS.GROUP)){
-                                var failResponseNotinGroup: InsightResponse = {
-                                    code: 400,
-                                    body: {"error": "All COLUMNS keys need to be either in GROUP or in APPLY"}
-                                };
-                                reject(failResponseNotinGroup);
-                            }
-                    }
-                        if (path === "courses") {
-
-                            for (var course of arrOFCourses) {
-                                finalCourseArr.push(objforQuery.Combine(course, query.TRANSFORMATIONS));
-                            }
-                        } else if (path === "rooms") {
-
-                            for (var course of arrOFrooms) {
-                                finalCourseArr.push(objforRoomQuery.Combine(course, query.TRANSFORMATIONS));
-                            }
+                        if (!contains(element, query.TRANSFORMATIONS.GROUP)){
+                            var failResponseNotinGroup: InsightResponse = {
+                                code: 400,
+                                body: {"error": "All COLUMNS keys need to be either in GROUP or in APPLY"}
+                            };
+                            reject(failResponseNotinGroup);
                         }
-                    }else{
+                    }
+                    if (path === "courses") {
+
+                        for (var course of arrOFCourses) {
+                            finalCourseArr.push(objforQuery.Combine(course, query.TRANSFORMATIONS));
+                        }
+                    } else if (path === "rooms") {
+
+                        for (var course of arrOFrooms) {
+                            finalCourseArr.push(objforRoomQuery.Combine(course, query.TRANSFORMATIONS));
+                        }
+                    }
+                }else{
 
                     for (var element of query.OPTIONS.COLUMNS) {
                         if ((!contains(element, query.TRANSFORMATIONS.GROUP)) && (!contains(element, Object.keys(query.TRANSFORMATIONS.APPLY)))) {
@@ -941,6 +944,8 @@ export default class InsightFacade implements IInsightFacade {
                     } else if (path === "rooms") {
 
                         for (var course of arrOFrooms) {
+
+                            console.log("been here");
                             finalCourseArr.push(objforRoomQuery.CombinewithApply(course, query.TRANSFORMATIONS));
                         }
                     }
@@ -963,12 +968,113 @@ export default class InsightFacade implements IInsightFacade {
             }
 
 
-                finalCourseArr.sort(function (a, b) {
-                    var orderS = query.OPTIONS['ORDER'];
 
-                    if (orderS === "courses_instructor" || orderS === "courses_uuid" || orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
-                        || orderS === "rooms_furniture" ||orderS === "rooms_fullname" ||orderS === "rooms_shortname" ||orderS === "rooms_number" ||orderS === "rooms_name" ||
-                        orderS === "rooms_address" ||orderS === "rooms_type" ||orderS === "rooms_href") {
+            console.log("final courses array  "+ JSON.stringify(finalCourseArr));
+
+            var lengthApply = query.TRANSFORMATIONS.APPLY.length;
+
+            var newObj = {};
+
+            if (lengthApply!==0) {
+                for (var e = 0; e < lengthApply; e++) {
+
+                    for (var thing in finalCourseArr) {
+
+                        var item = finalCourseArr[thing];
+
+                        var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e])[0];
+
+                        if (Operation === "SUM")
+
+                        for (var it in item){
+
+                            if (Object.keys(it)===
+
+                        }
+
+                        newObj[item.key[0]] += item.value;
+                    }
+
+                    var result = {};
+                    result.rows = [];
+                    for (i in newObj) {
+                        result.rows.push({'key': i, 'value': newObj[i]});
+                    }
+                }
+            }
+
+
+            // need to implement sorting the strings in apply
+            finalCourseArr.sort(function (a, b) {
+                var orderS = query.OPTIONS['ORDER'];
+
+                if (Object.keys(orderS)[0] === "dir") {
+
+                    if (Object.keys(orderS)[1] !== "keys"){
+                        var failResponseWrongKey: InsightResponse = {
+                            code: 400,
+                            body: {"error": "key in ORDER is wrong"}
+                        };
+                        reject(failResponseWrongKey);
+
+                    }
+
+                    var keysInOrder = orderS[1];
+
+                    for (var i = 0; i < keysInOrder.length; i++ ){
+
+                        if (keysInOrder[0] === "UP") {
+
+                            if (keysInOrder[i] === "courses_instructor" || keysInOrder[i] === "courses_uuid" ||
+                                keysInOrder[i] === "courses_id" || keysInOrder[i] === "courses_title" || keysInOrder[i] === "courses_dept"
+                                || keysInOrder[i] === "rooms_furniture" || keysInOrder[i] === "rooms_fullname" ||
+                                keysInOrder[i] === "rooms_shortname" || keysInOrder[i] === "rooms_number" || keysInOrder[i] === "rooms_name" ||
+                                keysInOrder[i] === "rooms_address" || keysInOrder[i] === "rooms_type" || keysInOrder[i] === "rooms_href") {
+                                var nameA = a[keysInOrder[i]].toLowerCase(), nameB = b[keysInOrder[i]].toLowerCase();
+                                if (nameA < nameB) //sort string ascending
+                                    return -1;
+                                if (nameA > nameB)
+                                    return 1;
+
+                                return 0;
+                            } else {
+                                return parseFloat(a[keysInOrder[i]]) - parseFloat(b[keysInOrder[i]]);
+                            }
+
+
+                        } else if (keysInOrder[i][0] === "DOWN") {
+
+                            if (keysInOrder[i] === "courses_instructor" || keysInOrder[i] === "courses_uuid"
+                                || keysInOrder[i] === "courses_id" || keysInOrder[i] === "courses_title" || keysInOrder[i] === "courses_dept"
+                                || keysInOrder[i] === "rooms_furniture" || keysInOrder[i] === "rooms_fullname"
+                                || keysInOrder[i] === "rooms_shortname" || keysInOrder[i] === "rooms_number" || keysInOrder[i] === "rooms_name" ||
+                                keysInOrder[i] === "rooms_address" || keysInOrder[i] === "rooms_type" || keysInOrder[i] === "rooms_href") {
+                                var nameA = a[keysInOrder[i]].toLowerCase(), nameB = b[keysInOrder[i]].toLowerCase();
+                                if (nameA > nameB) //sort string ascending
+                                    return -1;
+                                if (nameA < nameB)
+                                    return 1;
+
+                                return 0;
+                            } else {
+                                return parseFloat(b[keysInOrder[i]]) - parseFloat(a[keysInOrder[i]]);
+                            }
+                        }else {
+                            var failResponseForDir: InsightResponse = {
+                                code: 400,
+                                body: {"error": "dir in ORDER is wrong"}
+                            };
+                            reject(failResponseForDir);
+
+                        }
+                    }
+                }else {
+
+                    if (orderS === "courses_instructor" || orderS === "courses_uuid" ||
+                        orderS === "courses_id" || orderS === "courses_title" || orderS === "courses_dept"
+                        || orderS === "rooms_furniture" || orderS === "rooms_fullname" ||
+                        orderS === "rooms_shortname" || orderS === "rooms_number" || orderS === "rooms_name" ||
+                        orderS === "rooms_address" || orderS === "rooms_type" || orderS === "rooms_href") {
                         var nameA = a[orderS].toLowerCase(), nameB = b[orderS].toLowerCase();
                         if (nameA < nameB) //sort string ascending
                             return -1;
@@ -979,7 +1085,8 @@ export default class InsightFacade implements IInsightFacade {
                     } else {
                         return parseFloat(a[orderS]) - parseFloat(b[orderS]);
                     }
-                });
+                }
+            });
 
 
 

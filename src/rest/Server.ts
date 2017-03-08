@@ -50,9 +50,17 @@ export default class Server {
             try {
                 Log.info('Server::start() - start');
 
+                var next_user_id = 0;
+                var users:any = {};
+
                 that.rest = restify.createServer({
+
                     name: 'insightUBC'
+
+
                 });
+
+                that.rest.use(restify.bodyParser({mapParams: true, mapFiles: true}));
 
                 that.rest.get('/', function (req: restify.Request, res: restify.Response, next: restify.Next) {
                     res.send(200);
@@ -65,6 +73,26 @@ export default class Server {
 
                 // Other endpoints will go here
 
+                that.rest.post('/user', function (req, res, next) {
+                    var user = req.params;
+                    user.id = next_user_id++;
+                    users[user.id] = user;
+                    res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+                    res.end(JSON.stringify(user));
+                    return next();
+                });
+
+                that.rest.put('/user/:id', function (req, res, next) {
+                    var user = users[parseInt(req.params.id)];
+                    var changes = req.params;
+                    delete changes.id;
+                    for (var x in changes) {
+                        user[x] = changes[x];
+                    }
+                });
+
+
+
                 that.rest.listen(that.port, function () {
                     Log.info('Server::start() - restify listening: ' + that.rest.url);
                     fulfill(true);
@@ -75,12 +103,17 @@ export default class Server {
                     Log.info('Server::start() - restify ERROR: ' + err);
                     reject(err);
                 });
+
+
             } catch (err) {
                 Log.error('Server::start() - ERROR: ' + err);
                 reject(err);
             }
         });
     }
+
+
+
 
     // The next two methods handle the echo service.
     // These are almost certainly not the best place to put these, but are here for your reference.
