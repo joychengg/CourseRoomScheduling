@@ -188,7 +188,7 @@ var roomWithApply: QueryRequest = {
         "maxSeats", "avgSeats"
     ],
         ORDER: {
-        "dir": "DOWN",
+            "dir": "DOWN",
             "keys": ["rooms_fullname"]
     },
     "FORM": "TABLE"
@@ -1174,6 +1174,7 @@ var LTroomQuery:QueryRequest = {
     }
 
 }
+var applyResult = {"render":"TABLE","result":[{"rooms_fullname":"Woodward (Instructional Resources Centre-IRC)","maxSeats":120,"avgSeats":120},{"rooms_fullname":"West Mall Swing Space","maxSeats":190,"avgSeats":188.75},{"rooms_fullname":"Student Recreation Centre","maxSeats":299,"avgSeats":299},{"rooms_fullname":"Robert F. Osborne Centre","maxSeats":442,"avgSeats":442},{"rooms_fullname":"Pharmaceutical Sciences Building","maxSeats":236,"avgSeats":201.5},{"rooms_fullname":"MacLeod","maxSeats":136,"avgSeats":129.5},{"rooms_fullname":"Life Sciences Centre","maxSeats":350,"avgSeats":275},{"rooms_fullname":"Leonard S. Klinck (also known as CSCI)","maxSeats":205,"avgSeats":194},{"rooms_fullname":"Irving K Barber Learning Centre","maxSeats":154,"avgSeats":133},{"rooms_fullname":"Hugh Dempster Pavilion","maxSeats":160,"avgSeats":140},{"rooms_fullname":"Henry Angus","maxSeats":260,"avgSeats":260},{"rooms_fullname":"Hebb","maxSeats":375,"avgSeats":375},{"rooms_fullname":"Friedman Building","maxSeats":160,"avgSeats":160},{"rooms_fullname":"Chemical and Biological Engineering Building","maxSeats":200,"avgSeats":200},{"rooms_fullname":"Buchanan","maxSeats":108,"avgSeats":108}]}
 
 var laterStarQuery:QueryRequest = {
 
@@ -1815,6 +1816,20 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("apply with maxseat and avgseat", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomWithApply).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.body).to.deep.equal(applyResult);
+            expect(value.code).to.equal(200);
+
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
     it("latQuery", function () {
         this.timeout(10000);
         return insightFacade.performQuery(latQuery).then(function (value) {
@@ -1850,19 +1865,6 @@ describe("InsightFacadeTest", function () {
             console.log("error" + err);
             expect(err.code).to.equal(400);
             console.log(err.body);
-        });
-    });
-
-    it("apply with maxseat and avgseat", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomWithApply).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
         });
     });
 

@@ -43,6 +43,8 @@ var existsResponse: InsightResponse = {
 var everythingArr: any[] = [];
 var allRoomsArr:any[] = [];
 
+var index = 0;
+
 
 export default class InsightFacade implements IInsightFacade {
 
@@ -640,25 +642,56 @@ export default class InsightFacade implements IInsightFacade {
 
             if (!isNullOrUndefined(query.OPTIONS.ORDER)) {
 
-                var column = Object.keys(query.OPTIONS)[0];
+               // var column = Object.keys(query.OPTIONS)[0];
                 var order = query.OPTIONS.ORDER;
 
                 var count = 0;
-                for (var i of query.OPTIONS.COLUMNS) {
 
-                    if (i === order) {
-                        count++;
-                        break;
+                if (Object.keys(query.OPTIONS.ORDER)[0] === 'dir'){
+                    for(var val of query.OPTIONS.ORDER.keys){
+                        for(var i  of query.OPTIONS.COLUMNS){
+                            if (val === i){
+                                count++;
+                            }
+                        }
                     }
+
+                    if (count != Object.keys(query.OPTIONS.ORDER.keys).length){
+                        var failResponse: InsightResponse = {
+                            code: 400,
+                            body: {"error": "order not in column"}
+                        };
+                        reject(failResponse);
+
+                    }
+                    } else{
+                    for (var i of query.OPTIONS.COLUMNS) {
+
+                        if (i === order) {
+                            count++;
+                            break;
+                        }
                 }
+
+
                 if (count === 0) {
                     var failResponse: InsightResponse = {
                         code: 400,
-                        body: {"error": "empty options"}
+                        body: {"error": "order not in column"}
                     };
                     reject(failResponse);
 
+                }}
+
+            }
+
+            function containsInApply(element:any, apply:any[]):boolean {
+                for(let i of apply){
+                    if(element === Object.keys(i)[0]){
+                        return true;
+                    }
                 }
+                return false;
             }
 
 
@@ -926,7 +959,7 @@ export default class InsightFacade implements IInsightFacade {
                 }else{
 
                     for (var element of query.OPTIONS.COLUMNS) {
-                        if ((!contains(element, query.TRANSFORMATIONS.GROUP)) && (!contains(element, Object.keys(query.TRANSFORMATIONS.APPLY)))) {
+                        if ((!contains(element, query.TRANSFORMATIONS.GROUP)) && !containsInApply(element, query.TRANSFORMATIONS.APPLY)) {
                             var failResponseNotinGroup: InsightResponse = {
                                 code: 400,
                                 body: {"error": "All COLUMNS keys need to be either in GROUP or in APPLY"}
@@ -971,20 +1004,27 @@ export default class InsightFacade implements IInsightFacade {
 
                 var counter = 0;
 
-                for (var item of group){
+                for (let i = 0; i < resultObj.length; i++) {
+                    counter = 0;
+                    for (var item of group) {
 
-                    if (resultObj[item]===inputObj[item]){
+                        if (resultObj[i][item] === inputObj[item]) {
 
-                        counter++;
+                            counter++;
+                        }
                     }
-                }
-                if (counter===group.length){
-                    return true;
+
+
+                    if (counter===group.length){
+                        index = i;
+                        return true;
+                    }
                 }
 
                 return false;
 
             }
+
             var newObj: any = [];
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
@@ -1004,7 +1044,6 @@ export default class InsightFacade implements IInsightFacade {
                     for (var e = 0; e < lengthApply; e++) {
 
                         var beforeOp = Object.keys(query.TRANSFORMATIONS.APPLY[e])[0];
-                        var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
 
 
                         var groupInTrans = query.TRANSFORMATIONS.GROUP;
@@ -1015,45 +1054,27 @@ export default class InsightFacade implements IInsightFacade {
                             newObj.push(finalCourseArr[0]);
 
                             //  console.log("here is newobj" + JSON.stringify(newObj));
-                        } else {
+                        }
+
 
                             for (var b = 1; b < finalCourseArr.length; b++) {
 
                                 var obj2 = finalCourseArr[b];
+                                var val = finalCourseArr[b][beforeOp];
+
 
                                 var obj = newObj.length - 1;
 
-                                if (GroupLoop(groupInTrans, newObj[obj], obj2)) {
-
-                                    if (Operation === "SUM") {
-
-                                        newObj[obj][beforeOp] += obj2[beforeOp];
-
-                                    } else if (Operation === "MAX") {
-
-                                        if (newObj[obj][beforeOp] <= obj2[beforeOp]) {
-                                            newObj[obj][beforeOp] = obj2[beforeOp];
-                                        }
-
-                                    } else if (Operation === "AVG") {
-
-                                        newObj[obj][beforeOp] += obj2[beforeOp];
-
-                                        newObj[obj][beforeOp] = Math.round((newObj[obj][beforeOp] / 2)*100)/100;
-
-                                    } else if (Operation === "MIN") {
-
-                                        if (newObj[obj][beforeOp] >= obj2[beforeOp]) {
-                                            newObj[obj][beforeOp] = obj2[beforeOp];
-                                        }
-
-
-                                    } else if (Operation === "COUNT") {
-
-                                        //need to implement this special case
-
+                                if (GroupLoop(groupInTrans, newObj, obj2)) {
+                                    if (!isArray(newObj[index][beforeOp])){
+                                        var temp1 = newObj[index][beforeOp];
+                                        newObj[index][beforeOp] = [];
+                                        newObj[index][beforeOp].push(temp1);
 
                                     }
+
+                                    newObj[index][beforeOp].push(val);
+
 
 
                                 } else {
@@ -1061,7 +1082,76 @@ export default class InsightFacade implements IInsightFacade {
                                     newObj.push(obj2);
                                 }
 
-                            }
+
+
+
+
+                        }
+
+                        var tempp = 0;
+
+                    }
+
+                    for (var w = 0; w< lengthApply; w++){
+                        for (let i of newObj){
+                            var beforeOp = Object.keys(query.TRANSFORMATIONS.APPLY[w])[0];
+
+                            var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[w][beforeOp])[0];
+
+                            var avg = 0;
+                            var min = newObj[0][beforeOp][0];
+                            var max = 0;
+                            var sum = 0;
+                            var count = 0;
+
+                             if (Operation === "SUM") {
+                                 for (let val of newObj[obj][beforeOp]){
+                                     sum += val;
+
+                                 }
+                                 newObj[obj][beforeOp] = sum;
+
+                             } else if (Operation === "MAX") {
+                                 for (let val of newObj[obj][beforeOp]){
+                                     if (val >= max){
+                                         max = val;
+                                     }
+
+                                 }
+                                 newObj[obj][beforeOp] = max;
+
+                             } else if (Operation === "AVG") {
+
+                                 for (let val of newObj[obj][beforeOp]){
+                                     val = val * 10;
+                                     val = Number(val.toFixed(0));
+
+                                     avg += i;
+
+                                 }
+
+                             avg = avg / newObj[obj][beforeOp].length;
+                             avg = avg / 10;
+                             newObj[obj][beforeOp] = Number(avg.toFixed(2));
+
+                             } else if (Operation === "MIN") {
+                                 for (let val of newObj[obj][beforeOp]){
+                                     if (val <= min){
+                                         min = val;
+                                     }
+
+                                 }
+                                 newObj[obj][beforeOp] = min;
+
+
+                             } else if (Operation === "COUNT") {
+
+                             //need to implement this special case
+
+
+                             }
+
+
                         }
                     }
 
@@ -1069,14 +1159,10 @@ export default class InsightFacade implements IInsightFacade {
 
             }
 
-           // console.log(finalCourseArr.length);
             if (newObj.length!==0) {
                 finalCourseArr = newObj;
             }
 
-            //console.log(finalCourseArr.length);
-
-//console.log("new object array" + JSON.stringify(finalCourseArr));
 
             // need to implement sorting the strings in apply
 

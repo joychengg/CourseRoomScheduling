@@ -253,7 +253,6 @@ export default class QueryClassMethRoom {
 
             MainkeyInApply = input_option[apply][a];// this should be {"name":{"MAX":"name2"}}
 
-            //console.log(Object.keys(MainkeyInApply)[0]);
 
             valueinMain = MainkeyInApply[Object.keys(MainkeyInApply)[0]];//this should be {"MAX":"name2"}
 
