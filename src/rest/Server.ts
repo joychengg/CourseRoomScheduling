@@ -72,24 +72,24 @@ export default class Server {
                 that.rest.get('/echo/:msg', Server.echo);
 
                 // Other endpoints will go here
-
-                that.rest.post('/user', function (req, res, next) {
-                    var user = req.params;
-                    user.id = next_user_id++;
-                    users[user.id] = user;
-                    res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
-                    res.end(JSON.stringify(user));
-                    return next();
-                });
-
-                that.rest.put('/user/:id', function (req, res, next) {
-                    var user = users[parseInt(req.params.id)];
-                    var changes = req.params;
-                    delete changes.id;
-                    for (var x in changes) {
-                        user[x] = changes[x];
-                    }
-                });
+                //
+                // that.rest.post('/user', function (req, res, next) {
+                //     var user = req.params;
+                //     user.id = next_user_id++;
+                //     users[user.id] = user;
+                //     res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+                //     res.end(JSON.stringify(user));
+                //     return next();
+                // });
+                //
+                // that.rest.put('/user/:id', function (req, res, next) {
+                //     var user = users[parseInt(req.params.id)];
+                //     var changes = req.params;
+                //     delete changes.id;
+                //     for (var x in changes) {
+                //         user[x] = changes[x];
+                //     }
+                // });
 
 
 
