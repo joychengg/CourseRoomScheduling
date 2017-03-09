@@ -185,7 +185,7 @@ var roomWithApply: QueryRequest = {
     OPTIONS: {
     "COLUMNS": [
         "rooms_fullname",
-        "maxSeats", "avgSeats"
+        "maxSeats", "avgSeats", "countSeats"
     ],
         "ORDER": {
         "dir": "DOWN",
@@ -203,7 +203,12 @@ var roomWithApply: QueryRequest = {
         {"avgSeats":{
             "AVG":"rooms_seats"
         }
-        }]
+        },
+            {
+                "countSeats":{
+                    "COUNT":"rooms_seats"}
+            }
+        ]
 }
 
 };
@@ -1859,7 +1864,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
             expect(value.code).to.equal(200);
-            console.log(JSON.stringify(value.body));
+           // console.log(JSON.stringify(value.body));
 
         }).catch(function (err) {
             console.log("error" + err);
