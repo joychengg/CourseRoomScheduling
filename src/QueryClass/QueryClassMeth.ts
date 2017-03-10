@@ -427,21 +427,21 @@ export default class QueryClassMeth {
 
             innderValue2 = valueinMain2[Object.keys(valueinMain2)[0]];
 
-                for (var c = 0; c < Object.keys(apply).length; c++) {
+            for (var b = 0; b < Object.keys(course).length; b++) {
 
                     if ((course["Section"] === "overall") && (input_option[group][z] === "courses_year")) {
                         result[input_option[group][z]] = 1900;
                     }
 
-                    if (this.methodKey3(MainkeyInApply2) === Object.keys(course)[z]) {
+                    if (this.methodKey3(innderValue2) === Object.keys(course)[b]) {
 
-                        if (MainkeyInApply2 === "courses_year") {
+                        if (innderValue2 === "courses_year") {
 
-                            result[MainkeyInApply2] = parseInt(course[Object.keys(course)[z]]);
+                            result[innderValue2] = parseInt(course[Object.keys(course)[b]]);
                         }
                         else {
 
-                            result[MainkeyInApply2] = course[Object.keys(course)[z]];
+                            result[innderValue2] = course[Object.keys(course)[b]];
                         }
 
                     }
