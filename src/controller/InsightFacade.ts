@@ -1018,7 +1018,7 @@ export default class InsightFacade implements IInsightFacade {
             }
             var newObj: any = [];
 
-            // console.log(finalCourseArr.length);
+            console.log("final courses array " + JSON.stringify(finalCourseArr));
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 

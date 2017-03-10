@@ -345,24 +345,54 @@ export default class QueryClassMeth {
 
     CombinewithApply(course:any, input_option:any) {
 
+        //     for (var i = 0; i < input_option[group].length; i++) {
+    //
+    //         for (var c = 0; c < Object.keys(room).length; c++) {
+    //
+    //             if (input_option[group][i] === Object.keys(room)[c]) {
+    //                 result[input_option[group][i]] = room[Object.keys(room)[c]];
+    //             }
+    //         }
+    //     }
+    //
+    //     var apply = Object.keys(input_option)[1];
+    //
+    //     var lengthApply = input_option[apply].length;
+    //
+    //     for (var a = 0; a < lengthApply; a++) {
+    //
+    //         // console.log(input_option[apply][1]);
+    //         var MainkeyInApply = null;
+    //         var valueinMain = null;
+    //         var innderValue = null;
+    //
+    //         MainkeyInApply = input_option[apply][a];// this should be {"name":{"MAX":"name2"}}
+    //
+    //
+    //         valueinMain = MainkeyInApply[Object.keys(MainkeyInApply)[0]];//this should be {"MAX":"name2"}
+    //
+    //         innderValue = valueinMain[Object.keys(valueinMain)[0]];
+    //
+    //         for (var b = 0; b < Object.keys(room).length; b++) {
+    //
+    //             if (innderValue === Object.keys(room)[b]) {
+    //                 result[Object.keys(input_option[apply][a])[0]] = room[Object.keys(room)[b]];
+    //
+    //             }
+    //         }
+    //
+    //     }
+    //
+    //
+    //     return result;
+    //
+    // }
+
         var group = Object.keys(input_option)[0];
 
         var apply = Object.keys(input_option)[1];
 
-        // "APPLY": [{
-        //     "maxSeats": {
-        //         "MAX": "rooms_seats"
-        //     }
-        // },
-        //     {"avgSeats":{
-        //         "AVG":"rooms_seats"
-        //     }
-        //     }]
-
         var result: any = {};
-
-        var finalResult: any = {};
-
 
         for (var i = 0; i < input_option[group].length; i++) {
 
@@ -387,65 +417,61 @@ export default class QueryClassMeth {
 
         for (var z = 0; z < input_option[apply].length; z++) {
 
-            if ((course["Section"] === "overall") && (input_option[group][z] === "courses_year")){
-                result[input_option[group][z]] = 1900;
-            }
+            var MainkeyInApply2 = null;
+            var valueinMain2 = null;
+            var innderValue2 = null;
 
-            var MainkeyInApply = apply[z][0][0];
+            MainkeyInApply2 = input_option[apply][z];
 
-            if (this.methodKey3(MainkeyInApply) === Object.keys(course)[z]) {
+            valueinMain2 = MainkeyInApply2[Object.keys(MainkeyInApply2)[0]];
 
-                if (MainkeyInApply ==="courses_year"){
+            innderValue2 = valueinMain2[Object.keys(valueinMain2)[0]];
 
-                    result[MainkeyInApply] = parseInt(course[Object.keys(course)[z]]);
+                for (var c = 0; c < Object.keys(apply).length; c++) {
+
+                    if ((course["Section"] === "overall") && (input_option[group][z] === "courses_year")) {
+                        result[input_option[group][z]] = 1900;
+                    }
+
+                    if (this.methodKey3(MainkeyInApply2) === Object.keys(course)[z]) {
+
+                        if (MainkeyInApply2 === "courses_year") {
+
+                            result[MainkeyInApply2] = parseInt(course[Object.keys(course)[z]]);
+                        }
+                        else {
+
+                            result[MainkeyInApply2] = course[Object.keys(course)[z]];
+                        }
+
+                    }
+
                 }
-            else{
-
-                    result[MainkeyInApply] = course[Object.keys(course)[z]];
-                }
-
             }
-
-        }
-
-
-        //result = [result1,result2...etc]
-        //each result in result = {group1:value, group2:value...etc}
-
-        // for (var r of result){
-        //
-        //
-        //
-        //
-        // }
-
-        var applyMeth = Object.keys(input_option)[1];
-
-        for (var i = 0; i < input_option[applyMeth].length; i++) {
-
-            var keyinApply = input_option[applyMeth][i];
-
-            if (Object.keys(keyinApply)[0] === "MAX"){
-
-
-            }else if (Object.keys(keyinApply)[0] === "MIN"){
-
-
-            }else if (Object.keys(keyinApply)[0] === "AVG"){
-
-
-            }else if (Object.keys(keyinApply)[0] === "SUM"){
-
-
-            }else if (Object.keys(keyinApply)[0] === "COUNT"){
-
-
-            }
-
-        }
 
 
         return result;
 
     }
 }
+
+
+
+//inside http, theres a server and request
+//endpoints get the request and send to the specific methods (server)<--rest, routes http request to method, get the response
+//and get the result and send bk to request sender
+
+
+// that.get("/foo", Foo.X())  <-- get from foo and direct it to .X()
+//server.dataset: calls facade dataset
+
+//incoming request (JSON wrapped in http)
+//server forwards to a endpoint
+//direct to method
+
+//logic:
+//ie core logic is addDataset()
+//server.Dataset()  -> server method to handle req/res
+
+//that.server.put("/dataset/:id", server.dataset())
+//"/dataset/:id" will get exactly wuts inside the parameter
