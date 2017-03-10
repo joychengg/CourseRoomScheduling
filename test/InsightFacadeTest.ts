@@ -1939,7 +1939,7 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
-
+/*
     it("PUT description", function () {
         return chai.request("http://localhost:4321")
             .put('/dataset/rooms')
@@ -1968,7 +1968,7 @@ describe("InsightFacadeTest", function () {
                 // some assertions
                 expect.fail();
             });
-    });
+    });*/
 
     it("latQuery", function () {
         this.timeout(10000);

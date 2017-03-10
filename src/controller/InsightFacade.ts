@@ -1060,7 +1060,7 @@ export default class InsightFacade implements IInsightFacade {
                                     newObj[newObj.length - 1]["avg array"] = [];
 
                                 }
-                            } 
+                            }
                         }
 
                         for (var e in query.TRANSFORMATIONS.APPLY) {
