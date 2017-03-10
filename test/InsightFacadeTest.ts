@@ -1935,8 +1935,24 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("latQuery", function () {
+
+    it("apply with maxseat and avgseat", function () {
         this.timeout(10000);
+        return insightFacade.performQuery(roomWithApply).then(function (value) {
+            Log.test('Value: ' + value.code);
+            console.log(value.body);
+            expect(value.code).to.equal(200);
+            expect(value.body).to.deep.equal(resultForapply);
+            // console.log(JSON.stringify(value.body));
+
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+/*
+    it("latQuery", function () {
+        this.timeout(30000);
         return insightFacade.performQuery(latQuery).then(function (value) {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
@@ -1946,7 +1962,7 @@ describe("InsightFacadeTest", function () {
             console.log("error" + err);
             expect.fail();
         });
-    });
+    });*/
 
     it("Knuth: Find all studio type rooms without some furniture.", function () {
         this.timeout(10000);
@@ -1961,6 +1977,19 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("apply furniture", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(applyRequest2).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.body).to.deep.equal(applyResult2);
+        }).catch(function (err) {
+            console.log("error" + err);
+        });
+    });
+
+
+
     it("apply is empty but column contain maxseat - should give 400", function () {
         this.timeout(10000);
         return insightFacade.performQuery(testfornoApply).then(function (value) {
@@ -1973,31 +2002,7 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("apply furniture", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(applyRequest2).then(function (value) {
-            Log.test('Value: ' + value.code);
-            console.log(value.body);
-            expect(value.body).to.deep.equal(applyResult2);
-        }).catch(function (err) {
-            console.log("error" + err);
-        });
-    });
 
-    it("apply with maxseat and avgseat", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomWithApply).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            expect(value.body).to.deep.equal(resultForapply);
-           // console.log(JSON.stringify(value.body));
-
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
 
 
     it("apply with countCourses", function () {
@@ -3130,6 +3135,7 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
+
 
 
 });

@@ -22,7 +22,7 @@ var JSZip = require("jszip");
 var parse5 = require("parse5");
 var http = require("http");
 var parser = new parse5.SAXParser();
-
+var publicIndex = 0;
 
 var emptyResponse: InsightResponse = {
     code : 400,
@@ -886,6 +886,8 @@ export default class InsightFacade implements IInsightFacade {
 
                                 arrOFrooms.push(room);
                         }
+
+
                     }
                 } catch (err) {
 
@@ -1002,15 +1004,21 @@ export default class InsightFacade implements IInsightFacade {
 
                 var counter = 0;
 
-                for (var item of group){
+                for (let i = 0; i < resultObj.length; i++) {
+                    counter = 0;
+                    for (var item of group) {
 
-                    if (resultObj[item]===inputObj[item]){
+                        if (resultObj[i][item] === inputObj[item]) {
 
-                        counter++;
+                            counter++;
+                        }
                     }
-                }
-                if (counter===group.length){
-                    return true;
+
+
+                    if (counter===group.length){
+                        publicIndex = i;
+                        return true;
+                    }
                 }
 
                 return false;
@@ -1018,44 +1026,27 @@ export default class InsightFacade implements IInsightFacade {
             }
             var newObj: any = [];
 
-            console.log("final courses array " + JSON.stringify(finalCourseArr));
+            //console.log("final courses array " + JSON.stringify(finalCourseArr));
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
                 newObj = [];
-                newObj.push(finalCourseArr[0]);
 
-                for (var index in query.TRANSFORMATIONS.APPLY){
-                    var beforeOp1 = Object.keys(query.TRANSFORMATIONS.APPLY[index])[0];
-                    var Operation1 = Object.keys(query.TRANSFORMATIONS.APPLY[index][beforeOp1])[0];
-
-                    if (Operation1==="COUNT"){
-
-                        var vaInCountKey = newObj[0][beforeOp1];
-                        newObj[0]["counter array"] = [vaInCountKey];
-                    }else if (Operation1 === "AVG"){
-                        var vaInCountKey = newObj[0][beforeOp1];
-                        newObj[0]["avg array"] = [vaInCountKey];
-
-                    }
-                }
-
-              //  console.log(newObj);
 
                 var lengthApply = query.TRANSFORMATIONS.APPLY.length;
 
 
                 if (lengthApply !== 0) {
 
-                    for (var b = 1; b < finalCourseArr.length; b++) {
+                    for (var b = 0; b < finalCourseArr.length; b++) {
 
                         var groupInTrans = query.TRANSFORMATIONS.GROUP;
 
                         var obj2 = finalCourseArr[b];
 
-                        var obj = newObj.length - 1;
+                       // var obj = newObj.length - 1;
 
-                    if(!GroupLoop(groupInTrans, newObj[obj], obj2)) {
+                    if(!GroupLoop(groupInTrans, newObj, obj2)) {
 
                             newObj.push(obj2);
 
@@ -1064,9 +1055,9 @@ export default class InsightFacade implements IInsightFacade {
                                 var Operation1 = Object.keys(query.TRANSFORMATIONS.APPLY[index][beforeOp1])[0];
 
                                 if (Operation1==="COUNT"){
-                                    newObj[obj+1]["counter array"] = [obj2[beforeOp1]];
+                                    newObj[newObj.length - 1]["counter array"] = [];
                                 }else if (Operation1==="AVG"){
-                                    newObj[obj+1]["avg array"] = [obj2[beforeOp1]];
+                                    newObj[newObj.length - 1]["avg array"] = [];
 
                                 }
                             }
@@ -1078,35 +1069,45 @@ export default class InsightFacade implements IInsightFacade {
                             var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
 
 
-                            // console.log("final courses arr  "+JSON.stringify(finalCourseArr[b]));
-                            // console.log("new object array "+ JSON.stringify(newObj[obj]));
+                            if (GroupLoop(groupInTrans, newObj, obj2)) {
 
-                            if (GroupLoop(groupInTrans, newObj[obj], obj2)) {
+                                var failResponseWrongType: InsightResponse = {
+                                    code: 400,
+                                    body: {"error": "type of apply value is wrong"}
+                                };
+
+
+
+                                if (Operation == "SUM" || Operation === "MAX" ||Operation === "MIN" ||Operation === "AVG" ){
+                                    if (typeof(obj2[beforeOp]) != 'number'){
+                                        reject(failResponseWrongType);
+                                    }
+                                }
 
                                 if (Operation === "SUM") {
 
-                                    newObj[obj][beforeOp] += obj2[beforeOp];
+                                    newObj[publicIndex][beforeOp] += obj2[beforeOp];
 
                                 } else if (Operation === "MAX") {
 
-                                    if (newObj[obj][beforeOp] <= obj2[beforeOp]) {
+                                    if (newObj[publicIndex][beforeOp] <= obj2[beforeOp]) {
 
-                                        newObj[obj][beforeOp] = obj2[beforeOp];
+                                        newObj[publicIndex][beforeOp] = obj2[beforeOp];
                                     }
 
                                 } else if (Operation === "MIN") {
 
-                                    if (newObj[obj][beforeOp] >= obj2[beforeOp]) {
-                                        newObj[obj][beforeOp] = obj2[beforeOp];
+                                    if (newObj[publicIndex][beforeOp] >= obj2[beforeOp]) {
+                                        newObj[publicIndex][beforeOp] = obj2[beforeOp];
                                     }
 
                                 }else if (Operation === "COUNT") {
 
-                                    newObj[obj]["counter array"].push(obj2[beforeOp]);
+                                    newObj[publicIndex]["counter array"].push(obj2[beforeOp]);
 
                                 }else if (Operation === "AVG") {
 
-                                    newObj[obj]["avg array"].push(obj2[beforeOp]);
+                                    newObj[publicIndex]["avg array"].push(obj2[beforeOp]);
 
                                 }
 
@@ -1171,10 +1172,25 @@ export default class InsightFacade implements IInsightFacade {
                         }
                     }
 
+                } else {
+                    for (var b = 0; b < finalCourseArr.length; b++) {
+
+                        var groupInTrans = query.TRANSFORMATIONS.GROUP;
+
+                        var obj2 = finalCourseArr[b];
+
+                        //var publicIndex = newObj.length - 1;
+
+                        if(!GroupLoop(groupInTrans, newObj, obj2)) {
+
+                            newObj.push(obj2);
+
+                        }
                 }
 
 
-            }
+
+            }}
 
             // console.log(finalCourseArr.length);
             if (newObj.length!==0) {
