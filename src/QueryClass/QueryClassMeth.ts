@@ -437,11 +437,14 @@ export default class QueryClassMeth {
 
                         if (innderValue2 === "courses_year") {
 
-                            result[innderValue2] = parseInt(course[Object.keys(course)[b]]);
+                            result[Object.keys(input_option[apply][z])[0]] = parseInt(course[Object.keys(course)[b]]);
+
+                           // result[innderValue2] = parseInt(course[Object.keys(course)[b]]);
                         }
                         else {
 
-                            result[innderValue2] = course[Object.keys(course)[b]];
+                            result[Object.keys(input_option[apply][z])[0]] = course[Object.keys(course)[b]];
+                            //result[innderValue2] = course[Object.keys(course)[b]];
                         }
 
                     }
