@@ -76,32 +76,36 @@ export default class Server {
 
                 //Other endpoints will go here
 
-                that.rest.post('/user', function (req, res, next) {
-                    var user = req.params;
-                    user.id = next_user_id++;
-                    users[user.id] = user;
-                    res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
-                    res.end(JSON.stringify(user));
-                    return next();
-                });
+                // that.rest.post('/user', function (req, res, next) {
+                //     // var user = req.params;
+                //     // user.id = next_user_id++;
+                //     // users[user.id] = user;
+                //     // res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+                //     // res.end(JSON.stringify(user));
+                //
+                //     res.send();
+                //     return next();
+                // });
 
-                //that.rest.post('/dataset', );
+                that.rest.post('/query', Server.performQ);
 
-                that.rest.put('/dataset/:id', function (req, res, next) {
-
-                    res.send(200);
-                    return next();
-
-
-                    // var user = users[parseInt(req.params.id)];
-                    // var changes = req.params;
-                    // delete changes.id;
-                    // for (var x in changes) {
-                    //     user[x] = changes[x];
-                    // }
-                });
+                // that.rest.put('/dataset/:id', function (req, res, next) {
+                //
+                //     req =
+                //     res.send(res.statusCode);
+                //     return next();
+                //
+                //     // var user = users[parseInt(req.params.id)];
+                //     // var changes = req.params;
+                //     // delete changes.id;
+                //     // for (var x in changes) {
+                //     //     user[x] = changes[x];
+                //     // }
+                // });
 
                 that.rest.put("/dataset/:id", Server.dataset);
+
+                that.rest.del("/dataset/:id", Server.deleteD);
 
 //inside http, theres a server and request
 //endpoints get the request and send to the specific methods (server)<--rest, routes http request to method, get the response
@@ -151,10 +155,45 @@ export default class Server {
 
     public static dataset(req: restify.Request, res: restify.Response, next: restify.Next){
 
-        let reqFrom = req.params.msg;
+        var insigh = new InsightFacade();
 
+        let dataString = new Buffer(req.params.body).toString('base64');
 
+        insigh.addDataset(req.params.id, dataString).then(function (value:any) {
 
+            res.json(value.code, value.body);
+
+        });
+
+        return  next();
+
+    }
+
+    public static deleteD(req: restify.Request, res: restify.Response, next: restify.Next){
+
+        var insigh = new InsightFacade();
+
+        insigh.removeDataset(req.params.id).then(function (value:any) {
+
+            res.json(value.code, value.body);
+
+        });
+
+        return  next();
+
+    }
+
+    public static performQ(req: restify.Request, res: restify.Response, next: restify.Next){
+
+        var insigh = new InsightFacade();
+
+        insigh.performQuery(req.body).then(function (value:any) {
+
+            res.json(value.code, value.body);
+
+        });
+
+        return  next();
 
     }
 

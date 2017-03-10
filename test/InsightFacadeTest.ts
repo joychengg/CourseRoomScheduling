@@ -15,6 +15,11 @@ import InsightFacade from "../src/controller/InsightFacade";
 
 import fs = require("fs");
 import {Response} from "restify";
+var chai = require('chai')
+    , chaiHttp = require('chai-http');
+
+chai.use(chaiHttp);
+
 var zipStuff: any = null;
 var inValidZip: any = null;
 var wrongZip: any = null;
@@ -1935,24 +1940,38 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-
-    it("apply with maxseat and avgseat", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomWithApply).then(function (value) {
-            Log.test('Value: ' + value.code);
-            console.log(value.body);
-            expect(value.code).to.equal(200);
-            expect(value.body).to.deep.equal(resultForapply);
-            // console.log(JSON.stringify(value.body));
-
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
+    it("PUT description", function () {
+        return chai.request("http://localhost:4321")
+            .put('/dataset/rooms')
+            .attach("body", fs.readFileSync("./rooms.zip"), "rooms.zip")
+            .then(function (res: Response) {
+                Log.trace('then:');
+                // some assertions
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:'+err);
+                // some assertions
+                expect.fail();
+            });
     });
-/*
+
+    it("POST description", function () {
+        return chai.request("http://localhost:4321")
+            .post('/query')
+            .send(queryForRoom)
+            .then(function (res: Response) {
+                Log.trace('then:');
+                // some assertions
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:');
+                // some assertions
+                expect.fail();
+            });
+    });
+
     it("latQuery", function () {
-        this.timeout(30000);
+        this.timeout(10000);
         return insightFacade.performQuery(latQuery).then(function (value) {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
@@ -1962,7 +1981,7 @@ describe("InsightFacadeTest", function () {
             console.log("error" + err);
             expect.fail();
         });
-    });*/
+    });
 
     it("Knuth: Find all studio type rooms without some furniture.", function () {
         this.timeout(10000);
@@ -1977,19 +1996,6 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("apply furniture", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(applyRequest2).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.body).to.deep.equal(applyResult2);
-        }).catch(function (err) {
-            console.log("error" + err);
-        });
-    });
-
-
-
     it("apply is empty but column contain maxseat - should give 400", function () {
         this.timeout(10000);
         return insightFacade.performQuery(testfornoApply).then(function (value) {
@@ -2002,7 +2008,31 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("apply furniture", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(applyRequest2).then(function (value) {
+            Log.test('Value: ' + value.code);
+            console.log(value.body);
+            expect(value.body).to.deep.equal(applyResult2);
+        }).catch(function (err) {
+            console.log("error" + err);
+        });
+    });
 
+    it("apply with maxseat and avgseat", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomWithApply).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.code).to.equal(200);
+            expect(value.body).to.deep.equal(resultForapply);
+           // console.log(JSON.stringify(value.body));
+
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
 
 
     it("apply with countCourses", function () {
@@ -3135,7 +3165,6 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
-
 
 
 });
