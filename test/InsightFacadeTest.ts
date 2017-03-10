@@ -897,6 +897,48 @@ var fireTruckRequest: QueryRequest = {
     }
 };
 
+var applyRequest2: QueryRequest = {
+
+    WHERE: {},
+    OPTIONS: {
+    COLUMNS: [
+        "rooms_furniture"
+    ],
+        ORDER: "rooms_furniture",
+        FORM: "TABLE"
+},
+    TRANSFORMATIONS: {
+    GROUP: ["rooms_furniture"],
+        APPLY: []
+}
+
+}
+
+var applyResult2 = {
+    "render": "TABLE",
+    "result": [{
+        "rooms_furniture": "Classroom-Fixed Tables/Fixed Chairs"
+    }, {
+        "rooms_furniture": "Classroom-Fixed Tables/Movable Chairs"
+    }, {
+        "rooms_furniture": "Classroom-Fixed Tables/Moveable Chairs"
+    }, {
+        "rooms_furniture": "Classroom-Fixed Tablets"
+    }, {
+        "rooms_furniture": "Classroom-Hybrid Furniture"
+    }, {
+        "rooms_furniture": "Classroom-Learn Lab"
+    }, {
+        "rooms_furniture": "Classroom-Movable Tables & Chairs"
+    }, {
+        "rooms_furniture": "Classroom-Movable Tablets"
+    }, {
+        "rooms_furniture": "Classroom-Moveable Tables & Chairs"
+    }, {
+        "rooms_furniture": "Classroom-Moveable Tablets"
+    }]
+}
+
 var errorRequest: QueryRequest = {
     WHERE: {
         "AND": [{
@@ -1963,6 +2005,17 @@ describe("InsightFacadeTest", function () {
             console.log("error" + err);
             expect(err.code).to.equal(400);
             console.log(err.body);
+        });
+    });
+
+    it("apply furniture", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(applyRequest2).then(function (value) {
+            Log.test('Value: ' + value.code);
+            console.log(value.body);
+            expect(value.body).to.deep.equal(applyResult2);
+        }).catch(function (err) {
+            console.log("error" + err);
         });
     });
 
