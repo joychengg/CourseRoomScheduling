@@ -3202,6 +3202,6 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
-
+*/
 
 });
