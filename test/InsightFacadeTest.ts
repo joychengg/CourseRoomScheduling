@@ -15,6 +15,11 @@ import InsightFacade from "../src/controller/InsightFacade";
 
 import fs = require("fs");
 import {Response} from "restify";
+var chai = require('chai')
+    , chaiHttp = require('chai-http');
+
+chai.use(chaiHttp);
+
 var zipStuff: any = null;
 var inValidZip: any = null;
 var wrongZip: any = null;
@@ -1891,6 +1896,36 @@ describe("InsightFacadeTest", function () {
             console.log("error" + JSON.stringify(err));
             expect.fail();
         });
+    });
+
+    it("PUT description", function () {
+        return chai.request("http://localhost:4321")
+            .put('/dataset/rooms')
+            .attach("body", fs.readFileSync("./rooms.zip"), "rooms.zip")
+            .then(function (res: Response) {
+                Log.trace('then:');
+                // some assertions
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:'+err);
+                // some assertions
+                expect.fail();
+            });
+    });
+
+    it("POST description", function () {
+        return chai.request("http://localhost:4321")
+            .post('/query')
+            .send(queryForRoom)
+            .then(function (res: Response) {
+                Log.trace('then:');
+                // some assertions
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:');
+                // some assertions
+                expect.fail();
+            });
     });
 
     it("latQuery", function () {
