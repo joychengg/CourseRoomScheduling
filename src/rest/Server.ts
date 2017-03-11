@@ -72,38 +72,49 @@ export default class Server {
                 // curl -is  http://localhost:4321/echo/myMessage
                 that.rest.get('/echo/:msg', Server.echo);
 
-                that.rest.get("/square/:number", Server.square);
+                //that.rest.get("/square/:number", Server.square);
 
                 //Other endpoints will go here
 
-                // that.rest.post('/user', function (req, res, next) {
-                //     // var user = req.params;
-                //     // user.id = next_user_id++;
-                //     // users[user.id] = user;
-                //     // res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
-                //     // res.end(JSON.stringify(user));
-                //
-                //     res.send();
-                //     return next();
-                // });
+                that.rest.post('/user', function (req, res, next) {
+                    // var user = req.params;
+                    // user.id = next_user_id++;
+                    // users[user.id] = user;
+                    // res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+                    // res.end(JSON.stringify(user));
+
+                    res.send();
+                    return next();
+                });
 
                 that.rest.post('/query', Server.performQ);
 
-                // that.rest.put('/dataset/:id', function (req, res, next) {
-                //
-                //     req =
-                //     res.send(res.statusCode);
-                //     return next();
-                //
-                //     // var user = users[parseInt(req.params.id)];
-                //     // var changes = req.params;
-                //     // delete changes.id;
-                //     // for (var x in changes) {
-                //     //     user[x] = changes[x];
-                //     // }
-                // });
+                that.rest.put('/dataset/:id', function (req: restify.Request, res: restify.Response, next: restify.Next) {
 
-                that.rest.put("/dataset/:id", Server.dataset);
+                    try {
+
+                        var insigh = new InsightFacade();
+                        let dataString = new Buffer(req.params.body).toString('base64');
+
+                        insigh.addDataset(req.params.id, dataString).then(function (value: any) {
+
+                            res.json(value.code, value.body);
+                            console.log("hellow");
+                            return next();
+
+                        }).catch(function (err:any) {
+                            res.json(err.code, err.body);
+                            return next();
+                        });
+
+                    }catch(err){
+                        return next();
+                    }
+
+                    return next();
+                });
+
+//                that.rest.put("/dataset/:id", Server.dataset);
 
                 that.rest.del("/dataset/:id", Server.deleteD);
 
@@ -153,21 +164,27 @@ export default class Server {
     // By updating the Server.echo function pointer above, these methods can be easily moved.
 
 
-    public static dataset(req: restify.Request, res: restify.Response, next: restify.Next){
-
-        var insigh = new InsightFacade();
-
-        let dataString = new Buffer(req.params.body).toString('base64');
-
-        insigh.addDataset(req.params.id, dataString).then(function (value:any) {
-
-            res.json(value.code, value.body);
-
-        });
-
-        return  next();
-
-    }
+    // public static dataset(req: restify.Request, res: restify.Response, next: restify.Next){
+    //
+    //     var insigh = new InsightFacade();
+    //
+    //     try {
+    //         let dataString = new Buffer(req.params.body).toString('base64');
+    //
+    //         insigh.addDataset(req.params.id, dataString).then(function (value: any) {
+    //
+    //             res.json(value.code, value.body);
+    //
+    //         }).catch(function (err:any) {
+    //             res.json(err.code, err.body);
+    //             return next();
+    //         });
+    //
+    //     }catch(err){
+    //         return next();
+    //     }
+    //
+    // }
 
     public static deleteD(req: restify.Request, res: restify.Response, next: restify.Next){
 

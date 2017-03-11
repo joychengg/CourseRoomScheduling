@@ -15,9 +15,8 @@ import InsightFacade from "../src/controller/InsightFacade";
 
 import fs = require("fs");
 import {Response} from "restify";
-var chai = require('chai')
-    , chaiHttp = require('chai-http');
-
+import chai = require('chai');
+import chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 var zipStuff: any = null;
@@ -1242,7 +1241,7 @@ var bigApplyQuery = {
 ,
     OPTIONS: {
         COLUMNS: [
-            "courses_dept",
+            "courses_uuid",
             "countCourses", "Grades"
         ],
         ORDER: {
@@ -1526,13 +1525,19 @@ var result = {
 };
 
 
+
 describe("InsightFacadeTest", function () {
 
+    let s = new Server(4321);
+
+    let URL = "http://localhost:4321";
 
     before(function () { //runs once
         Log.test('Before: ' + (<any>this).test.parent.title);
 
         inValidZip = Buffer.from(fs.readFileSync("./invalidJson.zip")).toString('base64');
+
+        return s.start().then().catch();
 
     });
 
@@ -1947,6 +1952,8 @@ describe("InsightFacadeTest", function () {
 
     after(function () {
         Log.test('After: ' + (<any>this).test.parent.title);
+
+        return s.stop().then().catch();
     });
 
     afterEach(function () {
@@ -1965,13 +1972,16 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
-/*
+
     it("PUT description", function () {
-        return chai.request("http://localhost:4321")
+        this.timeout(10000);
+        fs.unlinkSync("./rooms.json");
+        return chai.request(URL)
             .put('/dataset/rooms')
             .attach("body", fs.readFileSync("./rooms.zip"), "rooms.zip")
-            .then(function (res: Response) {
+            .then(function (res: any) {
                 Log.trace('then:');
+                expect(res).to.have.status(204);
                 // some assertions
             })
             .catch(function (err:any) {
@@ -1982,11 +1992,12 @@ describe("InsightFacadeTest", function () {
     });
 
     it("POST description", function () {
-        return chai.request("http://localhost:4321")
+        return chai.request(URL)
             .post('/query')
             .send(queryForRoom)
-            .then(function (res: Response) {
+            .then(function (res: any) {
                 Log.trace('then:');
+                expect(res).to.have.status(200);
                 // some assertions
             })
             .catch(function (err:any) {
@@ -1994,8 +2005,7 @@ describe("InsightFacadeTest", function () {
                 // some assertions
                 expect.fail();
             });
-    });*/
-
+    });
 
     it("latQuery", function () {
         this.timeout(10000);
@@ -2325,7 +2335,7 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-  /*  it("big apply dataset - checking timeout", function () {
+   it("big apply dataset - checking timeout", function () {
         this.timeout(10000);
         return insightFacade.performQuery(bigApplyQuery).then(function (value) {
             Log.test('Value: ' + value.code);
@@ -2335,7 +2345,9 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
             //  console.log(err.body);
         });
-    });*/
+    });
+
+
     it("quantum", function () {
         this.timeout(10000);
         return insightFacade.performQuery(quantumQuery).then(function (value) {

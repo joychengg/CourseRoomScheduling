@@ -232,8 +232,6 @@ export default class InsightFacade implements IInsightFacade {
                                 var promises2: Promise<any>[] = [];
 
 
-
-
                                 for (let building of htmlArray) {
 
                                     allRoomsArr = [];
@@ -302,10 +300,6 @@ export default class InsightFacade implements IInsightFacade {
                                                         .childNodes[10].childNodes[1].childNodes[3].childNodes[1].childNodes[3]
                                                         .childNodes[1].childNodes[1].childNodes[1].childNodes[3].childNodes[0].childNodes[0].value;
                                                 }
-
-
-
-
 
                                                 for (let i = 1; i < roomtBody.childNodes.length; i++) {
 
