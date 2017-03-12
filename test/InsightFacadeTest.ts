@@ -198,7 +198,7 @@ var roomWithApply: QueryRequest = {
     "FORM": "TABLE"
 },
     TRANSFORMATIONS: {
-    "GROUP": ["rooms_fullname"],
+    "GROUP": ["rooms_fullname", "rooms_number"],
         "APPLY": [{
         "maxSeats": {
             "MAX": "rooms_seats"
@@ -234,6 +234,33 @@ var roomforcover4: QueryRequest = {
         "FORM": "TABLE"
     }
 
+};
+
+var applyWithUUIDBig:QueryRequest = {
+    WHERE: {}
+    ,
+    OPTIONS: {
+        "COLUMNS": [
+            "courses_uuid",
+            "countCourses", "Grades"
+        ],
+        "ORDER": {
+            "dir": "DOWN",
+            "keys": ["courses_uuid"]
+        },
+        "FORM": "TABLE"
+    },
+    TRANSFORMATIONS: {
+        "GROUP": ["courses_uuid"],
+        "APPLY": [
+            {
+                "countCourses":{
+                    "COUNT":"courses_id"}
+            },
+            {"Grades":{
+                "AVG":"courses_avg"}
+            }]
+    }
 };
 
 var roomforcover5: QueryRequest = {
@@ -1241,7 +1268,7 @@ var bigApplyQuery = {
 ,
     OPTIONS: {
         COLUMNS: [
-            "courses_uuid",
+            "courses_dept",
             "countCourses", "Grades"
         ],
         ORDER: {
@@ -2049,12 +2076,28 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(applyRequest2).then(function (value) {
             Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
           //  console.log(value.body);
          //   expect(value.body).to.deep.equal(applyResult2);
         }).catch(function (err) {
             console.log("error" + err);
+            expect.fail();
         });
     });
+
+    // it("apply with uuid big timeout try", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(applyWithUUIDBig).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         console.log(JSON.stringify(value.body));
+    //
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+
 
     it("apply with maxseat and avgseat", function () {
         this.timeout(10000);
@@ -2063,7 +2106,7 @@ describe("InsightFacadeTest", function () {
             //console.log(value.body);
             expect(value.code).to.equal(200);
          //   expect(value.body).to.deep.equal(resultForapply);
-           // console.log(JSON.stringify(value.body));
+           console.log(JSON.stringify(value.body));
 
         }).catch(function (err) {
             console.log("error" + err);
@@ -2339,10 +2382,12 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(bigApplyQuery).then(function (value) {
             Log.test('Value: ' + value.code);
-           // console.log(value.body);
+            expect(value.code).to.equal(200);
+            console.log(JSON.stringify(value.body));
         }).catch(function (err) {
             console.log("error" + err);
-            expect(err.code).to.equal(400);
+            expect.fail();
+           // expect(err.code).to.equal(400);
             //  console.log(err.body);
         });
     });

@@ -229,6 +229,8 @@ export default class QueryClassMethRoom {
 
         var result: any = {};
 
+        result ["groupResult"] = {};
+
 
         for (var i = 0; i < input_option[group].length; i++) {
 
@@ -236,6 +238,7 @@ export default class QueryClassMethRoom {
 
                 if (input_option[group][i] === Object.keys(room)[c]) {
                     result[input_option[group][i]] = room[Object.keys(room)[c]];
+                    result["groupResult"][input_option[group][i]]=room[Object.keys(room)[c]];
                 }
             }
         }

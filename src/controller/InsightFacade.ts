@@ -996,31 +996,42 @@ export default class InsightFacade implements IInsightFacade {
 
             function GroupLoop(group:any[],resultObj:any, inputObj:any):boolean{
 
-                var counter = 0;
+                for (var it in resultObj){
+                    if (resultObj[it]["groupResult"]===obj2["groupResult"]){
 
-                for (let i = 0; i < resultObj.length; i++) {
-                    counter = 0;
-                    for (var item of group) {
-
-                        if (resultObj[i][item] === inputObj[item]) {
-
-                            counter++;
-                        }
-                    }
-
-
-                    if (counter===group.length){
-                        publicIndex = i;
                         return true;
                     }
                 }
 
                 return false;
 
+                // var counter = 0;
+                //
+                // for (let i = 0; i < resultObj.length; i++) {
+                //     counter = 0;
+                //     for (var item of group) {
+                //
+                //         if (resultObj[i][item] === inputObj[item]) {
+                //
+                //            // console.log(inputObj[item]);
+                //
+                //             counter++;
+                //         }
+                //     }
+                //    // console.log("i is here" + i);
+                //
+                //     if (counter===group.length){
+                //         publicIndex = i;
+                //         return true;
+                //     }
+                // }
+                //
+                // return false;
+
             }
             var newObj: any = [];
 
-            //console.log("final courses array " + JSON.stringify(finalCourseArr));
+            console.log("final courses array " + JSON.stringify(finalCourseArr[0]["groupResult"]));
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
