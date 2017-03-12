@@ -312,9 +312,26 @@ export default class QueryClassMeth {
 
     Combine(course:any, input_option:any) {
 
+        var group = Object.keys(input_option)[0];
+
         var column = Object.keys(input_option)[0];
 
         var result: any = {};
+
+
+        result ["groupResult"] = {};
+
+
+        for (var i = 0; i < input_option[group].length; i++) {
+
+            for (var c = 0; c < Object.keys(course).length; c++) {
+
+                if (input_option[group][i] === Object.keys(course)[c]) {
+                    result[input_option[group][i]] = course[Object.keys(course)[c]];
+                    result["groupResult"][input_option[group][i]]=course[Object.keys(course)[c]];
+                }
+            }
+        }
 
 
         for (var i = 0; i < input_option[column].length; i++) {
@@ -426,6 +443,21 @@ export default class QueryClassMeth {
             valueinMain2 = MainkeyInApply2[Object.keys(MainkeyInApply2)[0]];
 
             innderValue2 = valueinMain2[Object.keys(valueinMain2)[0]];
+
+            result ["groupResult"] = {};
+
+
+            for (var i = 0; i < input_option[group].length; i++) {
+
+                for (var c = 0; c < Object.keys(course).length; c++) {
+
+                    if (input_option[group][i] === Object.keys(course)[c]) {
+                        result[input_option[group][i]] = course[Object.keys(course)[c]];
+                        result["groupResult"][input_option[group][i]]=course[Object.keys(course)[c]];
+                    }
+                }
+            }
+
 
             for (var b = 0; b < Object.keys(course).length; b++) {
 

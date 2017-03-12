@@ -22,7 +22,7 @@ var JSZip = require("jszip");
 var parse5 = require("parse5");
 var http = require("http");
 var parser = new parse5.SAXParser();
-var publicIndex = 0;
+var publicIndex:any = 0;
 
 var emptyResponse: InsightResponse = {
     code : 400,
@@ -996,8 +996,10 @@ export default class InsightFacade implements IInsightFacade {
 
             function GroupLoop(group:any[],resultObj:any, inputObj:any):boolean{
 
-                for (var it in resultObj){
-                    if (resultObj[it]["groupResult"]===obj2["groupResult"]){
+                for (var val in resultObj){
+                    if (JSON.stringify(resultObj[val]["groupResult"]) === JSON.stringify(inputObj["groupResult"])){
+
+                        publicIndex = val;
 
                         return true;
                     }
@@ -1011,7 +1013,7 @@ export default class InsightFacade implements IInsightFacade {
                 //     counter = 0;
                 //     for (var item of group) {
                 //
-                //         if (resultObj[i][item] === inputObj[item]) {
+                //         if (JSON.stringify(resultObj[i][item]) === JSON.stringify(inputObj[item])) {
                 //
                 //            // console.log(inputObj[item]);
                 //
@@ -1027,11 +1029,11 @@ export default class InsightFacade implements IInsightFacade {
                 // }
                 //
                 // return false;
-
             }
+
             var newObj: any = [];
 
-            console.log("final courses array " + JSON.stringify(finalCourseArr[0]["groupResult"]));
+            //console.log("final courses array " + JSON.stringify(finalCourseArr[0]["groupResult"]));
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
@@ -1199,6 +1201,9 @@ export default class InsightFacade implements IInsightFacade {
 
             // console.log(finalCourseArr.length);
             if (newObj.length!==0) {
+                for (let val of newObj){
+                    delete val["groupResult"];
+                }
                 finalCourseArr = newObj;
             }
 

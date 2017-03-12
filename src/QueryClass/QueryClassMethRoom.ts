@@ -200,10 +200,24 @@ export default class QueryClassMethRoom {
 
 
     Combine(room:any, input_option:any) {
-
+        var group = Object.keys(input_option)[0];
         var column = Object.keys(input_option)[0];
 
         var result: any = {};
+
+        result ["groupResult"] = {};
+
+
+        for (var i = 0; i < input_option[group].length; i++) {
+
+            for (var c = 0; c < Object.keys(room).length; c++) {
+
+                if (input_option[group][i] === Object.keys(room)[c]) {
+                    result[input_option[group][i]] = room[Object.keys(room)[c]];
+                    result["groupResult"][input_option[group][i]]=room[Object.keys(room)[c]];
+                }
+            }
+        }
 
 
         for (var w = 0; w < input_option[column].length; w++) {
@@ -229,19 +243,6 @@ export default class QueryClassMethRoom {
 
         var result: any = {};
 
-        result ["groupResult"] = {};
-
-
-        for (var i = 0; i < input_option[group].length; i++) {
-
-            for (var c = 0; c < Object.keys(room).length; c++) {
-
-                if (input_option[group][i] === Object.keys(room)[c]) {
-                    result[input_option[group][i]] = room[Object.keys(room)[c]];
-                    result["groupResult"][input_option[group][i]]=room[Object.keys(room)[c]];
-                }
-            }
-        }
 
         var apply = Object.keys(input_option)[1];
 
@@ -249,6 +250,19 @@ export default class QueryClassMethRoom {
 
         for (var a = 0; a < lengthApply; a++) {
 
+            result ["groupResult"] = {};
+
+
+            for (var i = 0; i < input_option[group].length; i++) {
+
+                for (var c = 0; c < Object.keys(room).length; c++) {
+
+                    if (input_option[group][i] === Object.keys(room)[c]) {
+                        result[input_option[group][i]] = room[Object.keys(room)[c]];
+                        result["groupResult"][input_option[group][i]]=room[Object.keys(room)[c]];
+                    }
+                }
+            }
            // console.log(input_option[apply][1]);
             var MainkeyInApply = null;
             var valueinMain = null;

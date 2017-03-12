@@ -16,8 +16,8 @@ import InsightFacade from "../src/controller/InsightFacade";
 import fs = require("fs");
 import {Response} from "restify";
 import chai = require('chai');
-import chaiHttp = require('chai-http');
-chai.use(chaiHttp);
+//import chaiHttp = require('chai-http');
+//chai.use(chaiHttp);
 
 var zipStuff: any = null;
 var inValidZip: any = null;
@@ -2000,6 +2000,38 @@ describe("InsightFacadeTest", function () {
         });
     });
 
+    it("apply furniture", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(applyRequest2).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+           // console.log(value.body);
+            //   expect(value.body).to.deep.equal(applyResult2);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("apply with maxseat and avgseat", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(roomWithApply).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.code).to.equal(200);
+            //   expect(value.body).to.deep.equal(resultForapply);
+            console.log(JSON.stringify(value.body));
+
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+
+
+/*
+
     it("PUT description", function () {
         this.timeout(10000);
         fs.unlinkSync("./rooms.json");
@@ -2033,6 +2065,7 @@ describe("InsightFacadeTest", function () {
                 expect.fail();
             });
     });
+*/
 
     it("latQuery", function () {
         this.timeout(10000);
@@ -2072,76 +2105,7 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("apply furniture", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(applyRequest2).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-          //  console.log(value.body);
-         //   expect(value.body).to.deep.equal(applyResult2);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
 
-    // it("apply with uuid big timeout try", function () {
-    //     this.timeout(10000);
-    //     return insightFacade.performQuery(applyWithUUIDBig).then(function (value) {
-    //         Log.test('Value: ' + value.code);
-    //         expect(value.code).to.equal(200);
-    //         console.log(JSON.stringify(value.body));
-    //
-    //     }).catch(function (err) {
-    //         console.log("error" + err);
-    //         expect.fail();
-    //     });
-    // });
-
-
-    it("apply with maxseat and avgseat", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomWithApply).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-         //   expect(value.body).to.deep.equal(resultForapply);
-           console.log(JSON.stringify(value.body));
-
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-
-    it("apply with countCourses", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(countCourses).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-         //   console.log(JSON.stringify(value.body));
-            //expect(value.body).to.deep.equal(countCourses);
-
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("apply with avg course_avg", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(AVGcourseGradeApply).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-          //  console.log(JSON.stringify(value.body));
-           // expect(value.body).to.deep.equal(AVGCourseApplyResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
 
 
 
@@ -2378,7 +2342,54 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-   it("big apply dataset - checking timeout", function () {
+
+    it("apply with countCourses", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(countCourses).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.code).to.equal(200);
+            //   console.log(JSON.stringify(value.body));
+            //expect(value.body).to.deep.equal(countCourses);
+
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+    it("apply with avg course_avg", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(AVGcourseGradeApply).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+            //  console.log(JSON.stringify(value.body));
+            // expect(value.body).to.deep.equal(AVGCourseApplyResult);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+
+/*
+    it("apply with uuid big timeout try", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(applyWithUUIDBig).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(200);
+            console.log(JSON.stringify(value.body));
+
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
+
+
+
+
+    it("big apply dataset - checking timeout", function () {
         this.timeout(10000);
         return insightFacade.performQuery(bigApplyQuery).then(function (value) {
             Log.test('Value: ' + value.code);
@@ -2390,7 +2401,7 @@ describe("InsightFacadeTest", function () {
            // expect(err.code).to.equal(400);
             //  console.log(err.body);
         });
-    });
+    });*/
 
 
     it("quantum", function () {
@@ -2429,7 +2440,7 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
-/*
+
     it("EQ array - reject 400", function () {
         this.timeout(10000);
         return insightFacade.performQuery(EQarrayRequest).then(function (value) {
@@ -3259,6 +3270,6 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
-*/
+
 
 });
