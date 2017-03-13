@@ -557,6 +557,7 @@ export default class InsightFacade implements IInsightFacade {
 
         return new Promise(function (resolve: any, reject: any) {
 
+
             if (!id || isNullOrUndefined(id))
                 reject(emptyResponse);
 
@@ -605,6 +606,7 @@ export default class InsightFacade implements IInsightFacade {
             everythingArr = [];
             allRoomsArr = [];
 
+            //console.log("the beginning timestamp: "+Date.now());
 
             if ((objforQuery.isJson(JSON.stringify(query.WHERE)) || objforQuery.isJson(JSON.stringify(query.OPTIONS))) === false) {
 
@@ -645,10 +647,10 @@ export default class InsightFacade implements IInsightFacade {
                 var count = 0;
                 if (Object.keys(query.OPTIONS.ORDER)[0] === 'dir') {
                     var keyDic = new Set(query.OPTIONS.ORDER.keys);
-                        for (var i  of query.OPTIONS.COLUMNS) {
-                            if (keyDic.has(i))
-                                count++;
-                        }
+                    for (var i  of query.OPTIONS.COLUMNS) {
+                        if (keyDic.has(i))
+                            count++;
+                    }
 
                     if (count != Object.keys(query.OPTIONS.ORDER.keys).length) {
                         var failResponse: InsightResponse = {
@@ -833,7 +835,7 @@ export default class InsightFacade implements IInsightFacade {
             if(Object.keys(query.WHERE).length===0){
                 if (path === "courses"){
 
-                        arrOFCourses = everythingArr;
+                    arrOFCourses = everythingArr;
 
                 }else if (path === "rooms"){
                     for (var room of allRoomsArr){
@@ -860,6 +862,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 try {
                     if (path === "courses") {
+                        console.log(JSON.stringify(everythingArr));
                         for (var course of everythingArr) {
 
                             if (objforQuery.Filter(query.WHERE, course) === true)
@@ -898,9 +901,11 @@ export default class InsightFacade implements IInsightFacade {
                 //var i = array.length;
                 var newSetArr = new Set(array);
                 if (newSetArr.has(obj))
-                        return true;
+                    return true;
                 return false;
             }
+
+
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)){
 
@@ -913,8 +918,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 }
 
-                // console.log("is it here ");
-
+              //  console.log("after filter, before combine timestamp: "+Date.now());
 
                 if (query.TRANSFORMATIONS.APPLY.length === 0) {
 
@@ -992,24 +996,29 @@ export default class InsightFacade implements IInsightFacade {
 
             function GroupLoop(resultObj:any, inputObj:any):boolean{
 
-                for (var val in resultObj){
-                    if (JSON.stringify(resultObj[val]["groupResult"]) === JSON.stringify(inputObj["groupResult"])){
+                //console.log("key here "+Object.keys(resultObj[inputObj["groupResult"]]));
 
-                        publicIndex = val;
+                if ((JSON.stringify(inputObj["groupResult"]) in resultObj) ===false) {
+                //    if (!isNullOrUndefined(Object.keys(resultObj[inputObj["groupResult"]]))) {
 
-                        return true;
-                    }
+                        //if(Object.keys(resultObj[inputObj["groupResult"]])===inputObj["groupResult"]) {
+                            console.log("hello");
+                            return false;
+                        //}
+                  //  }
                 }
-
-                return false;
-
+                console.log("hello2");
+                return true;
             }
 
-            var newObj: any = [];
+            var newObj: any = {};
+            var resultArray = [];
+
+           // console.log("before group timestamp: "+Date.now());
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
-                newObj = [];
+                newObj = {};
 
                 var lengthApply = query.TRANSFORMATIONS.APPLY.length;
 
@@ -1019,9 +1028,15 @@ export default class InsightFacade implements IInsightFacade {
 
                         var obj2 = finalCourseArr[b];
 
-                    if(!GroupLoop(newObj, obj2)) {
-                            newObj.push(obj2);
+                        var condition = GroupLoop(newObj,obj2);
+
+                        if(!condition) {
+                            newObj[JSON.stringify(obj2["groupResult"])]= obj2;
+
+                           // console.log("here is newObj " + JSON.stringify(newObj));
                         }
+
+                      //  console.log("before apply timestamp: "+Date.now());
 
                         for (var e in query.TRANSFORMATIONS.APPLY) {
 
@@ -1029,7 +1044,9 @@ export default class InsightFacade implements IInsightFacade {
                             var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
 
 
-                            if (GroupLoop(newObj, obj2)) {
+                            if (condition) {
+
+                                console.log("here " + JSON.stringify(newObj[obj2["groupResult"]]));
 
                                 var failResponseWrongType: InsightResponse = {
                                     code: 400,
@@ -1044,28 +1061,33 @@ export default class InsightFacade implements IInsightFacade {
 
                                 if (Operation === "SUM") {
 
-                                    newObj[publicIndex][beforeOp] += obj2[beforeOp];
+
+                                    newObj[obj2["groupResult"]][beforeOp] = newObj[obj2["groupResult"]][beforeOp]+ obj2[beforeOp];
 
                                 } else if (Operation === "MAX") {
 
-                                    if (newObj[publicIndex][beforeOp] <= obj2[beforeOp]) {
+                                    if (newObj[obj2["groupResult"]][beforeOp] <= obj2[beforeOp]) {
 
-                                        newObj[publicIndex][beforeOp] = obj2[beforeOp];
+                                        newObj[obj2["groupResult"]][beforeOp] = obj2[beforeOp];
                                     }
 
                                 } else if (Operation === "MIN") {
 
-                                    if (newObj[publicIndex][beforeOp] >= obj2[beforeOp]) {
-                                        newObj[publicIndex][beforeOp] = obj2[beforeOp];
+                                    if (newObj[obj2["groupResult"]][beforeOp] >= obj2[beforeOp]) {
+                                        newObj[obj2["groupResult"]][beforeOp] = obj2[beforeOp];
                                     }
 
                                 }else if (Operation === "COUNT") {
 
-                                    newObj[publicIndex]["counter array"].push(obj2[beforeOp]);
+                                    console.log("get in here");
+
+                                    newObj[obj2["groupResult"]]["counter array"].push(obj2[beforeOp]);
+
+                                    console.log("here" +newObj[obj2["groupResult"]]["counter array"]);
 
                                 }else if (Operation === "AVG") {
 
-                                    newObj[publicIndex]["avg array"].push(obj2[beforeOp]);
+                                    newObj[obj2["groupResult"]]["avg array"].push(obj2[beforeOp]);
 
                                 }
 
@@ -1073,8 +1095,10 @@ export default class InsightFacade implements IInsightFacade {
 
                         }
 
-                       // console.log("after" + JSON.stringify(newObj[publicIndex]));
+                        // console.log("after" + JSON.stringify(newObj[publicIndex]));
                     }
+
+                  //  console.log("after group before apply for count and avg timestamp: "+Date.now());
 
                     var distinctArr:any;
                     for (var index in query.TRANSFORMATIONS.APPLY){
@@ -1082,7 +1106,7 @@ export default class InsightFacade implements IInsightFacade {
                         var Operation2 = Object.keys(query.TRANSFORMATIONS.APPLY[index][beforeOp2])[0];
 
                         if (Operation2==="COUNT"){
-                            for (var ele in newObj) {
+                            for (var ele of Object.keys(newObj)) {
                                 distinctArr = [];
                                 var arrayEle = newObj[ele]["counter array"];
                                 for (var innerEle of arrayEle) {
@@ -1097,12 +1121,12 @@ export default class InsightFacade implements IInsightFacade {
 
                         }else if(Operation2==="AVG"){
 
-                            for (var ele2 of newObj) {
+                            for (var ele2 of Object.keys(newObj)) {
 
                                 var total = 0;
 
-                                var arrayEle = ele2["avg array"];
-                              //  console.log("array length for counter array "+ arrayEle.length);
+                                var arrayEle = newObj[ele2]["avg array"];
+                                //  console.log("array length for counter array "+ arrayEle.length);
                                 for (var innerEle of arrayEle) {
 
                                     innerEle = innerEle*10;
@@ -1111,25 +1135,29 @@ export default class InsightFacade implements IInsightFacade {
                                     total+=innerEle;
 
                                 }
-                                ele2[beforeOp2] = Number(((total/arrayEle.length)/10).toFixed(2));
+                                newObj[ele2][beforeOp2] = Number(((total/arrayEle.length)/10).toFixed(2));
                             }
 
                         }
 
                     }
 
-                    for (var insideEle of newObj){
+                   // console.log("the end timestamp: "+Date.now());
 
-                        if (!isNullOrUndefined(insideEle["counter array"])){
+                    for (var insideEle of Object.keys(newObj)){
 
-                            delete insideEle["counter array"];
+                        if (!isNullOrUndefined(newObj[insideEle]["counter array"])){
+
+                            delete newObj[insideEle]["counter array"];
                         }
 
-                        if(!isNullOrUndefined(insideEle["avg array"])){
-                            delete insideEle["avg array"];
+                        if(!isNullOrUndefined(newObj[insideEle]["avg array"])){
+                            delete newObj[insideEle]["avg array"];
                         }
 
-                        delete insideEle["groupResult"];
+                        delete newObj[insideEle]["groupResult"];
+
+                        resultArray.push(newObj[insideEle]);
                     }
 
                 } else {
@@ -1137,22 +1165,25 @@ export default class InsightFacade implements IInsightFacade {
 
                         var obj2 = finalCourseArr[b];
 
-                        //var publicIndex = newObj.length - 1;
-
                         if(!GroupLoop(newObj, obj2)) {
 
-                            newObj.push(obj2);
+                            newObj[obj2["groupResult"]]= obj2;
 
                         }
+                        for (var insideEle of Object.keys(newObj)){
+
+                            delete newObj[insideEle]["groupResult"];
+
+                            resultArray.push(newObj[insideEle]);
+                        }
+                    }
+
                 }
-
-
-
-            }}
+            }
 
             // console.log(finalCourseArr.length);
-            if (newObj.length!==0) {
-                finalCourseArr = newObj;
+            if (resultArray.length!==0) {
+                finalCourseArr = resultArray;
             }
 
             // need to implement sorting the strings in apply
@@ -1254,7 +1285,7 @@ export default class InsightFacade implements IInsightFacade {
                 result: finalCourseArr
             };
 
-           // console.log(resultThing.result.length);
+            // console.log(resultThing.result.length);
 
             var finalFinal = JSON.parse(JSON.stringify(resultThing));
 

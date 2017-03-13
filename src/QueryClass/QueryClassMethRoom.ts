@@ -258,8 +258,6 @@ export default class QueryClassMethRoom {
                 result[Object.keys(room)[c]] = room[Object.keys(room)[c]];
                 result["groupResult"][Object.keys(room)[c]]=room[Object.keys(room)[c]];
             }
-        }
-
 
         for (var a = 0; a < lengthApply; a++) {
             // console.log(input_option[apply][1]);
@@ -273,9 +271,9 @@ export default class QueryClassMethRoom {
 
             innderValue = valueinMain[Object.keys(valueinMain)[0]];
 
-            for (var b = 0; b < Object.keys(room).length; b++) {
+            //for (var b = 0; b < Object.keys(room).length; b++) {
 
-                if (innderValue === Object.keys(room)[b]) {
+                if (innderValue === Object.keys(room)[c]) {
                     if (Object.keys(valueinMain)[0]==="COUNT"){
                         result["counter array"] = [];
                     }
@@ -283,7 +281,7 @@ export default class QueryClassMethRoom {
                     if (Object.keys(valueinMain)[0]==="AVG"){
                         result["avg array"] = [];
                     }
-                    result[Object.keys(input_option[apply][a])[0]] = room[Object.keys(room)[b]];
+                    result[Object.keys(input_option[apply][a])[0]] = room[Object.keys(room)[c]];
 
                 }
             }

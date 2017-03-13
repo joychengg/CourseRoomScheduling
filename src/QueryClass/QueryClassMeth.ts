@@ -372,9 +372,11 @@ export default class QueryClassMeth {
 
         result ["groupResult"] = {};
 
+
+        for (var c = 0; c < Object.keys(course).length; c++) {
+
         for (var i = 0; i < input_option[group].length; i++) {
 
-            for (var c = 0; c < Object.keys(course).length; c++) {
                 if ((course["Section"] === "overall") && (input_option[group][i] === "courses_year")){
                     result[input_option[group][i]] = 1900;
                     result["groupResult"][input_option[group][i]]=1900;
@@ -394,7 +396,7 @@ export default class QueryClassMeth {
                     }
                 }
             }
-        }
+
 
         for (var z = 0; z < input_option[apply].length; z++) {
 
@@ -408,7 +410,7 @@ export default class QueryClassMeth {
 
             innderValue2 = valueinMain2[Object.keys(valueinMain2)[0]];
 
-            for (var b = 0; b < Object.keys(course).length; b++) {
+          //  for (var b = 0; b < Object.keys(course).length; b++) {
 
                 if (Object.keys(valueinMain2)[0]==="COUNT"){
                     result["counter array"] = [];
@@ -421,15 +423,15 @@ export default class QueryClassMeth {
                         result[input_option[group][z]] = 1900;
                     }
 
-                    if (this.methodKey3(innderValue2) === Object.keys(course)[b]) {
+                    if (this.methodKey3(innderValue2) === Object.keys(course)[c]) {
 
                         if (innderValue2 === "courses_year") {
 
-                            result[Object.keys(input_option[apply][z])[0]] = parseInt(course[Object.keys(course)[b]]);
+                            result[Object.keys(input_option[apply][z])[0]] = parseInt(course[Object.keys(course)[c]]);
 
                         }
                         else {
-                            result[Object.keys(input_option[apply][z])[0]] = course[Object.keys(course)[b]];
+                            result[Object.keys(input_option[apply][z])[0]] = course[Object.keys(course)[c]];
 
                         }
 
