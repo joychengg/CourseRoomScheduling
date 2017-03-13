@@ -236,30 +236,24 @@ var roomforcover4: QueryRequest = {
 
 };
 
-var applyWithUUIDBig:QueryRequest = {
-    WHERE: {}
-    ,
-    OPTIONS: {
+var applyWithUUIDBig:QueryRequest =    {
+    "WHERE": {},
+    "OPTIONS": {
         "COLUMNS": [
-            "courses_uuid",
-            "countCourses", "Grades"
+            "courses_uuid", "minGrade"
         ],
-        "ORDER": {
-            "dir": "DOWN",
-            "keys": ["courses_uuid"]
-        },
+        "ORDER": "minGrade",
         "FORM": "TABLE"
     },
-    TRANSFORMATIONS: {
+    "TRANSFORMATIONS": {
         "GROUP": ["courses_uuid"],
         "APPLY": [
             {
-                "countCourses":{
-                    "COUNT":"courses_id"}
-            },
-            {"Grades":{
-                "AVG":"courses_avg"}
-            }]
+                "minGrade": {
+                    "MIN": "courses_avg"
+                }
+            }
+        ]
     }
 };
 
@@ -2005,8 +1999,8 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(applyRequest2).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-           // console.log(value.body);
-            //   expect(value.body).to.deep.equal(applyResult2);
+            //console.log(value.body);
+            expect(value.body).to.deep.equal(applyResult2);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -2019,7 +2013,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
             expect(value.code).to.equal(200);
-            //   expect(value.body).to.deep.equal(resultForapply);
+            //expect(value.body).to.deep.equal(resultForapply);
             console.log(JSON.stringify(value.body));
 
         }).catch(function (err) {
@@ -2067,7 +2061,7 @@ describe("InsightFacadeTest", function () {
     });
 */
 
-    it("latQuery", function () {
+    it("latQuery - Empty", function () {
         this.timeout(10000);
         return insightFacade.performQuery(latQuery).then(function (value) {
             Log.test('Value: ' + value.code);
@@ -2084,7 +2078,7 @@ describe("InsightFacadeTest", function () {
         this.timeout(10000);
         return insightFacade.performQuery(knuthQuery).then(function (value) {
             Log.test('Value: ' + value.code);
-            //console.log(value.body);
+            console.log(value.body);
             expect(value.code).to.equal(200);
             //expect(knuthResult).to.deep.equal(value.body);
         }).catch(function (err) {
@@ -2372,7 +2366,7 @@ describe("InsightFacadeTest", function () {
     });
 
 
-/*
+
     it("apply with uuid big timeout try", function () {
         this.timeout(10000);
         return insightFacade.performQuery(applyWithUUIDBig).then(function (value) {
@@ -2401,7 +2395,7 @@ describe("InsightFacadeTest", function () {
            // expect(err.code).to.equal(400);
             //  console.log(err.body);
         });
-    });*/
+    });
 
 
     it("quantum", function () {
@@ -2409,7 +2403,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(quantumQuery).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-           // console.log(value.body);
+            //console.log(value.body);
             //   expect(value.body).to.deep.equal(testResult);
         }).catch(function (err) {
             console.log("error" + err);
