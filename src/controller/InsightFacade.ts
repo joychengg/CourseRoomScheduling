@@ -1155,10 +1155,6 @@ export default class InsightFacade implements IInsightFacade {
                 finalCourseArr = newObj;
             }
 
-            //console.log(finalCourseArr.length);
-
-           //console.log("new object array" + JSON.stringify(finalCourseArr));
-
             // need to implement sorting the strings in apply
 
             if (!isNullOrUndefined(query.OPTIONS.ORDER)) {
@@ -1246,6 +1242,11 @@ export default class InsightFacade implements IInsightFacade {
                         }
                     }
                 });
+            }
+
+
+            for (let val of finalCourseArr){
+                delete val["groupResult"];
             }
 
             var resultThing:QueryRequest2 = {
