@@ -1043,7 +1043,6 @@ export default class InsightFacade implements IInsightFacade {
                             var beforeOp = Object.keys(query.TRANSFORMATIONS.APPLY[e])[0];
                             var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
 
-
                             if (condition) {
 
                                 console.log("here " + JSON.stringify(newObj[obj2["groupResult"]]));
