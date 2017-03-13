@@ -1085,7 +1085,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                 }else if (Operation === "COUNT") {
 
-                                    console.log("get in here");
+                                    //console.log("get in here");
 
                                     newObj[obj2Key]["counter array"].push(obj2[beforeOp]);
 
