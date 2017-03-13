@@ -72,31 +72,15 @@ export default class Server {
                 // curl -is  http://localhost:4321/echo/myMessage
                 that.rest.get('/echo/:msg', Server.echo);
 
-                //that.rest.get("/square/:number", Server.square);
-
-                //Other endpoints will go here
-
-                // that.rest.post('/user', function (req, res, next) {
-                //     // var user = req.params;
-                //     // user.id = next_user_id++;
-                //     // users[user.id] = user;
-                //     // res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
-                //     // res.end(JSON.stringify(user));
-                //
-                //     res.send();
-                //     return next();
-                // });
 
                 that.rest.post('/query', Server.performQ);
 
                 that.rest.put('/dataset/:id', function (req: restify.Request, res: restify.Response, next: restify.Next) {
 
-                    try {
-
                         var insigh = new InsightFacade();
                         let dataString = new Buffer(req.params.body).toString('base64');
 
-                        insigh.addDataset(req.params.id, dataString).then(function (value: any) {
+                        return insigh.addDataset(req.params.id, dataString).then(function (value: any) {
 
                             res.json(value.code, value.body);
                             return next();
@@ -106,14 +90,7 @@ export default class Server {
                             return next();
                         });
 
-                    }catch(err){
-                        return next();
-                    }
-
-                    return next();
                 });
-
-//                that.rest.put("/dataset/:id", Server.dataset);
 
                 that.rest.del("/dataset/:id", Server.deleteD);
 
@@ -167,8 +144,7 @@ export default class Server {
 
         var insigh = new InsightFacade();
 
-        try {
-            insigh.removeDataset(req.params.id).then(function (value: any) {
+            return insigh.removeDataset(req.params.id).then(function (value: any) {
 
                 res.json(value.code, value.body);
                 return next();
@@ -178,11 +154,6 @@ export default class Server {
                 return next();
             });
 
-        }catch(err){
-
-            return next();
-        }
-        return  next();
 
     }
 
@@ -190,28 +161,33 @@ export default class Server {
 
         var insigh = new InsightFacade();
 
-        insigh.performQuery(req.body).then(function (value:any) {
 
-            res.json(value.code, value.body);
+            return insigh.performQuery(req.body).then(function (value: any) {
 
-        });
+                res.json(value.code, value.body);
 
-        return  next();
+                return next();
 
-    }
-
-    public static square(req: restify.Request, res: restify.Response, next: restify.Next){
-        let number = req.params.num;
-        let squared_number = number*number;
-
-        let response_json = {"squared_number" : squared_number};
-
-        res.json(200, response_json);  //send  the response upstream
-
-        return next();
+            }).catch(function (err: any) {
+                res.json(err.code, err.body);
+                return next();
+            });
 
 
     }
+
+    // public static square(req: restify.Request, res: restify.Response, next: restify.Next){
+    //     let number = req.params.num;
+    //     let squared_number = number*number;
+    //
+    //     let response_json = {"squared_number" : squared_number};
+    //
+    //     res.json(200, response_json);  //send  the response upstream
+    //
+    //     return next();
+    //
+    //
+    // }
 
     public static echo(req: restify.Request, res: restify.Response, next: restify.Next) {
 
