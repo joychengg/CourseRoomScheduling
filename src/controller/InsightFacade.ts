@@ -1040,7 +1040,6 @@ export default class InsightFacade implements IInsightFacade {
                             if (!condition){
                                 if (Operation === "COUNT") {
 
-                                    console.log("get in here");
 
                                     newObj[obj2Key]["counter array"].push(obj2[beforeOp]);
 
@@ -1054,7 +1053,6 @@ export default class InsightFacade implements IInsightFacade {
 
                             if (condition) {
 
-                                console.log("here " + newObj[obj2Key]);
 
                                 var failResponseWrongType: InsightResponse = {
                                     code: 400,
