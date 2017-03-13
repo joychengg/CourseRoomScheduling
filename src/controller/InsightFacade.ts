@@ -1043,7 +1043,7 @@ export default class InsightFacade implements IInsightFacade {
                            // console.log("here is newObj " + JSON.stringify(newObj));
                         }
 
-                      //  console.log("before apply timestamp: "+Date.now());
+
 
                         for (var e in query.TRANSFORMATIONS.APPLY) {
 
