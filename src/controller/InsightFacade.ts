@@ -998,17 +998,10 @@ export default class InsightFacade implements IInsightFacade {
 
                 //console.log("key here "+Object.keys(resultObj[inputObj["groupResult"]]));
 
-                if ((JSON.stringify(inputObj["groupResult"]) in resultObj) ===false) {
-                //    if (!isNullOrUndefined(Object.keys(resultObj[inputObj["groupResult"]]))) {
-
-                        //if(Object.keys(resultObj[inputObj["groupResult"]])===inputObj["groupResult"]) {
-                            console.log("hello");
-                            return false;
-                        //}
-                  //  }
+                if (!isNullOrUndefined(resultObj[JSON.stringify(inputObj["groupResult"])])) {
+                    return true;
                 }
-                console.log("hello2");
-                return true;
+                return false;
             }
 
             var newObj: any = {};
@@ -1042,10 +1035,26 @@ export default class InsightFacade implements IInsightFacade {
 
                             var beforeOp = Object.keys(query.TRANSFORMATIONS.APPLY[e])[0];
                             var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
+                            var obj2Key = JSON.stringify(obj2["groupResult"]);
+
+                            if (!condition){
+                                if (Operation === "COUNT") {
+
+                                    console.log("get in here");
+
+                                    newObj[obj2Key]["counter array"].push(obj2[beforeOp]);
+
+
+                                }else if (Operation === "AVG") {
+
+                                    newObj[obj2Key]["avg array"].push(obj2[beforeOp]);
+
+                                }
+                            }
 
                             if (condition) {
 
-                                console.log("here " + JSON.stringify(newObj[obj2["groupResult"]]));
+                                console.log("here " + newObj[obj2Key]);
 
                                 var failResponseWrongType: InsightResponse = {
                                     code: 400,
@@ -1061,32 +1070,31 @@ export default class InsightFacade implements IInsightFacade {
                                 if (Operation === "SUM") {
 
 
-                                    newObj[obj2["groupResult"]][beforeOp] = newObj[obj2["groupResult"]][beforeOp]+ obj2[beforeOp];
+                                    newObj[obj2Key][beforeOp] = newObj[obj2Key][beforeOp]+ obj2[beforeOp];
 
                                 } else if (Operation === "MAX") {
 
-                                    if (newObj[obj2["groupResult"]][beforeOp] <= obj2[beforeOp]) {
+                                    if (newObj[obj2Key][beforeOp] <= obj2[beforeOp]) {
 
-                                        newObj[obj2["groupResult"]][beforeOp] = obj2[beforeOp];
+                                        newObj[obj2Key][beforeOp] = obj2[beforeOp];
                                     }
 
                                 } else if (Operation === "MIN") {
 
-                                    if (newObj[obj2["groupResult"]][beforeOp] >= obj2[beforeOp]) {
-                                        newObj[obj2["groupResult"]][beforeOp] = obj2[beforeOp];
+                                    if (newObj[obj2Key][beforeOp] >= obj2[beforeOp]) {
+                                        newObj[obj2Key][beforeOp] = obj2[beforeOp];
                                     }
 
                                 }else if (Operation === "COUNT") {
 
                                     console.log("get in here");
 
-                                    newObj[obj2["groupResult"]]["counter array"].push(obj2[beforeOp]);
+                                    newObj[obj2Key]["counter array"].push(obj2[beforeOp]);
 
-                                    console.log("here" +newObj[obj2["groupResult"]]["counter array"]);
 
                                 }else if (Operation === "AVG") {
 
-                                    newObj[obj2["groupResult"]]["avg array"].push(obj2[beforeOp]);
+                                    newObj[obj2Key]["avg array"].push(obj2[beforeOp]);
 
                                 }
 
