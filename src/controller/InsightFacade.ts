@@ -14,6 +14,7 @@ import {AST} from "parse5";
 import QueryClassMethRoom from "../QueryClass/QueryClassMethRoom";
 import {Room} from "../QueryClass/Room";
 import lastIndexOf = require("core-js/fn/array/last-index-of");
+import {isNull} from "util";
 
 
 var fs = require("fs");
@@ -992,16 +993,34 @@ export default class InsightFacade implements IInsightFacade {
 
             function GroupLoop(resultObj:any, inputObj:any):boolean{
 
-                for (var val in resultObj){
-                    if (JSON.stringify(resultObj[val]["groupResult"]) === JSON.stringify(inputObj["groupResult"])){
+                var input = JSON.stringify(inputObj["groupResult"]);
+                var test = JSON.stringify(resultObj);
 
-                        publicIndex = val;
+                if( test.indexOf(input) >= 0){
+                   resultObj.filter(function (element:any, index:any) {
+                        if (JSON.stringify(element['groupResult']) === input) {
+                            publicIndex = index;
+                            return;
+                        }
+                    });
 
-                        return true;
-                    }
+                    return true;
+                }else {
+                    return false;
                 }
 
-                return false;
+
+                //
+                // for (var val in resultObj){
+                //     if (JSON.stringify(resultObj[val]["groupResult"]) === JSON.stringify(inputObj["groupResult"])){
+                //
+                //         publicIndex = val;
+                //
+                //         return true;
+                //     }
+                // }
+                //
+                // return false;
 
             }
 
@@ -1017,9 +1036,13 @@ export default class InsightFacade implements IInsightFacade {
 
                     for (var b = 0; b < finalCourseArr.length; b++) {
 
-                        var obj2 = finalCourseArr[b];
 
-                    if(!GroupLoop(newObj, obj2)) {
+                        var obj2 = finalCourseArr[b];
+                        var condition = GroupLoop(newObj,obj2);
+
+
+                    if(!condition) {
+                            publicIndex = newObj.length;
                             newObj.push(obj2);
                         }
 
@@ -1029,7 +1052,7 @@ export default class InsightFacade implements IInsightFacade {
                             var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
 
 
-                            if (GroupLoop(newObj, obj2)) {
+                            //if (condition) {
 
                                 var failResponseWrongType: InsightResponse = {
                                     code: 400,
@@ -1069,7 +1092,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                 }
 
-                            }
+                            //}
 
                         }
 
@@ -1137,9 +1160,9 @@ export default class InsightFacade implements IInsightFacade {
 
                         var obj2 = finalCourseArr[b];
 
-                        //var publicIndex = newObj.length - 1;
+                        var condition = GroupLoop(newObj,obj2);
 
-                        if(!GroupLoop(newObj, obj2)) {
+                        if(!condition) {
 
                             newObj.push(obj2);
 
@@ -1149,6 +1172,7 @@ export default class InsightFacade implements IInsightFacade {
 
 
             }}
+
 
             // console.log(finalCourseArr.length);
             if (newObj.length!==0) {
