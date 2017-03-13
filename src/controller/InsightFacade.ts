@@ -644,13 +644,12 @@ export default class InsightFacade implements IInsightFacade {
 
                 var count = 0;
                 if (Object.keys(query.OPTIONS.ORDER)[0] === 'dir') {
-                    for (var val of query.OPTIONS.ORDER.keys) {
+                    var keyDic = new Set(query.OPTIONS.ORDER.keys);
                         for (var i  of query.OPTIONS.COLUMNS) {
-                            if (val === i) {
+                            if (keyDic.has(i))
                                 count++;
-                            }
                         }
-                    }
+
                     if (count != Object.keys(query.OPTIONS.ORDER.keys).length) {
                         var failResponse: InsightResponse = {
                             code: 400,
@@ -833,13 +832,12 @@ export default class InsightFacade implements IInsightFacade {
 
             if(Object.keys(query.WHERE).length===0){
                 if (path === "courses"){
-                    for (var course of everythingArr) {
-                        arrOFCourses.push(course);
-                    }
+
+                        arrOFCourses = everythingArr;
 
                 }else if (path === "rooms"){
                     for (var room of allRoomsArr){
-                        var room = JSON.parse(room);
+                        room = JSON.parse(room);
                         arrOFrooms.push(room);
                     }
                 }
@@ -898,11 +896,9 @@ export default class InsightFacade implements IInsightFacade {
 
             function contains(obj:any, array:any[]) {
                 //var i = array.length;
-                for (var i = 0; i <array.length; i++) {
-                    if (array[i] == obj) {
+                var newSetArr = new Set(array);
+                if (newSetArr.has(obj))
                         return true;
-                    }
-                }
                 return false;
             }
 
@@ -994,7 +990,7 @@ export default class InsightFacade implements IInsightFacade {
                 }
             }
 
-            function GroupLoop(group:any[],resultObj:any, inputObj:any):boolean{
+            function GroupLoop(resultObj:any, inputObj:any):boolean{
 
                 for (var val in resultObj){
                     if (JSON.stringify(resultObj[val]["groupResult"]) === JSON.stringify(inputObj["groupResult"])){
@@ -1007,67 +1003,24 @@ export default class InsightFacade implements IInsightFacade {
 
                 return false;
 
-                // var counter = 0;
-                //
-                // for (let i = 0; i < resultObj.length; i++) {
-                //     counter = 0;
-                //     for (var item of group) {
-                //
-                //         if (JSON.stringify(resultObj[i][item]) === JSON.stringify(inputObj[item])) {
-                //
-                //            // console.log(inputObj[item]);
-                //
-                //             counter++;
-                //         }
-                //     }
-                //    // console.log("i is here" + i);
-                //
-                //     if (counter===group.length){
-                //         publicIndex = i;
-                //         return true;
-                //     }
-                // }
-                //
-                // return false;
             }
 
             var newObj: any = [];
-
-            //console.log("final courses array " + JSON.stringify(finalCourseArr[0]["groupResult"]));
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
                 newObj = [];
 
-
                 var lengthApply = query.TRANSFORMATIONS.APPLY.length;
-
 
                 if (lengthApply !== 0) {
 
                     for (var b = 0; b < finalCourseArr.length; b++) {
 
-                        var groupInTrans = query.TRANSFORMATIONS.GROUP;
-
                         var obj2 = finalCourseArr[b];
 
-                       // var obj = newObj.length - 1;
-
-                    if(!GroupLoop(groupInTrans, newObj, obj2)) {
-
+                    if(!GroupLoop(newObj, obj2)) {
                             newObj.push(obj2);
-
-                            for (var index in query.TRANSFORMATIONS.APPLY){
-                                var beforeOp1 = Object.keys(query.TRANSFORMATIONS.APPLY[index])[0];
-                                var Operation1 = Object.keys(query.TRANSFORMATIONS.APPLY[index][beforeOp1])[0];
-
-                                if (Operation1==="COUNT"){
-                                    newObj[newObj.length - 1]["counter array"] = [];
-                                }else if (Operation1==="AVG"){
-                                    newObj[newObj.length - 1]["avg array"] = [];
-
-                                }
-                            }
                         }
 
                         for (var e in query.TRANSFORMATIONS.APPLY) {
@@ -1076,17 +1029,15 @@ export default class InsightFacade implements IInsightFacade {
                             var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
 
 
-                            if (GroupLoop(groupInTrans, newObj, obj2)) {
+                            if (GroupLoop(newObj, obj2)) {
 
                                 var failResponseWrongType: InsightResponse = {
                                     code: 400,
                                     body: {"error": "type of apply value is wrong"}
                                 };
 
-
-
-                                if (Operation == "SUM" || Operation === "MAX" ||Operation === "MIN" ||Operation === "AVG" ){
-                                    if (typeof(obj2[beforeOp]) != 'number'){
+                                if ((Operation === "SUM") || (Operation === "MAX") ||(Operation === "MIN") ||(Operation === "AVG") ){
+                                    if (typeof(obj2[beforeOp]) !== 'number'){
                                         reject(failResponseWrongType);
                                     }
                                 }
@@ -1122,7 +1073,7 @@ export default class InsightFacade implements IInsightFacade {
 
                         }
 
-                       // console.log("after" + JSON.stringify(newObj[obj]));
+                       // console.log("after" + JSON.stringify(newObj[publicIndex]));
                     }
 
                     var distinctArr:any;
@@ -1177,18 +1128,18 @@ export default class InsightFacade implements IInsightFacade {
                         if(!isNullOrUndefined(insideEle["avg array"])){
                             delete insideEle["avg array"];
                         }
+
+                        delete insideEle["groupResult"];
                     }
 
                 } else {
                     for (var b = 0; b < finalCourseArr.length; b++) {
 
-                        var groupInTrans = query.TRANSFORMATIONS.GROUP;
-
                         var obj2 = finalCourseArr[b];
 
                         //var publicIndex = newObj.length - 1;
 
-                        if(!GroupLoop(groupInTrans, newObj, obj2)) {
+                        if(!GroupLoop(newObj, obj2)) {
 
                             newObj.push(obj2);
 
@@ -1201,9 +1152,6 @@ export default class InsightFacade implements IInsightFacade {
 
             // console.log(finalCourseArr.length);
             if (newObj.length!==0) {
-                for (let val of newObj){
-                    delete val["groupResult"];
-                }
                 finalCourseArr = newObj;
             }
 

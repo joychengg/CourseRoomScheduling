@@ -76,16 +76,16 @@ export default class Server {
 
                 //Other endpoints will go here
 
-                that.rest.post('/user', function (req, res, next) {
-                    // var user = req.params;
-                    // user.id = next_user_id++;
-                    // users[user.id] = user;
-                    // res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
-                    // res.end(JSON.stringify(user));
-
-                    res.send();
-                    return next();
-                });
+                // that.rest.post('/user', function (req, res, next) {
+                //     // var user = req.params;
+                //     // user.id = next_user_id++;
+                //     // users[user.id] = user;
+                //     // res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+                //     // res.end(JSON.stringify(user));
+                //
+                //     res.send();
+                //     return next();
+                // });
 
                 that.rest.post('/query', Server.performQ);
 
@@ -99,7 +99,6 @@ export default class Server {
                         insigh.addDataset(req.params.id, dataString).then(function (value: any) {
 
                             res.json(value.code, value.body);
-                            console.log("hellow");
                             return next();
 
                         }).catch(function (err:any) {
@@ -164,38 +163,25 @@ export default class Server {
     // By updating the Server.echo function pointer above, these methods can be easily moved.
 
 
-    // public static dataset(req: restify.Request, res: restify.Response, next: restify.Next){
-    //
-    //     var insigh = new InsightFacade();
-    //
-    //     try {
-    //         let dataString = new Buffer(req.params.body).toString('base64');
-    //
-    //         insigh.addDataset(req.params.id, dataString).then(function (value: any) {
-    //
-    //             res.json(value.code, value.body);
-    //
-    //         }).catch(function (err:any) {
-    //             res.json(err.code, err.body);
-    //             return next();
-    //         });
-    //
-    //     }catch(err){
-    //         return next();
-    //     }
-    //
-    // }
-
     public static deleteD(req: restify.Request, res: restify.Response, next: restify.Next){
 
         var insigh = new InsightFacade();
 
-        insigh.removeDataset(req.params.id).then(function (value:any) {
+        try {
+            insigh.removeDataset(req.params.id).then(function (value: any) {
 
-            res.json(value.code, value.body);
+                res.json(value.code, value.body);
+                return next();
 
-        });
+            }).catch(function (err:any) {
+                res.json(err.code, err.body);
+                return next();
+            });
 
+        }catch(err){
+
+            return next();
+        }
         return  next();
 
     }

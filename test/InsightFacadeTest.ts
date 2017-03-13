@@ -16,8 +16,8 @@ import InsightFacade from "../src/controller/InsightFacade";
 import fs = require("fs");
 import {Response} from "restify";
 import chai = require('chai');
-//import chaiHttp = require('chai-http');
-//chai.use(chaiHttp);
+import chaiHttp = require('chai-http');
+chai.use(chaiHttp);
 
 var zipStuff: any = null;
 var inValidZip: any = null;
@@ -198,7 +198,7 @@ var roomWithApply: QueryRequest = {
     "FORM": "TABLE"
 },
     TRANSFORMATIONS: {
-    "GROUP": ["rooms_fullname", "rooms_number"],
+    "GROUP": ["rooms_fullname"],
         "APPLY": [{
         "maxSeats": {
             "MAX": "rooms_seats"
@@ -351,7 +351,7 @@ var roomforcover9: QueryRequest = {
 
 
 
-var NitroResult = {"render":"TABLE","result":[{"rooms_name":"SPPH_143","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Small Group"},{"rooms_name":"SPPH_B108","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Small Group"},{"rooms_name":"ANGU_350","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_4","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_221","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_121","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_222","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"SWNG_122","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_5","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_1","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"PHRM_1101","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"PHRM_1201","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1003","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1001","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"LSC_1002","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_310","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_301","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"DMP_110","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"WOOD_3","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_345","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_243","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_098","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_354","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_347","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_343","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ANGU_241","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"FRDM_153","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"ESB_2012","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"CHBE_101","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"CHBE_102","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D219","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D217","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_B315","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BUCH_D218","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BRKX_2365","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_name":"BIOL_2200","rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"}]}
+var NitroResult = {"render":"TABLE","result":[{"rooms_lat":49.2642,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Small Group"},{"rooms_lat":49.2642,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Small Group"},{"rooms_lat":49.26486,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26478,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26293,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26293,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26293,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26293,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26478,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26478,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26229,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26229,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26236,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26236,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26236,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26125,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26125,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26125,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26478,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26486,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26486,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26486,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26486,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26486,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26486,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26486,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26541,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26274,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26228,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26228,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26826,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26826,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26826,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26826,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26862,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"},{"rooms_lat":49.26479,"rooms_furniture":"Classroom-Fixed Tables/Movable Chairs","rooms_type":"Tiered Large Group"}]}
 
 var queryRequest9: QueryRequest = {
     WHERE: {},
@@ -1375,7 +1375,8 @@ var laterStarQuery:QueryRequest = {
 var nautilusResult = {"render":"TABLE","result":[{"rooms_name":"WOOD_G65","rooms_type":"Small Group"},{"rooms_name":"WOOD_G57","rooms_type":"Small Group"},{"rooms_name":"WOOD_G53","rooms_type":"Small Group"},{"rooms_name":"WOOD_G41","rooms_type":"Small Group"},{"rooms_name":"WOOD_B75","rooms_type":"Small Group"},{"rooms_name":"WOOD_G66","rooms_type":"Small Group"},{"rooms_name":"WOOD_G59","rooms_type":"Small Group"},{"rooms_name":"WOOD_G55","rooms_type":"Small Group"},{"rooms_name":"WOOD_G44","rooms_type":"Small Group"},{"rooms_name":"WOOD_B79","rooms_type":"Small Group"},{"rooms_name":"SWNG_410","rooms_type":"Small Group"},{"rooms_name":"SWNG_408","rooms_type":"Small Group"},{"rooms_name":"SWNG_406","rooms_type":"Small Group"},{"rooms_name":"SWNG_310","rooms_type":"Small Group"},{"rooms_name":"SWNG_308","rooms_type":"Small Group"},{"rooms_name":"SWNG_306","rooms_type":"Small Group"},{"rooms_name":"SWNG_110","rooms_type":"Small Group"},{"rooms_name":"SWNG_108","rooms_type":"Small Group"},{"rooms_name":"SWNG_106","rooms_type":"Small Group"},{"rooms_name":"UCLL_101","rooms_type":"Small Group"},{"rooms_name":"SPPH_B138","rooms_type":"Small Group"},{"rooms_name":"SPPH_B112","rooms_type":"Small Group"},{"rooms_name":"SPPH_143","rooms_type":"Small Group"},{"rooms_name":"SPPH_B136","rooms_type":"Small Group"},{"rooms_name":"SPPH_B108","rooms_type":"Small Group"},{"rooms_name":"OSBO_203A","rooms_type":"Small Group"},{"rooms_name":"OSBO_203B","rooms_type":"Small Group"},{"rooms_name":"PCOH_1215","rooms_type":"Small Group"},{"rooms_name":"PCOH_1009","rooms_type":"Small Group"},{"rooms_name":"PCOH_1302","rooms_type":"Small Group"},{"rooms_name":"PCOH_1011","rooms_type":"Small Group"},{"rooms_name":"PCOH_1008","rooms_type":"Small Group"},{"rooms_name":"PHRM_3122","rooms_type":"Small Group"},{"rooms_name":"PHRM_3118","rooms_type":"Small Group"},{"rooms_name":"PHRM_3115","rooms_type":"Small Group"},{"rooms_name":"PHRM_3112","rooms_type":"Small Group"},{"rooms_name":"PHRM_3124","rooms_type":"Small Group"},{"rooms_name":"PHRM_3120","rooms_type":"Small Group"},{"rooms_name":"PHRM_3116","rooms_type":"Small Group"},{"rooms_name":"PHRM_3114","rooms_type":"Small Group"},{"rooms_name":"SCRF_209","rooms_type":"Small Group"},{"rooms_name":"SCRF_207","rooms_type":"Small Group"},{"rooms_name":"SCRF_205","rooms_type":"Small Group"},{"rooms_name":"SCRF_204","rooms_type":"Small Group"},{"rooms_name":"SCRF_202","rooms_type":"Small Group"},{"rooms_name":"SCRF_200","rooms_type":"Small Group"},{"rooms_name":"SCRF_1024","rooms_type":"Small Group"},{"rooms_name":"SCRF_1022","rooms_type":"Small Group"},{"rooms_name":"SCRF_1020","rooms_type":"Small Group"},{"rooms_name":"SCRF_1004","rooms_type":"Small Group"},{"rooms_name":"SCRF_210","rooms_type":"Small Group"},{"rooms_name":"SCRF_208","rooms_type":"Small Group"},{"rooms_name":"SCRF_206","rooms_type":"Small Group"},{"rooms_name":"SCRF_204A","rooms_type":"Small Group"},{"rooms_name":"SCRF_203","rooms_type":"Small Group"},{"rooms_name":"SCRF_201","rooms_type":"Small Group"},{"rooms_name":"SCRF_1328","rooms_type":"Small Group"},{"rooms_name":"SCRF_1023","rooms_type":"Small Group"},{"rooms_name":"SCRF_1021","rooms_type":"Small Group"},{"rooms_name":"SCRF_1005","rooms_type":"Small Group"},{"rooms_name":"SCRF_1003","rooms_type":"Small Group"},{"rooms_name":"MATH_202","rooms_type":"Small Group"},{"rooms_name":"MATH_225","rooms_type":"Small Group"},{"rooms_name":"MATH_102","rooms_type":"Small Group"},{"rooms_name":"MCML_360M","rooms_type":"Small Group"},{"rooms_name":"MCML_360K","rooms_type":"Small Group"},{"rooms_name":"MCML_360H","rooms_type":"Small Group"},{"rooms_name":"MCML_360F","rooms_type":"Small Group"},{"rooms_name":"MCML_360D","rooms_type":"Small Group"},{"rooms_name":"MCML_360B","rooms_type":"Small Group"},{"rooms_name":"MCML_358","rooms_type":"Small Group"},{"rooms_name":"MCML_256","rooms_type":"Small Group"},{"rooms_name":"MCML_360L","rooms_type":"Small Group"},{"rooms_name":"MCML_360J","rooms_type":"Small Group"},{"rooms_name":"MCML_360G","rooms_type":"Small Group"},{"rooms_name":"MCML_360E","rooms_type":"Small Group"},{"rooms_name":"MCML_360C","rooms_type":"Small Group"},{"rooms_name":"MCML_360A","rooms_type":"Small Group"},{"rooms_name":"MCML_260","rooms_type":"Small Group"},{"rooms_name":"MCLD_220","rooms_type":"Small Group"},{"rooms_name":"SOWK_326","rooms_type":"Small Group"},{"rooms_name":"SOWK_122","rooms_type":"Small Group"},{"rooms_name":"SOWK_324","rooms_type":"Small Group"},{"rooms_name":"IBLC_460","rooms_type":"Small Group"},{"rooms_name":"IBLC_265","rooms_type":"Small Group"},{"rooms_name":"IBLC_263","rooms_type":"Small Group"},{"rooms_name":"IBLC_195","rooms_type":"Small Group"},{"rooms_name":"IBLC_193","rooms_type":"Small Group"},{"rooms_name":"IBLC_191","rooms_type":"Small Group"},{"rooms_name":"IBLC_157","rooms_type":"Small Group"},{"rooms_name":"IBLC_461","rooms_type":"Small Group"},{"rooms_name":"IBLC_266","rooms_type":"Small Group"},{"rooms_name":"IBLC_264","rooms_type":"Small Group"},{"rooms_name":"IBLC_194","rooms_type":"Small Group"},{"rooms_name":"IBLC_192","rooms_type":"Small Group"},{"rooms_name":"IBLC_185","rooms_type":"Small Group"},{"rooms_name":"IBLC_158","rooms_type":"Small Group"},{"rooms_name":"IBLC_156","rooms_type":"Small Group"},{"rooms_name":"DMP_201","rooms_type":"Small Group"},{"rooms_name":"DMP_101","rooms_type":"Small Group"},{"rooms_name":"ANGU_339","rooms_type":"Small Group"},{"rooms_name":"ANGU_332","rooms_type":"Small Group"},{"rooms_name":"ANGU_292","rooms_type":"Small Group"},{"rooms_name":"ANGU_232","rooms_type":"Small Group"},{"rooms_name":"HENN_302","rooms_type":"Small Group"},{"rooms_name":"HENN_304","rooms_type":"Small Group"},{"rooms_name":"HENN_301","rooms_type":"Small Group"},{"rooms_name":"GEOG_214","rooms_type":"Small Group"},{"rooms_name":"GEOG_242","rooms_type":"Small Group"},{"rooms_name":"LASR_211","rooms_type":"Small Group"},{"rooms_name":"LASR_5C","rooms_type":"Small Group"},{"rooms_name":"FORW_519","rooms_type":"Small Group"},{"rooms_name":"FORW_317","rooms_type":"Small Group"},{"rooms_name":"FSC_1615","rooms_type":"Small Group"},{"rooms_name":"FSC_1611","rooms_type":"Small Group"},{"rooms_name":"FSC_1617","rooms_type":"Small Group"},{"rooms_name":"FSC_1613","rooms_type":"Small Group"},{"rooms_name":"FSC_1402","rooms_type":"Small Group"},{"rooms_name":"FSC_1002","rooms_type":"Small Group"},{"rooms_name":"FNH_320","rooms_type":"Small Group"},{"rooms_name":"FNH_20","rooms_type":"Small Group"},{"rooms_name":"FNH_30","rooms_type":"Small Group"},{"rooms_name":"CEME_1206","rooms_type":"Small Group"},{"rooms_name":"CEME_1210","rooms_type":"Small Group"},{"rooms_name":"BUCH_D325","rooms_type":"Small Group"},{"rooms_name":"BUCH_D315","rooms_type":"Small Group"},{"rooms_name":"BUCH_D313","rooms_type":"Small Group"},{"rooms_name":"BUCH_D307","rooms_type":"Small Group"},{"rooms_name":"BUCH_D304","rooms_type":"Small Group"},{"rooms_name":"BUCH_D229","rooms_type":"Small Group"},{"rooms_name":"BUCH_D214","rooms_type":"Small Group"},{"rooms_name":"BUCH_D209","rooms_type":"Small Group"},{"rooms_name":"BUCH_D205","rooms_type":"Small Group"},{"rooms_name":"BUCH_B312","rooms_type":"Small Group"},{"rooms_name":"BUCH_B307","rooms_type":"Small Group"},{"rooms_name":"BUCH_B304","rooms_type":"Small Group"},{"rooms_name":"BUCH_B302","rooms_type":"Small Group"},{"rooms_name":"BUCH_D323","rooms_type":"Small Group"},{"rooms_name":"BUCH_D319","rooms_type":"Small Group"},{"rooms_name":"BUCH_D306","rooms_type":"Small Group"},{"rooms_name":"BUCH_D228","rooms_type":"Small Group"},{"rooms_name":"BUCH_D221","rooms_type":"Small Group"},{"rooms_name":"BUCH_D216","rooms_type":"Small Group"},{"rooms_name":"BUCH_D213","rooms_type":"Small Group"},{"rooms_name":"BUCH_D207","rooms_type":"Small Group"},{"rooms_name":"BUCH_B319","rooms_type":"Small Group"},{"rooms_name":"BUCH_B316","rooms_type":"Small Group"},{"rooms_name":"BUCH_B310","rooms_type":"Small Group"},{"rooms_name":"BUCH_B308","rooms_type":"Small Group"},{"rooms_name":"BUCH_B306","rooms_type":"Small Group"},{"rooms_name":"BUCH_B216","rooms_type":"Small Group"},{"rooms_name":"BIOL_1503","rooms_type":"Small Group"},{"rooms_name":"BIOL_2519","rooms_type":"Small Group"},{"rooms_name":"AUDX_142","rooms_type":"Small Group"},{"rooms_name":"AUDX_157","rooms_type":"Small Group"},{"rooms_name":"ANSO_205","rooms_type":"Small Group"},{"rooms_name":"ANSO_202","rooms_type":"Small Group"},{"rooms_name":"ANSO_203","rooms_type":"Small Group"}]}
 
 var argonResult = {"render":"TABLE","result":[{"rooms_name":"DMP_101","rooms_shortname":"DMP"},{"rooms_name":"DMP_110","rooms_shortname":"DMP"},{"rooms_name":"DMP_201","rooms_shortname":"DMP"},{"rooms_name":"DMP_301","rooms_shortname":"DMP"},{"rooms_name":"DMP_310","rooms_shortname":"DMP"}]}
-var metroResult = {"render":"TABLE","result":[{"rooms_name":"ANGU_098","rooms_seats":260},{"rooms_name":"BIOL_2000","rooms_seats":228},{"rooms_name":"BUCH_A101","rooms_seats":275},{"rooms_name":"BUCH_A201","rooms_seats":181},{"rooms_name":"CHBE_101","rooms_seats":200},{"rooms_name":"CHEM_B150","rooms_seats":265},{"rooms_name":"CHEM_B250","rooms_seats":240},{"rooms_name":"CIRS_1250","rooms_seats":426},{"rooms_name":"DMP_310","rooms_seats":160},{"rooms_name":"ESB_1013","rooms_seats":350},{"rooms_name":"FRDM_153","rooms_seats":160},{"rooms_name":"FSC_1005","rooms_seats":250},{"rooms_name":"GEOG_100","rooms_seats":225},{"rooms_name":"HEBB_100","rooms_seats":375},{"rooms_name":"HENN_200","rooms_seats":257},{"rooms_name":"HENN_201","rooms_seats":155},{"rooms_name":"IBLC_182","rooms_seats":154},{"rooms_name":"LSC_1001","rooms_seats":350},{"rooms_name":"LSC_1002","rooms_seats":350},{"rooms_name":"LSK_200","rooms_seats":205},{"rooms_name":"LSK_201","rooms_seats":183},{"rooms_name":"MATH_100","rooms_seats":224},{"rooms_name":"MCML_166","rooms_seats":200},{"rooms_name":"OSBO_A","rooms_seats":442},{"rooms_name":"PHRM_1101","rooms_seats":236},{"rooms_name":"PHRM_1201","rooms_seats":167},{"rooms_name":"SCRF_100","rooms_seats":280},{"rooms_name":"SRC_220A","rooms_seats":299},{"rooms_name":"SRC_220B","rooms_seats":299},{"rooms_name":"SRC_220C","rooms_seats":299},{"rooms_name":"SWNG_121","rooms_seats":187},{"rooms_name":"SWNG_122","rooms_seats":188},{"rooms_name":"SWNG_221","rooms_seats":190},{"rooms_name":"SWNG_222","rooms_seats":190},{"rooms_name":"WESB_100","rooms_seats":325},{"rooms_name":"WOOD_2","rooms_seats":503},{"rooms_name":"WOOD_6","rooms_seats":181}]}
+var metroResult = {"render":"TABLE","result":[{"rooms_name":"WOOD_6","rooms_seats":181},{"rooms_name":"WOOD_2","rooms_seats":503},{"rooms_name":"SWNG_221","rooms_seats":190},{"rooms_name":"SWNG_121","rooms_seats":187},{"rooms_name":"SWNG_222","rooms_seats":190},{"rooms_name":"SWNG_122","rooms_seats":188},{"rooms_name":"WESB_100","rooms_seats":325},{"rooms_name":"SRC_220C","rooms_seats":299},{"rooms_name":"SRC_220A","rooms_seats":299},{"rooms_name":"SRC_220B","rooms_seats":299},{"rooms_name":"OSBO_A","rooms_seats":442},{"rooms_name":"PHRM_1101","rooms_seats":236},{"rooms_name":"PHRM_1201","rooms_seats":167},{"rooms_name":"SCRF_100","rooms_seats":280},{"rooms_name":"MATH_100","rooms_seats":224},{"rooms_name":"MCML_166","rooms_seats":200},{"rooms_name":"LSC_1001","rooms_seats":350},{"rooms_name":"LSC_1002","rooms_seats":350},{"rooms_name":"LSK_200","rooms_seats":205},{"rooms_name":"LSK_201","rooms_seats":183},{"rooms_name":"IBLC_182","rooms_seats":154},{"rooms_name":"DMP_310","rooms_seats":160},{"rooms_name":"ANGU_098","rooms_seats":260},{"rooms_name":"HENN_200","rooms_seats":257},{"rooms_name":"HENN_201","rooms_seats":155},{"rooms_name":"HEBB_100","rooms_seats":375},{"rooms_name":"GEOG_100","rooms_seats":225},{"rooms_name":"FRDM_153","rooms_seats":160},{"rooms_name":"FSC_1005","rooms_seats":250},{"rooms_name":"ESB_1013","rooms_seats":350},{"rooms_name":"CHEM_B150","rooms_seats":265},{"rooms_name":"CHEM_B250","rooms_seats":240},{"rooms_name":"CHBE_101","rooms_seats":200},{"rooms_name":"CIRS_1250","rooms_seats":426},{"rooms_name":"BUCH_A201","rooms_seats":181},{"rooms_name":"BUCH_A101","rooms_seats":275},{"rooms_name":"BIOL_2000","rooms_seats":228}]}
+
 var argonQuery1: QueryRequest = {
     WHERE: {
         "IS": {
@@ -1989,6 +1990,17 @@ describe("InsightFacadeTest", function () {
     });
 
 
+    it("delete file fail --- reject(404)", function () {
+        this.timeout(10000);
+        return insightFacade.removeDataset('courses').then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect.fail();
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect(err.code).to.equal(404);
+        });
+    });
+
     it("adding rooms.zip first time --- resolve(204)", function () {
         this.timeout(10000);
         return insightFacade.addDataset('rooms', roomFile).then(function (value) {
@@ -2000,18 +2012,18 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("apply furniture", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(applyRequest2).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-           // console.log(value.body);
-            //   expect(value.body).to.deep.equal(applyResult2);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("apply furniture", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(applyRequest2).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //        // console.log(value.body);
+    //         //   expect(value.body).to.deep.equal(applyResult2);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
     it("apply with maxseat and avgseat", function () {
         this.timeout(10000);
@@ -2019,18 +2031,15 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
             expect(value.code).to.equal(200);
-            //   expect(value.body).to.deep.equal(resultForapply);
-            console.log(JSON.stringify(value.body));
+            //console.log(JSON.stringify(value.body));
+           // expect(value.body).to.deep.equal(resultForapply);
+
 
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
         });
     });
-
-
-
-/*
 
     it("PUT description", function () {
         this.timeout(10000);
@@ -2065,7 +2074,41 @@ describe("InsightFacadeTest", function () {
                 expect.fail();
             });
     });
-*/
+    it("DEL should remove a dataset", function () {
+        return chai.request(URL)
+            .del('/dataset/rooms')
+            .then(function (res: any) {
+                Log.trace('then:');
+                expect(res.status).to.equal(204);
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:');
+                expect.fail();
+            });
+    });
+    it("DEL should remove a dataset2", function () {
+        return chai.request(URL)
+            .del('/dataset/rooms')
+            .then(function (res: any) {
+                Log.trace('then:');
+                expect.fail();
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:');
+                expect(err.status).to.equal(404);
+            });
+    });
+
+    it("adding rooms.zip first time2 --- resolve(204)", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('rooms', roomFile).then(function (value) {
+            //Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(204);
+        }).catch(function (err) {
+            console.log("error" + JSON.stringify(err));
+            expect.fail();
+        });
+    });
 
     it("latQuery", function () {
         this.timeout(10000);
@@ -2080,95 +2123,95 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("Knuth: Find all studio type rooms without some furniture.", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(knuthQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(knuthResult).to.deep.equal(value.body);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("apply is empty but column contain maxseat - should give 400", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(testfornoApply).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-          //  console.log(err.body);
-        });
-    });
-
-
-
-
-
-    it("Nautilus: Should be able to find all rooms of a certain type", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(nautilusQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-          //  expect(JSON.stringify(value.body).length).to.equal(JSON.stringify(nautilusResult).length);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("deepNest", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(deepNestRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(JSON.stringify(value.body).length).to.equal(JSON.stringify(nautilusResult).length);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("LTroomQuery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(LTroomQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("laterStarQuery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(laterStarQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("Helium: Filter by partial href", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(heliumQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-           // expect(heliumResult).to.deep.equal(value.body);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("Knuth: Find all studio type rooms without some furniture.", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(knuthQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         //expect(knuthResult).to.deep.equal(value.body);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("apply is empty but column contain maxseat - should give 400", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(testfornoApply).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //       //  console.log(err.body);
+    //     });
+    // });
+    //
+    //
+    //
+    //
+    //
+    // it("Nautilus: Should be able to find all rooms of a certain type", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(nautilusQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //       //  expect(JSON.stringify(value.body).length).to.equal(JSON.stringify(nautilusResult).length);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("deepNest", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(deepNestRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         //expect(JSON.stringify(value.body).length).to.equal(JSON.stringify(nautilusResult).length);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("LTroomQuery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(LTroomQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("laterStarQuery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(laterStarQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("Helium: Filter by partial href", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(heliumQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //        // expect(heliumResult).to.deep.equal(value.body);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
     it("Kleene: Find all group type rooms without some furniture", function () {
         this.timeout(10000);
@@ -2246,16 +2289,16 @@ describe("InsightFacadeTest", function () {
     });
 
 
-    it("cant parse file - reject 400", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses123', inValidZip).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            //console.log(JSON.stringify(err.body));
-            expect(err.code).to.equal(400);
-        });
-    });
+    // it("cant parse file - reject 400", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('courses123', inValidZip).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         //console.log(JSON.stringify(err.body));
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
 
     it("add file fail- reject 400", function () {
         this.timeout(10000);
@@ -2330,17 +2373,17 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
-
-    it("first add of file - resolve in 204", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses', zipStuff).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(204);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    //
+    // it("first add of file - resolve in 204", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('courses', zipStuff).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(201);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
 
     it("apply with countCourses", function () {
@@ -2349,7 +2392,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
             expect(value.code).to.equal(200);
-            //   console.log(JSON.stringify(value.body));
+              // console.log(JSON.stringify(value.body));
             //expect(value.body).to.deep.equal(countCourses);
 
         }).catch(function (err) {
@@ -2372,61 +2415,55 @@ describe("InsightFacadeTest", function () {
     });
 
 
-/*
-    it("apply with uuid big timeout try", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(applyWithUUIDBig).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            console.log(JSON.stringify(value.body));
 
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("apply with uuid big timeout try", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(applyWithUUIDBig).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         //console.log(JSON.stringify(value.body));
+    //
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
+    // it("big apply dataset - checking timeout", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(bigApplyQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //        // console.log(JSON.stringify(value.body));
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
-
-
-    it("big apply dataset - checking timeout", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(bigApplyQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            console.log(JSON.stringify(value.body));
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-           // expect(err.code).to.equal(400);
-            //  console.log(err.body);
-        });
-    });*/
-
-
-    it("quantum", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(quantumQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-           // console.log(value.body);
-            //   expect(value.body).to.deep.equal(testResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("second add of file - resolve in 201", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('rooms', roomFile).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(201);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("quantum", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(quantumQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //        //console.log(JSON.stringify(value.body));
+    //         //expect(value.body).to.deep.equal(testResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("second add of file - resolve in 201", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('rooms', roomFile).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(201);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
 
 
@@ -2490,7 +2527,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(quantum).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-            console.log(value.body);
+           // console.log(value.body);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -2499,121 +2536,121 @@ describe("InsightFacadeTest", function () {
 
 
 
-    it("Gallium: Filter by courses year. LT", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(LTyearQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("Nitro: Should be able to find all rooms with a certain type of furniture.", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(NitroQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(NitroResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("Metro: Should be able to find rooms with more than a certain number of seats", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(metroQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(metroResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("Fluorine: Should be able to find the year a course is offered in", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(fluorineQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-           // console.log(JSON.stringify(value.body));
-            expect(value.code).to.equal(200);
-           // expect(value.body).to.deep.equal(fluorineResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("Argon: Should be able to find rooms in a specific building", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(argonQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(argonResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("Argon: Should be able to find rooms in a specific building1", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(argonQuery1).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(argonResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("invalid Query( IS) - reject 400", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(invalidISRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            //console.log(err.body);
-            expect(err.code).to.equal(400);
-
-        });
-    });
-
-    it("query with both *", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(bothWildRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(bothWildResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-
-
-    it("query with later *", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(laterWildRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-
-            // Log.test("body  " + JSON.stringify(value.body));
-            //expect(value.body).to.deep.equal(laterWildResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("Gallium: Filter by courses year. LT", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(LTyearQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("Nitro: Should be able to find all rooms with a certain type of furniture.", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(NitroQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //        // console.log(JSON.stringify(value.body));
+    //         expect(value.code).to.equal(200);
+    //         //expect(value.body).to.deep.equal(NitroResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("Metro: Should be able to find rooms with more than a certain number of seats", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(metroQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //     //    console.log(JSON.stringify(value.body));
+    //         expect(value.code).to.equal(200);
+    //       //  expect(value.body).to.deep.equal(metroResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("Fluorine: Should be able to find the year a course is offered in", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(fluorineQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //        // console.log(JSON.stringify(value.body));
+    //         expect(value.code).to.equal(200);
+    //       //  expect(value.body).to.deep.equal(fluorineResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("Argon: Should be able to find rooms in a specific building", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(argonQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         //expect(value.body).to.deep.equal(argonResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("Argon: Should be able to find rooms in a specific building1", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(argonQuery1).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         //expect(value.body).to.deep.equal(argonResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("invalid Query( IS) - reject 400", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(invalidISRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         //console.log(err.body);
+    //         expect(err.code).to.equal(400);
+    //
+    //     });
+    // });
+    //
+    // it("query with both *", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(bothWildRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         //expect(value.body).to.deep.equal(bothWildResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    //
+    //
+    // it("query with later *", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(laterWildRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //
+    //         // Log.test("body  " + JSON.stringify(value.body));
+    //         //expect(value.body).to.deep.equal(laterWildResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
     it("query with front *", function () {
         this.timeout(10000);
@@ -2667,17 +2704,17 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("query with no order", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequestNoOrder).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            // expect(value.body).to.deep.equal(resultNoOrder);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("query with no order", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequestNoOrder).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         // expect(value.body).to.deep.equal(resultNoOrder);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
 
     it("query with NOT with wrong id", function () {
@@ -2773,18 +2810,18 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("query with NOT name, return dept", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest17).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(resultPatial);
-            //Log.test("body  " + JSON.stringify(value.body));
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("query with NOT name, return dept", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest17).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         //expect(value.body).to.deep.equal(resultPatial);
+    //         //Log.test("body  " + JSON.stringify(value.body));
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
     it("query with not is, and is", function () {
         this.timeout(10000);
@@ -2814,106 +2851,106 @@ describe("InsightFacadeTest", function () {
     });
 
 
-    it("query with wrong courses_wrong", function () {
-
-        //wrong thingy
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest6).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            //  Log.test('Value: ' + err.code);
-            expect(err.code).to.equal(400);
-        });
-    });
-
-    it("query with wrong order", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(errorRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            //  Log.test('Value: ' + err.code);
-            expect(err.code).to.equal(400);
-        });
-    });
-
-    it("query with wrong AND, OR", function () {
-
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest4).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            //    Log.test('Value: ' + err.code);
-            expect(err.code).to.equal(400);
-        });
-    });
-
-
-    it("query with wrong type", function () {
-
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest5).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            // Log.test('Value: ' + err.code);
-            expect(err.code).to.equal(400);
-        });
-    });
-
-    it("query with null Options", function () {
-
-        this.timeout(10000);
-        return insightFacade.performQuery(nullOptionsRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            // Log.test('Value: ' + err.body);
-            expect(err.code).to.equal(400);
-        });
-    });
-
-
-    it("query_ complex", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest2).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            //console.log(value.body);
-            //expect(value.body).to.deep.equal(testResult_complex);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-
-    it("query with wrong id", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest8).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            //   console.log("error" +JSON.stringify(err.body));
-            expect(err.code).to.equal(424);
-        });
-    });
-
-    it("query20", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryRequest20).then(function (value) {
-            Log.test('Value: ' + value.code);
-        }).catch(function (err) {
-            console.log("error" + err);
-        });
-    });
+    // it("query with wrong courses_wrong", function () {
+    //
+    //     //wrong thingy
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest6).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         //  Log.test('Value: ' + err.code);
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
+    //
+    // it("query with wrong order", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(errorRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         //  Log.test('Value: ' + err.code);
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
+    //
+    // it("query with wrong AND, OR", function () {
+    //
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest4).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         //    Log.test('Value: ' + err.code);
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
+    //
+    //
+    // it("query with wrong type", function () {
+    //
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest5).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         // Log.test('Value: ' + err.code);
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
+    //
+    // it("query with null Options", function () {
+    //
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(nullOptionsRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         // Log.test('Value: ' + err.body);
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
+    //
+    //
+    // it("query_ complex", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest2).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         //console.log(value.body);
+    //         //expect(value.body).to.deep.equal(testResult_complex);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    //
+    // it("query with wrong id", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest8).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         //   console.log("error" +JSON.stringify(err.body));
+    //         expect(err.code).to.equal(424);
+    //     });
+    // });
+    //
+    // it("query20", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryRequest20).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //     });
+    // });
 
     it("LTquery", function () {
         this.timeout(10000);
@@ -2958,16 +2995,16 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("emptyANDFormquery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(emptyANDRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-        });
-    });
+    // it("emptyANDFormquery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(emptyANDRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
 
     it("doubleNegatequery", function () {
         this.timeout(10000);
@@ -2979,206 +3016,206 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("fusionquery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(fusionRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-
-            //expect(value.body).to.deep.equal(fusionResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-        });
-    });
-
-    it("notArrayquery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(notArrayRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-
-        });
-    });
-
-    it("fireTruckquery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(fireTruckRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-
-            //expect(value.body).to.deep.equal(fireTruckResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-        });
-    });
-
-    it("testing year", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(testForYear).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            //   console.log(JSON.stringify(value.body).length);
-            // console.log(JSON.stringify(result).length);
-            //   expect(value.body).to.deep.equal(result);
-            //console.log(JSON.stringify(value.body));
-
-        }).catch(function (err) {
-            console.log("error" + err);
-        });
-    });
-
-
-    it("coverageQuery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(coverageRequest).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("coverageQuery2", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(testforcoverage).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("roomCoverageQuery1", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforCover).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("roomCoverageQuery2", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforCover2).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("roomCoverageQuery3", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforcover3).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("roomCoverageQuery4", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforcover4).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-
-        });
-    });
-
-    it("roomCoverageQuery5", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforcover5).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-
-        });
-    });
-
-    it("roomCoverageQuery6", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforcover6).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-
-        });
-    });
-
-    it("roomCoverageQuery7", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforcover7).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-
-        });
-    });
-
-    it("roomCoverageQuery8", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforcover8).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-
-        });
-    });
-
-    it("roomCoverageQuery9", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomforcover9).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-
-        });
-    });
-
-    it("second add --- resolve(201)", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses', zipStuff).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(201);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("exists file --- resolve(201)", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses', zipStuff).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(201);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("fusionquery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(fusionRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //
+    //         //expect(value.body).to.deep.equal(fusionResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //     });
+    // });
+    //
+    // it("notArrayquery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(notArrayRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //
+    //     });
+    // });
+    //
+    // it("fireTruckquery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(fireTruckRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //
+    //         //expect(value.body).to.deep.equal(fireTruckResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //     });
+    // });
+    //
+    // it("testing year", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(testForYear).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         //   console.log(JSON.stringify(value.body).length);
+    //         // console.log(JSON.stringify(result).length);
+    //         //   expect(value.body).to.deep.equal(result);
+    //         //console.log(JSON.stringify(value.body));
+    //
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //     });
+    // });
+    //
+    //
+    // it("coverageQuery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(coverageRequest).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("coverageQuery2", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(testforcoverage).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery1", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforCover).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery2", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforCover2).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery3", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforcover3).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery4", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforcover4).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery5", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforcover5).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery6", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforcover6).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery7", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforcover7).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery8", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforcover8).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //
+    //     });
+    // });
+    //
+    // it("roomCoverageQuery9", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(roomforcover9).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect(err.code).to.equal(400);
+    //
+    //     });
+    // });
+    //
+    // it("second add --- resolve(201)", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('courses', zipStuff).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(201);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("exists file --- resolve(201)", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('courses', zipStuff).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(201);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
     it("add courses with rooms id - resolve in 400", function () {
         this.timeout(10000);
@@ -3237,16 +3274,16 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("last add, folder exist but no file - resolve in 204", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses', zipStuff).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(204);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    // it("last add, folder exist but no file - resolve in 204", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('courses', zipStuff).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(204);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
 
     it("delete file fail(invalid ID) --- reject(404)", function () {

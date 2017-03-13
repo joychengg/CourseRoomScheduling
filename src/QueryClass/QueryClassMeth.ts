@@ -318,8 +318,9 @@ export default class QueryClassMeth {
 
         var result: any = {};
 
-
-        result ["groupResult"] = {};
+        if (group==="GROUP") {
+            result ["groupResult"] = {};
+        }
 
 
         for (var i = 0; i < input_option[group].length; i++) {
@@ -328,6 +329,7 @@ export default class QueryClassMeth {
 
                 if (input_option[group][i] === Object.keys(course)[c]) {
                     result[input_option[group][i]] = course[Object.keys(course)[c]];
+                    if (group==="GROUP")
                     result["groupResult"][input_option[group][i]]=course[Object.keys(course)[c]];
                 }
             }
@@ -362,71 +364,33 @@ export default class QueryClassMeth {
 
     CombinewithApply(course:any, input_option:any) {
 
-        //     for (var i = 0; i < input_option[group].length; i++) {
-    //
-    //         for (var c = 0; c < Object.keys(room).length; c++) {
-    //
-    //             if (input_option[group][i] === Object.keys(room)[c]) {
-    //                 result[input_option[group][i]] = room[Object.keys(room)[c]];
-    //             }
-    //         }
-    //     }
-    //
-    //     var apply = Object.keys(input_option)[1];
-    //
-    //     var lengthApply = input_option[apply].length;
-    //
-    //     for (var a = 0; a < lengthApply; a++) {
-    //
-    //         // console.log(input_option[apply][1]);
-    //         var MainkeyInApply = null;
-    //         var valueinMain = null;
-    //         var innderValue = null;
-    //
-    //         MainkeyInApply = input_option[apply][a];// this should be {"name":{"MAX":"name2"}}
-    //
-    //
-    //         valueinMain = MainkeyInApply[Object.keys(MainkeyInApply)[0]];//this should be {"MAX":"name2"}
-    //
-    //         innderValue = valueinMain[Object.keys(valueinMain)[0]];
-    //
-    //         for (var b = 0; b < Object.keys(room).length; b++) {
-    //
-    //             if (innderValue === Object.keys(room)[b]) {
-    //                 result[Object.keys(input_option[apply][a])[0]] = room[Object.keys(room)[b]];
-    //
-    //             }
-    //         }
-    //
-    //     }
-    //
-    //
-    //     return result;
-    //
-    // }
-
         var group = Object.keys(input_option)[0];
 
         var apply = Object.keys(input_option)[1];
 
         var result: any = {};
 
+        result ["groupResult"] = {};
+
         for (var i = 0; i < input_option[group].length; i++) {
 
             for (var c = 0; c < Object.keys(course).length; c++) {
                 if ((course["Section"] === "overall") && (input_option[group][i] === "courses_year")){
                     result[input_option[group][i]] = 1900;
+                    result["groupResult"][input_option[group][i]]=1900;
                 }
 
                 if (this.methodKey3(input_option[group][i]) === Object.keys(course)[c]) {
                     if (input_option[group][i] === "courses_year"){
 
-
                         result[input_option[group][i]] = parseInt(course[Object.keys(course)[c]]);
+
+                        result["groupResult"][input_option[group][i]]=parseInt(course[Object.keys(course)[c]]);
                     }
                     else{
 
                         result[input_option[group][i]] = course[Object.keys(course)[c]];
+                        result["groupResult"][input_option[group][i]]=course[Object.keys(course)[c]];
                     }
                 }
             }
@@ -444,23 +408,15 @@ export default class QueryClassMeth {
 
             innderValue2 = valueinMain2[Object.keys(valueinMain2)[0]];
 
-            result ["groupResult"] = {};
-
-
-            for (var i = 0; i < input_option[group].length; i++) {
-
-                for (var c = 0; c < Object.keys(course).length; c++) {
-
-                    if (input_option[group][i] === Object.keys(course)[c]) {
-                        result[input_option[group][i]] = course[Object.keys(course)[c]];
-                        result["groupResult"][input_option[group][i]]=course[Object.keys(course)[c]];
-                    }
-                }
-            }
-
-
             for (var b = 0; b < Object.keys(course).length; b++) {
 
+                if (Object.keys(valueinMain2)[0]==="COUNT"){
+                    result["counter array"] = [];
+                }
+
+                if (Object.keys(valueinMain2)[0]==="AVG"){
+                    result["avg array"] = [];
+                }
                     if ((course["Section"] === "overall") && (input_option[group][z] === "courses_year")) {
                         result[input_option[group][z]] = 1900;
                     }
@@ -471,20 +427,16 @@ export default class QueryClassMeth {
 
                             result[Object.keys(input_option[apply][z])[0]] = parseInt(course[Object.keys(course)[b]]);
 
-                           // result[innderValue2] = parseInt(course[Object.keys(course)[b]]);
                         }
                         else {
-
                             result[Object.keys(input_option[apply][z])[0]] = course[Object.keys(course)[b]];
-                            //result[innderValue2] = course[Object.keys(course)[b]];
+
                         }
 
                     }
 
                 }
             }
-
-
         return result;
 
     }
