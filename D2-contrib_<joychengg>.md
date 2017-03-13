@@ -1,25 +1,31 @@
-Final test pass rate: 98%   Coverage rate: 93%
+Final test pass rate:    Coverage rate: 
 
 
 Contribution:
 We worked together on most parts of the project.
 There was constant effort for us to help debug each other's code as well.
 
-
 some links:
-writing courses_year:
-https://github.com/CS310-2017Jan/cpsc310project_team21/commit/a6fe11fe0f99c249c7c033fe89e284bd88a8345f
+finish creating transform and empty where,created new combine method that takes in apply:
+https://github.com/CS310-2017Jan/cpsc310project_team21/commit/e0a37e4f74ceb16cb45a77d3efea712ed14370ba
 
-try to write lat lon part:
-https://github.com/CS310-2017Jan/cpsc310project_team21/commit/b6a5fa35bafbeebe8e72e48ee6514241e1f876a5
+cleaning up code, fixing apply and order:
+https://github.com/CS310-2017Jan/cpsc310project_team21/commit/d8561c593ba624c0d6e016bb29776b49946b7c4c
 
-fixing bugs:
-https://github.com/CS310-2017Jan/cpsc310project_team21/commit/8f9824663025bf0ec5112598f3b2001ef697f705
-https://github.com/CS310-2017Jan/cpsc310project_team21/commit/f42e5236fb3a839ae0b1b3aa7de8ba0d8ae4439c
+finished group and apply, added some tests:
+https://github.com/CS310-2017Jan/cpsc310project_team21/commit/e6d89e0a0e351fd6b8b88055d3cc93598fd34968
 
-adding tests:
-https://github.com/CS310-2017Jan/cpsc310project_team21/commit/c06db3af00e4c0128e137f85993e4c92f693041e
+implemented REST:
+https://github.com/CS310-2017Jan/cpsc310project_team21/commit/97ec1462ccc5450494675f3e32a675e4ee7e587f
+
+implemented new key:
+https://github.com/CS310-2017Jan/cpsc310project_team21/commit/da1c14f7ffb0c0260036ebe0681244faae319392
+
+fixing loops and groups:
+https://github.com/CS310-2017Jan/cpsc310project_team21/commit/9299f91e42f75083f13ecd2667e464b2214194e0
 
 
-Overall this deliverable was fun. There were definitely some difficult points that we struggled for a long time, but we got through them as a team and we learned so much about team work. We definitely were better on the communication level because we didn't have much redundant work this time. We are also able to share and appreciate each other's ideas on how to approach parts of the project. I don't think there is much to stress on for improvement because we got to know each other better and it was a pleasure to work with my partner.
+This deliverable was very rushed because it overlapped with our midterms and there were only two weeks to do it.
+We spent a long time refractoring our code to try to fix the time out problem.
+In the future, we will be more mindful of the efficiency of our codes.
 
