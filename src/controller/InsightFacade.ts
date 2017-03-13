@@ -1023,7 +1023,7 @@ export default class InsightFacade implements IInsightFacade {
 
            // console.log("before group timestamp: "+Date.now());
 
-            if (!isNullOrUndefined(query.TRANSFORMATIONS)&&(finalCourseArr.length<10000)) {
+            if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
                 newObj = {};
 
