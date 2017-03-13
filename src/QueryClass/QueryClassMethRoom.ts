@@ -221,7 +221,6 @@ export default class QueryClassMethRoom {
             }
         }
 
-
         for (var w = 0; w < input_option[column].length; w++) {
 
             for (var q = 0; q < Object.keys(room).length; q++) {
