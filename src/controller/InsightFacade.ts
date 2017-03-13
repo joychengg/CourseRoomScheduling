@@ -862,7 +862,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 try {
                     if (path === "courses") {
-                        console.log(JSON.stringify(everythingArr));
+                       // console.log(JSON.stringify(everythingArr));
                         for (var course of everythingArr) {
 
                             if (objforQuery.Filter(query.WHERE, course) === true)
@@ -952,6 +952,20 @@ export default class InsightFacade implements IInsightFacade {
                     }
                 }else{
 
+                    for (var As in query.TRANSFORMATIONS.APPLY){
+
+                        var names = Object.keys(query.TRANSFORMATIONS.APPLY[As])[0];
+                        if(objforQuery.checkPartial(names,"_")===true){
+                            var failResponseNotinGroup: InsightResponse = {
+                                code: 400,
+                                body: {"error": "Apply keys cannot contain '_'"}
+                            };
+                            reject(failResponseNotinGroup);
+
+                        }
+
+                    }
+
                     for (var element of query.OPTIONS.COLUMNS) {
                         if ((!contains(element, query.TRANSFORMATIONS.GROUP)) && !containsInApply(element, query.TRANSFORMATIONS.APPLY)) {
                             var failResponseNotinGroup: InsightResponse = {
@@ -1009,7 +1023,7 @@ export default class InsightFacade implements IInsightFacade {
 
            // console.log("before group timestamp: "+Date.now());
 
-            if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
+            if (!isNullOrUndefined(query.TRANSFORMATIONS)&&(finalCourseArr.length<10000)) {
 
                 newObj = {};
 
