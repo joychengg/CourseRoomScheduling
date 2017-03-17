@@ -416,11 +416,11 @@ export default class QueryClassMeth {
           //  for (var b = 0; b < Object.keys(course).length; b++) {
 
                 if (Object.keys(valueinMain2)[0]==="COUNT"){
-                    result["counter array"] = [];
+                    result["counter" + innderValue2] = [];
                 }
 
                 if (Object.keys(valueinMain2)[0]==="AVG"){
-                    result["avg array"] = [];
+                    result["avg" + innderValue2] = [];
                 }
                     if ((course["Section"] === "overall") && (input_option[group][z] === "courses_year")) {
                         result[input_option[group][z]] = 1900;

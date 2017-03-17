@@ -21,7 +21,7 @@ export interface QueryRequest {
     }
 
     TRANSFORMATIONS?: {
-        GROUP: any[];
+        GROUP?: any[];
         APPLY: any[];
     }
 }

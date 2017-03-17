@@ -1337,6 +1337,7 @@ var bigApplyQuery = {
     }
 };
 
+
 var AVGcourseGradeApply = {
     WHERE: {
         "AND": [{
@@ -2358,6 +2359,8 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
+
+
 
     it("apply with countCourses", function () {
         this.timeout(10000);

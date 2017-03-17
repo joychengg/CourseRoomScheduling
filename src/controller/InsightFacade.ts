@@ -14,6 +14,7 @@ import {AST} from "parse5";
 import QueryClassMethRoom from "../QueryClass/QueryClassMethRoom";
 import {Room} from "../QueryClass/Room";
 import lastIndexOf = require("core-js/fn/array/last-index-of");
+import {fail} from "assert";
 
 
 var fs = require("fs");
@@ -904,18 +905,34 @@ export default class InsightFacade implements IInsightFacade {
                     return true;
                 return false;
             }
+            function checkGroup(group:any):boolean{
+                for (let val of group){
+                    if (val.indexOf("_") < 0){
+                        return false;
+                    }
+                }
+                return true;
+            }
 
 
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)){
 
-                if (query.TRANSFORMATIONS.GROUP.length === 0 || isNullOrUndefined(query.TRANSFORMATIONS.GROUP)){
+                if (isNullOrUndefined(query.TRANSFORMATIONS.GROUP) || query.TRANSFORMATIONS.GROUP.length === 0){
                     var failResponseForGroup: InsightResponse = {
                         code: 400,
                         body: {"error": "Group cannot be empty"}
                     };
                     reject(failResponseForGroup);
 
+                }
+
+                if(!checkGroup(query.TRANSFORMATIONS.GROUP)){
+                    var failResponseForGroup1: InsightResponse = {
+                        code: 400,
+                        body: {"error": "Group contains invalid key"}
+                    };
+                    reject(failResponseForGroup1);
                 }
 
               //  console.log("after filter, before combine timestamp: "+Date.now());
@@ -1030,6 +1047,25 @@ export default class InsightFacade implements IInsightFacade {
                 var lengthApply = query.TRANSFORMATIONS.APPLY.length;
 
                 if (lengthApply !== 0) {
+                    var tempSet = new Set();
+                    var tempArr = [];
+
+                    for (var e in query.TRANSFORMATIONS.APPLY) {
+
+                        var beforeOp = Object.keys(query.TRANSFORMATIONS.APPLY[e])[0];
+                        tempSet.add(beforeOp);
+                        tempArr.push(beforeOp);
+
+                    }
+
+                    if (tempSet.size != tempArr.length){
+                        var failResponse: InsightResponse = {
+                            code: 400,
+                            body: {"error": "duplicate apply keys"}
+                        };
+                        reject(failResponse);
+                    }
+
 
                     for (var b = 0; b < finalCourseArr.length; b++) {
 
@@ -1049,6 +1085,7 @@ export default class InsightFacade implements IInsightFacade {
 
                             var beforeOp = Object.keys(query.TRANSFORMATIONS.APPLY[e])[0];
                             var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
+                            var tempKey = query.TRANSFORMATIONS.APPLY[e][beforeOp][Operation];
                             var obj2Key = JSON.stringify(obj2["groupResult"]);
 
 
@@ -1067,12 +1104,12 @@ export default class InsightFacade implements IInsightFacade {
                                 if (Operation === "COUNT") {
 
 
-                                    newObj[obj2Key]["counter array"].push(obj2[beforeOp]);
+                                    newObj[obj2Key]["counter" + tempKey].push(obj2[beforeOp]);
 
 
                                 }else if (Operation === "AVG") {
 
-                                    newObj[obj2Key]["avg array"].push(obj2[beforeOp]);
+                                    newObj[obj2Key]["avg" + tempKey].push(obj2[beforeOp]);
 
                                 }
                             }
@@ -1103,18 +1140,20 @@ export default class InsightFacade implements IInsightFacade {
 
                                     //console.log("get in here");
 
-                                    newObj[obj2Key]["counter array"].push(obj2[beforeOp]);
+                                    newObj[obj2Key]["counter" + tempKey].push(obj2[beforeOp]);
 
 
                                 }else if (Operation === "AVG") {
 
-                                    newObj[obj2Key]["avg array"].push(obj2[beforeOp]);
+                                    newObj[obj2Key]["avg" + tempKey].push(obj2[beforeOp]);
 
                                 }
 
                             }
 
                         }
+
+
 
                         // console.log("after" + JSON.stringify(newObj[publicIndex]));
                     }
@@ -1126,10 +1165,12 @@ export default class InsightFacade implements IInsightFacade {
                         var beforeOp2 = Object.keys(query.TRANSFORMATIONS.APPLY[index])[0];
                         var Operation2 = Object.keys(query.TRANSFORMATIONS.APPLY[index][beforeOp2])[0];
 
+                        var tempKey1 = query.TRANSFORMATIONS.APPLY[index][beforeOp2][Operation2];
+
                         if (Operation2==="COUNT"){
                             for (var ele of Object.keys(newObj)) {
                                 distinctArr = [];
-                                var arrayEle = newObj[ele]["counter array"];
+                                var arrayEle = newObj[ele]["counter" + tempKey1];
                                 for (var innerEle of arrayEle) {
 
                                     if (!contains(innerEle,distinctArr)){
@@ -1146,7 +1187,7 @@ export default class InsightFacade implements IInsightFacade {
 
                                 var total = 0;
 
-                                var arrayEle = newObj[ele2]["avg array"];
+                                var arrayEle = newObj[ele2]["avg" + tempKey1];
                                 //  console.log("array length for counter array "+ arrayEle.length);
                                 for (var innerEle of arrayEle) {
 
@@ -1173,11 +1214,12 @@ export default class InsightFacade implements IInsightFacade {
 
                             if (!columnSet.has(inKey)) {
                                 delete newObj[insideEle][inKey];
-                            }
-
-                            if (inKey === 'courses_uuid'){
+                            }else if (inKey === 'courses_uuid'){
                                 var string = newObj[insideEle][inKey].toString();
                                 newObj[insideEle][inKey] = string;
+                            }else if (inKey === 'courses_year'){
+                                var int = parseInt(newObj[insideEle][inKey]);
+                                newObj[insideEle][inKey] = int;
                             }
                         }
 
@@ -1202,11 +1244,12 @@ export default class InsightFacade implements IInsightFacade {
 
                                 if (!columnSet.has(inKey)) {
                                     delete newObj[insideEle][inKey];
-                                }
-
-                                if (inKey === 'courses_uuid'){
+                                }else if (inKey === 'courses_uuid'){
                                     var string = newObj[insideEle][inKey].toString();
                                     newObj[insideEle][inKey] = string;
+                                }else if (inKey === 'courses_year'){
+                                    var int = parseInt(newObj[insideEle][inKey]);
+                                    newObj[insideEle][inKey] = int;
                                 }
                             }
 
@@ -1313,7 +1356,11 @@ export default class InsightFacade implements IInsightFacade {
 
 
             for (let val of finalCourseArr){
-                delete val["groupResult"];
+                if (!isNullOrUndefined(val["courses_year"])){
+                    var temp = parseInt(val["courses_year"]);
+                    val["courses_year"] = temp;
+                }
+
             }
 
             var resultThing:QueryRequest2 = {

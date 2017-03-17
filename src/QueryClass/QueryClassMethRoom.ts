@@ -275,11 +275,11 @@ export default class QueryClassMethRoom {
 
                 if (innderValue === Object.keys(room)[c]) {
                     if (Object.keys(valueinMain)[0]==="COUNT"){
-                        result["counter array"] = [];
+                        result["counter" + innderValue] = [];
                     }
 
                     if (Object.keys(valueinMain)[0]==="AVG"){
-                        result["avg array"] = [];
+                        result["avg" + innderValue] = [];
                     }
                     result[Object.keys(input_option[apply][a])[0]] = room[Object.keys(room)[c]];
 
