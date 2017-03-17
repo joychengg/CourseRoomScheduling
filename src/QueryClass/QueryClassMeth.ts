@@ -349,6 +349,9 @@ export default class QueryClassMeth {
 
                         result[input_option[column][i]] = parseInt(course[Object.keys(course)[c]]);
                     }
+                    if(input_option[column][i] === "courses_uuid"){
+                        result[input_option[column][i]] = course[Object.keys(course)[c]].toString();
+                    }
                     else{
 
                         result[input_option[column][i]] = course[Object.keys(course)[c]];

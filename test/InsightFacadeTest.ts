@@ -1505,101 +1505,6 @@ var knuthQuery: QueryRequest = {
     }
 }
 
-var knuthResult ={"render":"TABLE","result":[{"rooms_furniture":"Classroom-Learn Lab","rooms_name":"ORCH_3018"},{"rooms_furniture":"Classroom-Learn Lab","rooms_name":"ORCH_4074"},{"rooms_furniture":"Classroom-Learn Lab","rooms_name":"UCLL_109"}]}
-
-
-var kleeneResult = {"render":"TABLE","result":[{"rooms_address":"2202 Main Mall","rooms_name":"AERL_120"},{"rooms_address":"2053 Main Mall","rooms_name":"ANGU_098"},{"rooms_address":"2053 Main Mall","rooms_name":"ANGU_241"},{"rooms_address":"2053 Main Mall","rooms_name":"ANGU_243"},{"rooms_address":"2053 Main Mall","rooms_name":"ANGU_343"},{"rooms_address":"2053 Main Mall","rooms_name":"ANGU_345"},{"rooms_address":"2053 Main Mall","rooms_name":"ANGU_347"},{"rooms_address":"2053 Main Mall","rooms_name":"ANGU_350"},{"rooms_address":"2053 Main Mall","rooms_name":"ANGU_354"},{"rooms_address":"6303 North West Marine Drive","rooms_name":"ANSO_203"},{"rooms_address":"6303 North West Marine Drive","rooms_name":"ANSO_205"},{"rooms_address":"6270 University Boulevard","rooms_name":"BIOL_2000"},{"rooms_address":"6270 University Boulevard","rooms_name":"BIOL_2200"},{"rooms_address":"1874 East Mall","rooms_name":"BRKX_2365"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_A101"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_A102"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_A103"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_A104"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_A201"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B302"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B304"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B306"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B307"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B308"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B310"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B313"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B315"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_B319"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D213"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D216"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D217"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D218"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D219"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D228"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D304"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D306"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D307"},{"rooms_address":"1866 Main Mall","rooms_name":"BUCH_D313"},{"rooms_address":"6250 Applied Science Lane","rooms_name":"CEME_1202"},{"rooms_address":"2360 East Mall V6T 1Z3","rooms_name":"CHBE_101"},{"rooms_address":"2360 East Mall V6T 1Z3","rooms_name":"CHBE_102"},{"rooms_address":"2036 Main Mall","rooms_name":"CHEM_B150"},{"rooms_address":"2036 Main Mall","rooms_name":"CHEM_B250"},{"rooms_address":"2036 Main Mall","rooms_name":"CHEM_C124"},{"rooms_address":"2036 Main Mall","rooms_name":"CHEM_C126"},{"rooms_address":"2036 Main Mall","rooms_name":"CHEM_D200"},{"rooms_address":"2036 Main Mall","rooms_name":"CHEM_D300"},{"rooms_address":"2260 West Mall, V6T 1Z4","rooms_name":"CIRS_1250"},{"rooms_address":"6245 Agronomy Road V6T 1Z4","rooms_name":"DMP_110"},{"rooms_address":"6245 Agronomy Road V6T 1Z4","rooms_name":"DMP_301"},{"rooms_address":"6245 Agronomy Road V6T 1Z4","rooms_name":"DMP_310"},{"rooms_address":"2207 Main Mall","rooms_name":"ESB_1012"},{"rooms_address":"2207 Main Mall","rooms_name":"ESB_1013"},{"rooms_address":"2207 Main Mall","rooms_name":"ESB_2012"},{"rooms_address":"2205 East Mall","rooms_name":"FNH_20"},{"rooms_address":"2205 East Mall","rooms_name":"FNH_320"},{"rooms_address":"2205 East Mall","rooms_name":"FNH_60"},{"rooms_address":"2177 Wesbrook Mall V6T 1Z3","rooms_name":"FRDM_153"},{"rooms_address":"2424 Main Mall","rooms_name":"FSC_1005"},{"rooms_address":"2424 Main Mall","rooms_name":"FSC_1221"},{"rooms_address":"1984 West Mall","rooms_name":"GEOG_100"},{"rooms_address":"1984 West Mall","rooms_name":"GEOG_214"},{"rooms_address":"1984 West Mall","rooms_name":"GEOG_242"},{"rooms_address":"2045 East Mall","rooms_name":"HEBB_100"},{"rooms_address":"6224 Agricultural Road","rooms_name":"HENN_200"},{"rooms_address":"6224 Agricultural Road","rooms_name":"HENN_201"},{"rooms_address":"6224 Agricultural Road","rooms_name":"HENN_202"},{"rooms_address":"1961 East Mall V6T 1Z1","rooms_name":"IBLC_182"},{"rooms_address":"1961 East Mall V6T 1Z1","rooms_name":"IBLC_192"},{"rooms_address":"1961 East Mall V6T 1Z1","rooms_name":"IBLC_193"},{"rooms_address":"1961 East Mall V6T 1Z1","rooms_name":"IBLC_194"},{"rooms_address":"1961 East Mall V6T 1Z1","rooms_name":"IBLC_263"},{"rooms_address":"1961 East Mall V6T 1Z1","rooms_name":"IBLC_266"},{"rooms_address":"1961 East Mall V6T 1Z1","rooms_name":"IBLC_461"},{"rooms_address":"6333 Memorial Road","rooms_name":"LASR_102"},{"rooms_address":"6333 Memorial Road","rooms_name":"LASR_104"},{"rooms_address":"2350 Health Sciences Mall","rooms_name":"LSC_1001"},{"rooms_address":"2350 Health Sciences Mall","rooms_name":"LSC_1002"},{"rooms_address":"2350 Health Sciences Mall","rooms_name":"LSC_1003"},{"rooms_address":"6356 Agricultural Road","rooms_name":"LSK_200"},{"rooms_address":"6356 Agricultural Road","rooms_name":"LSK_201"},{"rooms_address":"1984 Mathematics Road","rooms_name":"MATH_100"},{"rooms_address":"1984 Mathematics Road","rooms_name":"MATH_202"},{"rooms_address":"1984 Mathematics Road","rooms_name":"MATH_225"},{"rooms_address":"1986 Mathematics Road","rooms_name":"MATX_1100"},{"rooms_address":"2356 Main Mall","rooms_name":"MCLD_202"},{"rooms_address":"2356 Main Mall","rooms_name":"MCLD_228"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_158"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_166"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360A"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360B"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360C"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360D"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360E"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360F"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360G"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360H"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360J"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360K"},{"rooms_address":"2357 Main Mall","rooms_name":"MCML_360L"},{"rooms_address":"6108 Thunderbird Boulevard","rooms_name":"OSBO_203B"},{"rooms_address":"6445 University Boulevard","rooms_name":"PCOH_1008"},{"rooms_address":"2405 Wesbrook Mall","rooms_name":"PHRM_1101"},{"rooms_address":"2405 Wesbrook Mall","rooms_name":"PHRM_1201"},{"rooms_address":"2125 Main Mall","rooms_name":"SCRF_100"},{"rooms_address":"2125 Main Mall","rooms_name":"SCRF_201"},{"rooms_address":"2125 Main Mall","rooms_name":"SCRF_203"},{"rooms_address":"2206 East Mall","rooms_name":"SPPH_143"},{"rooms_address":"2206 East Mall","rooms_name":"SPPH_B108"},{"rooms_address":"2175 West Mall V6T 1Z4","rooms_name":"SWNG_121"},{"rooms_address":"2175 West Mall V6T 1Z4","rooms_name":"SWNG_122"},{"rooms_address":"2175 West Mall V6T 1Z4","rooms_name":"SWNG_221"},{"rooms_address":"2175 West Mall V6T 1Z4","rooms_name":"SWNG_222"},{"rooms_address":"2175 West Mall V6T 1Z4","rooms_name":"SWNG_406"},{"rooms_address":"2175 West Mall V6T 1Z4","rooms_name":"SWNG_408"},{"rooms_address":"6174 University Boulevard","rooms_name":"WESB_100"},{"rooms_address":"6174 University Boulevard","rooms_name":"WESB_201"},{"rooms_address":"2194 Health Sciences Mall","rooms_name":"WOOD_1"},{"rooms_address":"2194 Health Sciences Mall","rooms_name":"WOOD_2"},{"rooms_address":"2194 Health Sciences Mall","rooms_name":"WOOD_3"},{"rooms_address":"2194 Health Sciences Mall","rooms_name":"WOOD_4"},{"rooms_address":"2194 Health Sciences Mall","rooms_name":"WOOD_5"},{"rooms_address":"2194 Health Sciences Mall","rooms_name":"WOOD_6"},{"rooms_address":"2194 Health Sciences Mall","rooms_name":"WOOD_B79"}]}
-
-var resultForapply = {"render":"TABLE","result":[{"rooms_fullname":"Woodward (Instructional Resources Centre-IRC)","maxSeats":120,"avgSeats":120,"countSeats":1},{"rooms_fullname":"West Mall Swing Space","maxSeats":190,"avgSeats":188.75,"countSeats":3},{"rooms_fullname":"Student Recreation Centre","maxSeats":299,"avgSeats":299,"countSeats":1},{"rooms_fullname":"Robert F. Osborne Centre","maxSeats":442,"avgSeats":442,"countSeats":1},{"rooms_fullname":"Pharmaceutical Sciences Building","maxSeats":236,"avgSeats":201.5,"countSeats":2},{"rooms_fullname":"MacLeod","maxSeats":136,"avgSeats":129.5,"countSeats":2},{"rooms_fullname":"Life Sciences Centre","maxSeats":350,"avgSeats":275,"countSeats":2},{"rooms_fullname":"Leonard S. Klinck (also known as CSCI)","maxSeats":205,"avgSeats":194,"countSeats":2},{"rooms_fullname":"Irving K Barber Learning Centre","maxSeats":154,"avgSeats":133,"countSeats":2},{"rooms_fullname":"Hugh Dempster Pavilion","maxSeats":160,"avgSeats":140,"countSeats":2},{"rooms_fullname":"Henry Angus","maxSeats":260,"avgSeats":260,"countSeats":1},{"rooms_fullname":"Hebb","maxSeats":375,"avgSeats":375,"countSeats":1},{"rooms_fullname":"Friedman Building","maxSeats":160,"avgSeats":160,"countSeats":1},{"rooms_fullname":"Chemical and Biological Engineering Building","maxSeats":200,"avgSeats":200,"countSeats":1},{"rooms_fullname":"Buchanan","maxSeats":108,"avgSeats":108,"countSeats":1}]};
-
-var resultForCountCourses = {"render":"TABLE","result":[{"courses_dept":"adhe","courses_id":"412","countCourses":1},{"courses_dept":"adhe","courses_id":"330","countCourses":1},{"courses_dept":"adhe","courses_id":"329","countCourses":1},{"courses_dept":"adhe","courses_id":"328","countCourses":1},{"courses_dept":"adhe","courses_id":"327","countCourses":1}]};
-
-var AVGCourseApplyResult = {"render":"TABLE","result":[{"courses_dept":"adhe","courses_id":"412","countCourses":1,"Grades":81},{"courses_dept":"adhe","courses_id":"330","countCourses":1,"Grades":85.25},{"courses_dept":"adhe","courses_id":"329","countCourses":1,"Grades":83.44},{"courses_dept":"adhe","courses_id":"328","countCourses":1,"Grades":80.63},{"courses_dept":"adhe","courses_id":"327","countCourses":1,"Grades":83.05}]};
-
-var result = {
-    "render": "TABLE",
-    "result": [{
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4074"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4068"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4058"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4018"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4004"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3074"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3068"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3058"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3018"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3004"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_1001"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4072"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4062"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4052"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4016"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_4002"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3072"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3062"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3052"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3016"
-    }, {
-        "rooms_address": "6363 Agronomy Road",
-        "rooms_name": "ORCH_3002"
-    }, {
-        "rooms_address": "6245 Agronomy Road V6T 1Z4",
-        "rooms_name": "DMP_310"
-    }, {
-        "rooms_address": "6245 Agronomy Road V6T 1Z4",
-        "rooms_name": "DMP_201"
-    }, {
-        "rooms_address": "6245 Agronomy Road V6T 1Z4",
-        "rooms_name": "DMP_101"
-    }, {
-        "rooms_address": "6245 Agronomy Road V6T 1Z4",
-        "rooms_name": "DMP_301"
-    }, {
-        "rooms_address": "6245 Agronomy Road V6T 1Z4",
-        "rooms_name": "DMP_110"
-    }]
-};
-
-
 
 describe("InsightFacadeTest", function () {
 
@@ -2078,8 +1983,8 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
             expect(value.code).to.equal(200);
-            // console.log(value.body);
-            // expect(value.body).to.deep.equal(resultForapply);
+            //console.log(value.body);
+            //expect(value.body).to.deep.equal(resultForapply);
 
         }).catch(function (err) {
             console.log("error" + err);
@@ -2431,17 +2336,17 @@ describe("InsightFacadeTest", function () {
             expect(err.code).to.equal(400);
         });
     });
-    //
-    // it("first add of file - resolve in 204", function () {
-    //     this.timeout(10000);
-    //     return insightFacade.addDataset('courses', zipStuff).then(function (value) {
-    //         Log.test('Value: ' + value.code);
-    //         expect(value.code).to.equal(201);
-    //     }).catch(function (err) {
-    //         console.log("error" + err);
-    //         expect.fail();
-    //     });
-    // });
+
+    it("first add of file - resolve in 204", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('courses', zipStuff).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(201);
+        }).catch(function (err) {
+            console.log("error" + err);
+            expect.fail();
+        });
+    });
 
     it("adding courses", function () {
         this.timeout(10000);
@@ -2453,7 +2358,6 @@ describe("InsightFacadeTest", function () {
             expect.fail();
         });
     });
-
 
     it("apply with countCourses", function () {
         this.timeout(10000);

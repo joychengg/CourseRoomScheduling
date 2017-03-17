@@ -909,7 +909,7 @@ export default class InsightFacade implements IInsightFacade {
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)){
 
-                if (query.TRANSFORMATIONS.GROUP.length === 0){
+                if (query.TRANSFORMATIONS.GROUP.length === 0 || isNullOrUndefined(query.TRANSFORMATIONS.GROUP)){
                     var failResponseForGroup: InsightResponse = {
                         code: 400,
                         body: {"error": "Group cannot be empty"}
@@ -1051,6 +1051,18 @@ export default class InsightFacade implements IInsightFacade {
                             var Operation = Object.keys(query.TRANSFORMATIONS.APPLY[e][beforeOp])[0];
                             var obj2Key = JSON.stringify(obj2["groupResult"]);
 
+
+                            var failResponseWrongType: InsightResponse = {
+                                code: 400,
+                                body: {"error":"type of apply value is wrong"}
+                            };
+
+                            if ((Operation === "SUM") || (Operation === "MAX") ||(Operation === "MIN") ||(Operation === "AVG") ){
+                                if (typeof(obj2[beforeOp]) !== 'number'){
+                                    reject(failResponseWrongType);
+                                }
+                            }
+
                             if (!condition){
                                 if (Operation === "COUNT") {
 
@@ -1068,16 +1080,6 @@ export default class InsightFacade implements IInsightFacade {
                             if (condition) {
 
 
-                                var failResponseWrongType: InsightResponse = {
-                                    code: 400,
-                                    body: {"error": "type of apply value is wrong"}
-                                };
-
-                                if ((Operation === "SUM") || (Operation === "MAX") ||(Operation === "MIN") ||(Operation === "AVG") ){
-                                    if (typeof(obj2[beforeOp]) !== 'number'){
-                                        reject(failResponseWrongType);
-                                    }
-                                }
 
                                 if (Operation === "SUM") {
 
@@ -1165,16 +1167,19 @@ export default class InsightFacade implements IInsightFacade {
 
                     for (var insideEle of Object.keys(newObj)){
 
-                        if (!isNullOrUndefined(newObj[insideEle]["counter array"])){
+                        var columnSet = new Set(query.OPTIONS.COLUMNS);
 
-                            delete newObj[insideEle]["counter array"];
+                        for (var inKey of Object.keys(newObj[insideEle])) {
+
+                            if (!columnSet.has(inKey)) {
+                                delete newObj[insideEle][inKey];
+                            }
+
+                            if (inKey === 'courses_uuid'){
+                                var string = newObj[insideEle][inKey].toString();
+                                newObj[insideEle][inKey] = string;
+                            }
                         }
-
-                        if(!isNullOrUndefined(newObj[insideEle]["avg array"])){
-                            delete newObj[insideEle]["avg array"];
-                        }
-
-                        delete newObj[insideEle]["groupResult"];
 
                         resultArray.push(newObj[insideEle]);
                     }
@@ -1191,7 +1196,19 @@ export default class InsightFacade implements IInsightFacade {
                         }
                         for (var insideEle of Object.keys(newObj)){
 
-                            delete newObj[insideEle]["groupResult"];
+                            var columnSet = new Set(query.OPTIONS.COLUMNS);
+
+                            for (var inKey of Object.keys(newObj[insideEle])) {
+
+                                if (!columnSet.has(inKey)) {
+                                    delete newObj[insideEle][inKey];
+                                }
+
+                                if (inKey === 'courses_uuid'){
+                                    var string = newObj[insideEle][inKey].toString();
+                                    newObj[insideEle][inKey] = string;
+                                }
+                            }
 
                             resultArray.push(newObj[insideEle]);
                         }
