@@ -691,6 +691,9 @@ export default class InsightFacade implements IInsightFacade {
 
             var acc: any = [];
 
+            var key_column = query.OPTIONS.COLUMNS[0];
+            path = key_column.substring(0, key_column.indexOf("_"));
+
             function checkKey(input: any): any {
 
                 var failResponse2: InsightResponse = {
@@ -706,7 +709,12 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(input.GT)) reject(failResponse2);
 
+                    if(key1[0].substring(0, key1[0].indexOf("_"))!==path){
+                        reject(failResponse2);
+                    }
+
                     if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
+
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
 
                     } else {
@@ -720,6 +728,10 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(input.LT)) reject(failResponse2);
 
+                    if(key1[0].substring(0, key1[0].indexOf("_"))!==path){
+                        reject(failResponse2);
+                    }
+
                     if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
                     } else {
@@ -731,6 +743,10 @@ export default class InsightFacade implements IInsightFacade {
                     var key1 = Object.keys(input.EQ);
 
                     if (isArray(input.EQ)) reject(failResponse2);
+
+                    if(key1[0].substring(0, key1[0].indexOf("_"))!==path){
+                        reject(failResponse2);
+                    }
 
                     if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
@@ -744,6 +760,10 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(input.IS)) reject(failResponse2);
 
+                    if(key1[0].substring(0, key1[0].indexOf("_"))!==path){
+                        reject(failResponse2);
+                    }
+
                     if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
                         acc.push(key1[0].substring(0, key1[0].indexOf("_")));
                     } else {
@@ -754,6 +774,10 @@ export default class InsightFacade implements IInsightFacade {
                     var exprs = input.AND;
 
                     if (!isArray(input.AND)) reject(failResponse2);
+
+                    if(key1[0].substring(0, key1[0].indexOf("_"))!==path){
+                        reject(failResponse2);
+                    }
 
                     if ((input.AND.length === 0) || (!isArray(input.AND))) reject(failResponse2);
 
@@ -767,6 +791,10 @@ export default class InsightFacade implements IInsightFacade {
                     var exprs = input.OR;
 
                     if (!isArray(input.OR)) reject(failResponse2);
+
+                    if(key1[0].substring(0, key1[0].indexOf("_"))!==path){
+                        reject(failResponse2);
+                    }
 
                     if ((input.OR.length === 0) || (!isArray(input.OR))) reject(failResponse2);
 
@@ -782,6 +810,10 @@ export default class InsightFacade implements IInsightFacade {
 
                     if (isArray(exprs)) reject(failResponse2);
 
+                    if(key1[0].substring(0, key1[0].indexOf("_"))!==path){
+                        reject(failResponse2);
+                    }
+
                     checkKey(exprs);
 
                 } else {
@@ -789,9 +821,6 @@ export default class InsightFacade implements IInsightFacade {
                 }
 
             }
-
-            var key_column = query.OPTIONS.COLUMNS[0];
-            path = key_column.substring(0, key_column.indexOf("_"));
 
 
             if (path==="courses"){
