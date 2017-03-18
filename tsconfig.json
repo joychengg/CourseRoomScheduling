@@ -2,16 +2,24 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES5",
-    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true
   },
   "filesGlob": [
+    "/typings/index.d.ts",
     "/src/**/*.ts",
     "/test/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/rest/app",
+    "src/typings/main",
+    "src/typings/main.d.ts"
   ]
 }
+
