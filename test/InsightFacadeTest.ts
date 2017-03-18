@@ -1071,6 +1071,10 @@ var countCourses = {
     }
 };
 
+var qs: QueryRequest = { "WHERE": { "EQ": { "courses_year": 1900 } }, "OPTIONS": { "COLUMNS": [ "courses_dept", "courses_title" ], "FORM": "TABLE" }, "TRANSFORMATIONS": { "GROUP": [ "courses_year", "courses_title", "courses_dept" ], "APPLY": [{ "avgaudits": { "AVG": "courses_audit" } }] } };
+
+
+
 var laterWildRequest = {
     WHERE: {
         "IS": {
@@ -2356,6 +2360,21 @@ describe("InsightFacadeTest", function () {
             expect(value.code).to.equal(201);
         }).catch(function (err) {
             console.log("error" + JSON.stringify(err.body));
+            expect.fail();
+        });
+    });
+
+    it("qs", function () {
+        this.timeout(10000);
+        return insightFacade.performQuery(qs).then(function (value) {
+            Log.test('Value: ' + value.code);
+            //console.log(value.body);
+            expect(value.code).to.equal(200);
+            console.log(JSON.stringify(value.body));
+            //expect(value.body).to.deep.equal(countCourses);
+
+        }).catch(function (err) {
+            console.log("error" + err);
             expect.fail();
         });
     });
