@@ -1222,7 +1222,6 @@ export default class InsightFacade implements IInsightFacade {
                                 newObj[insideEle][inKey] = int;
                             }
                         }
-
                         resultArray.push(newObj[insideEle]);
                     }
 
