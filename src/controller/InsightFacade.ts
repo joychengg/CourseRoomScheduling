@@ -911,7 +911,7 @@ export default class InsightFacade implements IInsightFacade {
                         return false;
                     }
                 }
-                return true;
+                return true; 
             }
 
 
