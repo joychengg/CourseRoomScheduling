@@ -2009,63 +2009,63 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    // it("PUT description", function () {
-    //     this.timeout(10000);
-    //     fs.unlinkSync("./rooms.json");
-    //     return chai.request(URL)
-    //         .put('/dataset/rooms')
-    //         .attach("body", fs.readFileSync("./rooms.zip"), "rooms.zip")
-    //         .then(function (res: any) {
-    //             Log.trace('then:');
-    //             expect(res).to.have.status(204);
-    //             // some assertions
-    //         })
-    //         .catch(function (err:any) {
-    //             Log.trace('catch:'+err);
-    //             // some assertions
-    //             expect.fail();
-    //         });
-    // });
-    //
-    // it("POST description", function () {
-    //     return chai.request(URL)
-    //         .post('/query')
-    //         .send(queryForRoom)
-    //         .then(function (res: any) {
-    //             Log.trace('then:');
-    //             expect(res).to.have.status(200);
-    //             // some assertions
-    //         })
-    //         .catch(function (err:any) {
-    //             Log.trace('catch:');
-    //             // some assertions
-    //             expect.fail();
-    //         });
-    // });
-    // it("DEL should remove a dataset", function () {
-    //     return chai.request(URL)
-    //         .del('/dataset/rooms')
-    //         .then(function (res: any) {
-    //             Log.trace('then:');
-    //             expect(res.status).to.equal(204);
-    //         })
-    //         .catch(function (err:any) {
-    //             Log.trace('catch:');
-    //             expect.fail();
-    //         });
-    // });
-    // it("DEL should remove a dataset2", function () {
-    //     return chai.request(URL)
-    //         .del('/dataset/rooms')
-    //         .then(function (res: any) {
-    //             Log.trace('then:');
-    //             expect.fail();
-    //         })
-    //         .catch(function (err:any) {
-    //             Log.trace('catch:');
-    //             expect(err.status).to.equal(404);
-    //         });
-    // });
+    it("PUT description", function () {
+        this.timeout(10000);
+        fs.unlinkSync("./rooms.json");
+        return chai.request(URL)
+            .put('/dataset/rooms')
+            .attach("body", fs.readFileSync("./rooms.zip"), "rooms.zip")
+            .then(function (res: any) {
+                Log.trace('then:');
+                expect(res).to.have.status(204);
+                // some assertions
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:'+err);
+                // some assertions
+                expect.fail();
+            });
+    });
+
+    it("POST description", function () {
+        return chai.request(URL)
+            .post('/query')
+            .send(queryForRoom)
+            .then(function (res: any) {
+                Log.trace('then:');
+                expect(res).to.have.status(200);
+                // some assertions
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:');
+                // some assertions
+                expect.fail();
+            });
+    });
+    it("DEL should remove a dataset", function () {
+        return chai.request(URL)
+            .del('/dataset/rooms')
+            .then(function (res: any) {
+                Log.trace('then:');
+                expect(res.status).to.equal(204);
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:');
+                expect.fail();
+            });
+    });
+    it("DEL should remove a dataset2", function () {
+        return chai.request(URL)
+            .del('/dataset/rooms')
+            .then(function (res: any) {
+                Log.trace('then:');
+                expect.fail();
+            })
+            .catch(function (err:any) {
+                Log.trace('catch:');
+                expect(err.status).to.equal(404);
+            });
+    });
 
     it("adding rooms.zip first time2 --- resolve(204)", function () {
         this.timeout(10000);
