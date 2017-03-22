@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>4 Col Portfolio - Start Bootstrap Template</title>
+
+        <!-- Custom CSS -->
+        <link href="styles.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="script.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+
+<body>
+
+<!-- Navigation -->
+<!--nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Home</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#">Room Explorer</a>
+                </li>
+                <li>
+                    <a href="#">Room Scheduling</a>
+                </li>
+                <li>
+                    <a href="#">Novel Exploration</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+
+
+    <!-- Page Heading -->
+    <form>
+        <div class="form-group row">
+            <label>Section Size</label>
+            <input type="number" class="form-control" id="sectionSize" placeholder="eg. 50">
+        </div>
+        <div class="form-group row">
+            <label>Department</label>
+            <input type="text" class="form-control" id="department" placeholder="eg. CPSC">
+        </div>
+        <div class="form-group row">
+            <label>Course Number</label>
+            <input type="text" class="form-control" id="courseNumber" placeholder="eg. 310">
+        </div>
+        <div class="form-group row">
+            <label>Instructor</label>
+            <input type="text" class="form-control" id="instructor" placeholder="eg. Wolfman">
+        </div>
+        <div class="form-group row">
+            <label>Course Title</label>
+            <input type="text" class="form-control" id="courseTitle" placeholder="eg. Software Engineering">
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="performSearch()">Search</button>
+    </form>
+
+    <form>
+        <label class="custom-file">
+            <input type="file" id="file" class="custom-file-input">
+            <span class="custom-file-control"></span>
+        </label>
+        <button type="submit" class="btn btn-primary" onclick="upload()">Upload Dataset</button>
+    </form>
+    <!-- /.row -->
+
+    <!-- Projects Row -->
+    <!--div class="row">
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+        <div class="col-md-3 portfolio-item">
+            <a href="#">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </a>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Pagination -->
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <ul class="pagination">
+                <li>
+                    <a href="#">&laquo;</a>
+                </li>
+                <li class="active">
+                    <a href="#">1</a>
+                </li>
+                <li>
+                    <a href="#">2</a>
+                </li>
+                <li>
+                    <a href="#">3</a>
+                </li>
+                <li>
+                    <a href="#">4</a>
+                </li>
+                <li>
+                    <a href="#">5</a>
+                </li>
+                <li>
+                    <a href="#">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; Your Website 2014</p>
+            </div>
+        </div>
+        <!-- /.row -->
+    </footer>
+
+</div>
+<!-- /.container -->
+
+</body>
+
+</html>

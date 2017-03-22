@@ -55,10 +55,7 @@ export default class Server {
                 var users:any = {};
 
                 that.rest = restify.createServer({
-
                     name: 'insightUBC'
-
-
                 });
 
                 that.rest.use(restify.bodyParser({mapParams: true, mapFiles: true}));
@@ -67,6 +64,10 @@ export default class Server {
                     res.send(200);
                     return next();
                 });
+
+                that.rest.get(/(^\/$)|(\.(html|js|css|png|jpg)$)/, restify.serveStatic({
+                    directory:  __dirname,
+                }));
 
                 // provides the echo service
                 // curl -is  http://localhost:4321/echo/myMessage
@@ -154,17 +155,16 @@ export default class Server {
                 return next();
             });
 
-
     }
 
     public static performQ(req: restify.Request, res: restify.Response, next: restify.Next){
 
         var insigh = new InsightFacade();
 
-
             return insigh.performQuery(req.body).then(function (value: any) {
 
                 res.json(value.code, value.body);
+
 
                 return next();
 
