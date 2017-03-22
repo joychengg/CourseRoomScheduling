@@ -176,27 +176,27 @@ var roomforcover3: QueryRequest = {
 var roomWithApply: QueryRequest = {
 
     WHERE: {
-    "AND": [{
-        "IS": {
-            "rooms_furniture": "*Tables*"
-        }
-    }, {
-        "GT": {
-            "rooms_seats": 100
-        }
-    }]
-},
-    OPTIONS: {
-    "COLUMNS": [
-        "rooms_fullname",
-        "maxSeats", "avgSeats", "countSeats"
-    ],
-        "ORDER": {
-        "dir": "DOWN",
-            "keys": ["rooms_fullname"]
+        "AND": [{
+            "IS": {
+                "rooms_furniture": "*Tables*"
+            }
+        }, {
+            "GT": {
+                "rooms_seats": 100
+            }
+        }]
     },
-    "FORM": "TABLE"
-},
+    OPTIONS: {
+        "COLUMNS": [
+            "rooms_fullname",
+            "maxSeats", "avgSeats", "countSeats"
+        ],
+        "ORDER": {
+            "dir": "DOWN",
+            "keys": ["rooms_fullname"]
+        },
+        "FORM": "TABLE"
+    },
     TRANSFORMATIONS: {
         "GROUP": ["rooms_fullname"],
         "APPLY": [{
@@ -610,17 +610,17 @@ var shortQ2: QueryRequest = {
 var testfornoApply:QueryRequest= {
     WHERE: {},
     OPTIONS: {
-    COLUMNS: [
-        "rooms_furniture",
-        "maxseat"
-    ],
+        COLUMNS: [
+            "rooms_furniture",
+            "maxseat"
+        ],
         ORDER: "rooms_furniture",
         FORM: "TABLE"
-},
+    },
     TRANSFORMATIONS: {
-    GROUP: ["rooms_furniture"],
+        GROUP: ["rooms_furniture"],
         APPLY: []
-}
+    }
 };
 
 var fluorineResult = {"render":"TABLE","result":[{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":2008},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":2016},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":2013},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":2015},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":2011},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":2007},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":2012},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2009},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2010},{"courses_id":"327","courses_year":1900},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":2014},{"courses_id":"327","courses_year":1900}]}
@@ -974,16 +974,16 @@ var applyRequest2: QueryRequest = {
 
     WHERE: {},
     OPTIONS: {
-    COLUMNS: [
-        "rooms_furniture"
-    ],
+        COLUMNS: [
+            "rooms_furniture"
+        ],
         ORDER: "rooms_furniture",
         FORM: "TABLE"
-},
+    },
     TRANSFORMATIONS: {
-    GROUP: ["rooms_furniture"],
+        GROUP: ["rooms_furniture"],
         APPLY: []
-}
+    }
 
 }
 
@@ -1316,7 +1316,7 @@ var nautilusQuery:QueryRequest = {
 };
 var bigApplyQuery = {
     WHERE: {}
-,
+    ,
     OPTIONS: {
         COLUMNS: [
             "courses_dept",
@@ -1381,15 +1381,15 @@ var AVGcourseGradeApply = {
 var LTroomQuery:QueryRequest = {
 
     WHERE: {"AND":[
-{
-    "IS"
-:
-    {
-        "rooms_type"
-    :
-        "*Group"
-    }
-}, {"LT": {"rooms_seats": 50}}]
+        {
+            "IS"
+                :
+                {
+                    "rooms_type"
+                        :
+                        "*Group"
+                }
+        }, {"LT": {"rooms_seats": 50}}]
     },
     OPTIONS: {
         "COLUMNS": [
@@ -2239,7 +2239,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             expect.fail();
         }).catch(function (err) {
-           console.log("error" + JSON.stringify(err.body));
+            console.log("error" + JSON.stringify(err.body));
             expect(err.code).to.equal(400);
         });
     });
@@ -2311,7 +2311,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(newTestwithLatlong).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-           // console.log(JSON.stringify(value.body));
+            // console.log(JSON.stringify(value.body));
             //     expect(value.body).to.deep.equal(result);
         }).catch(function (err) {
             console.log("error" + err);
@@ -2387,7 +2387,7 @@ describe("InsightFacadeTest", function () {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
             expect(value.code).to.equal(200);
-              // console.log(JSON.stringify(value.body));
+            // console.log(JSON.stringify(value.body));
             //expect(value.body).to.deep.equal(countCourses);
 
         }).catch(function (err) {
@@ -2522,7 +2522,7 @@ describe("InsightFacadeTest", function () {
         return insightFacade.performQuery(quantum).then(function (value) {
             Log.test('Value: ' + value.code);
             expect(value.code).to.equal(200);
-           // console.log(value.body);
+            // console.log(value.body);
         }).catch(function (err) {
             console.log("error" + err);
             expect.fail();
@@ -2720,7 +2720,7 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect(err.code).to.equal(424);
-           // console.log(err.body);
+            // console.log(err.body);
 
         });
     });
@@ -3242,7 +3242,7 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect(err.code).to.equal(424);
-           // console.log(err.body);
+            // console.log(err.body);
         });
     });
 
@@ -3265,7 +3265,7 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect(err.code).to.equal(424);
-          //  console.log(err.body);
+            //  console.log(err.body);
         });
     });
 

@@ -870,7 +870,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 try {
                     if (path === "courses") {
-                       // console.log(JSON.stringify(everythingArr));
+                        // console.log(JSON.stringify(everythingArr));
                         for (var course of everythingArr) {
 
                             if (objforQuery.Filter(query.WHERE, course) === true)
@@ -918,7 +918,7 @@ export default class InsightFacade implements IInsightFacade {
                         return false;
                     }
                 }
-                return true; 
+                return true;
             }
 
 
@@ -942,7 +942,7 @@ export default class InsightFacade implements IInsightFacade {
                     reject(failResponseForGroup1);
                 }
 
-              //  console.log("after filter, before combine timestamp: "+Date.now());
+                //  console.log("after filter, before combine timestamp: "+Date.now());
 
                 if (query.TRANSFORMATIONS.APPLY.length === 0) {
 
@@ -1045,7 +1045,7 @@ export default class InsightFacade implements IInsightFacade {
             var newObj: any = {};
             var resultArray = [];
 
-           // console.log("before group timestamp: "+Date.now());
+            // console.log("before group timestamp: "+Date.now());
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
@@ -1083,7 +1083,7 @@ export default class InsightFacade implements IInsightFacade {
                         if(!condition) {
                             newObj[JSON.stringify(obj2["groupResult"])]= obj2;
 
-                           // console.log("here is newObj " + JSON.stringify(newObj));
+                            // console.log("here is newObj " + JSON.stringify(newObj));
                         }
 
 
@@ -1165,7 +1165,7 @@ export default class InsightFacade implements IInsightFacade {
                         // console.log("after" + JSON.stringify(newObj[publicIndex]));
                     }
 
-                  //  console.log("after group before apply for count and avg timestamp: "+Date.now());
+                    //  console.log("after group before apply for count and avg timestamp: "+Date.now());
 
                     var distinctArr:any;
                     for (var index in query.TRANSFORMATIONS.APPLY){
@@ -1211,7 +1211,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     }
 
-                   // console.log("the end timestamp: "+Date.now());
+                    // console.log("the end timestamp: "+Date.now());
 
                     for (var insideEle of Object.keys(newObj)){
 
