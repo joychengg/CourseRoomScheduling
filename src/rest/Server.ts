@@ -9,6 +9,7 @@ import Log from "../Util";
 import {InsightResponse} from "../controller/IInsightFacade";
 import InsightFacade from "../controller/InsightFacade";
 
+var fs = require("fs");
 /**
  * This configures the REST endpoints for the server.
  */
@@ -71,6 +72,11 @@ export default class Server {
                 // provides the echo service
                 // curl -is  http://localhost:4321/echo/myMessage
                 that.rest.get('/echo/:msg', Server.echo);
+
+                that.rest.get('index.html', restify.serveStatic({
+                    'directory': __dirname+'/views/',
+                    'default': 'index.html'
+                }));
 
 
                 that.rest.post('/query', Server.performQ);
