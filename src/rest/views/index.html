@@ -7,12 +7,16 @@
         crossorigin="anonymous"></script>
 
 <style>
-    #HEADER{
+    h1 {
         padding: 50px 0;
         font-weight: 400;
         text-align: center;
-        text-align: center;
+    }
 
+    body {
+        font: 14px/1 'Open Sans', sans-serif;
+        color: #555;
+        background: #eee;
     }
 
     #fileupload{
@@ -24,9 +28,74 @@
         text-align: center;
     }
 
+
     textarea{
 
     }
+    main {
+        min-width: 320px;
+        max-width: 800px;
+        padding: 50px;
+        margin: 0 auto;
+        background: #fff;
+    }
+
+    section {
+        display:none;
+        padding: 20px 0 0;
+        border-top: 1px solid #ddd;
+    }
+
+    fieldSet{
+        border:none;
+    }
+
+    label {
+        display: inline-block;
+        margin: 0 0 -1px;
+        padding: 15px 25px;
+        font-weight: 600;
+        text-align: center;
+        color: #bbb;
+        border: 1px solid transparent;
+    }
+
+    label:before {
+        font-family: fontawesome;
+        font-weight: normal;
+        margin-right: 10px;
+    }
+
+    label[for*='1']:before {
+        content: '\f1cb';
+    }
+
+    label[for*='2']:before {
+        content: '\f17d';
+    }
+
+    label[for*='3']:before {
+        content: '\f16b';
+    }
+
+    label[for*='4']:before {
+        content: '\f1a9';
+    }
+    input:checked + label {
+        color: #555;
+        border: 1px solid #ddd;
+        border-top: 2px solid orange;
+        border-bottom: 1px solid #fff;
+    }
+
+    #tab1:checked ~ #courses,
+    #tab2:checked ~ #rooms,
+    #tab3:checked ~ #content3,
+    #tab4:checked ~ #content4 {
+        display: block;
+    }
+
+
 
 
 </style>
@@ -34,6 +103,7 @@
 
 <body>
 <h1 id = "HEADER" class = "header">Insight UBC</h1>
+
 
 <div>
 
@@ -45,11 +115,42 @@
     <table id="Results"></table>
 </div>
 
+<main>
+    <input id="tab1" type="radio" name="tabs" checked>
+    <label for="tab1">Courses</label>
 
+    <input id="tab2" type="radio" name="tabs">
+    <label for="tab2">Rooms</label>
+
+    <input id="tab3" type="radio" name="tabs">
+    <label for="tab3">Temp1</label>
+
+    <input id="tab4" type="radio" name="tabs">
+    <label for="tab4">Temp2</label>
+
+    <section id="rooms">
+        <input type="radio" name="RoomFilter" value="rf0" checked>Select all rooms<br>
+        <input type="radio" name="RoomFilter" value="rf0" checked>
+        <fieldset>
+            <label for="roomType">Select by room type</label>
+            <select name="roomType" id="roomType">
+            </select></fieldset>
+
+        <input type="radio" name="RoomFilter" value="rf0" checked>
+        <fieldset>
+            <label for="roomFurniture">Select by room furniture</label>
+            <select name="roomFurniture" id="roomFurniture">
+            </select></fieldset>
+
+        <input type="radio" name="RoomFilter" value="rf0" checked>Select by building name<input type="text" name="rbRoomFilter" value="Input Name" checked><br />
+
+        <button id="btnSubmitRoom">Submit</button>
+
+    </section>
+
+</main>
 </body>
-<script>
-    src='myScript.js'
-</script>
+<script src ="myScript.js"></script>
 
 <body>
 

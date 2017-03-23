@@ -64,18 +64,18 @@ export default class Server {
 
                 that.rest.use(restify.bodyParser({mapParams: true, mapFiles: true}));
 
-                that.rest.get('/', function (req: restify.Request, res: restify.Response, next: restify.Next) {
-                    res.send(200);
-                    return next();
-                });
-
                 // provides the echo service
                 // curl -is  http://localhost:4321/echo/myMessage
                 that.rest.get('/echo/:msg', Server.echo);
 
-                that.rest.get('index.html', restify.serveStatic({
+                that.rest.get('/', restify.serveStatic({
                     'directory': __dirname+'/views/',
                     'default': 'index.html'
+                }));
+
+                that.rest.get('/myScript.js', restify.serveStatic({
+                    'directory': __dirname+'/views/',
+                    'default': 'myScript.js'
                 }));
 
 
@@ -129,6 +129,8 @@ export default class Server {
                     Log.info('Server::start() - restify ERROR: ' + err);
                     reject(err);
                 });
+
+                fulfill(true);
 
 
             } catch (err) {
