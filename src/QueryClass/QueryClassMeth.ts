@@ -70,6 +70,8 @@ export default class QueryClassMeth {
             return 'Audit';
         } else if(input === 'courses_year') {
             return 'Year';
+        } else if (input === 'courses_secSize') {
+            return 'Enrolled';
         }
 
     }
@@ -115,6 +117,8 @@ export default class QueryClassMeth {
             return 'Audit';
         } else if(input === 'courses_year') {
             return 'Year';
+        } else if(input === 'courses_secSize') {
+            return 'Enrolled';
         }
 
 
@@ -135,7 +139,10 @@ export default class QueryClassMeth {
 
         if ((input_key==="courses_audit")&&(typeof(input_value)==="number")) {
             return true;
-        }else if ((input_key === "courses_avg")&&(typeof(input_value)==="number")){
+        }else if((input_key === "courses_secSize")&&(typeof(input_value)==="number")){
+            return true;
+
+        }else if((input_key === "courses_avg")&&(typeof(input_value)==="number")){
             return true;
 
         }else if((input_key === "courses_pass")&&(typeof(input_value)==="number")){
@@ -144,9 +151,8 @@ export default class QueryClassMeth {
             return true;
         }else if((input_key === "courses_year")&&(typeof(input_value)==="number")){
             return true;
-        }
-        else {
-
+        }else{
+            console.log("been here");
             throw new Error;
         }
     }
@@ -328,6 +334,7 @@ export default class QueryClassMeth {
             for (var c = 0; c < Object.keys(course).length; c++) {
 
                 if (input_option[group][i] === Object.keys(course)[c]) {
+
                     result[input_option[group][i]] = course[Object.keys(course)[c]];
                     if (group==="GROUP")
                     result["groupResult"][input_option[group][i]]=course[Object.keys(course)[c]];
