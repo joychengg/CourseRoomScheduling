@@ -6,7 +6,38 @@
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script></head>
+
 <style>
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 7px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+
+    .button {
+        background-color: white;
+        color: #008CBA;
+        border: 2px solid #008CBA;
+        height:20px
+    }
+
+    .button:hover {
+        background-color: #008CBA;
+        color: white;
+    }
     h1 {
         padding: 50px 0;
         font-weight: 400;
@@ -19,18 +50,17 @@
         background: #eee;
     }
 
-    #fileupload{
-        border-left: 6px solid red;
-        background-color: lightgrey;
+    /*#fileupload{*/
+        /*border-left: 6px solid red;*/
+        /*background-color: lightgrey;*/
+        /*text-align: center;*/
+    /*}*/
+
+    #textBox{
+        text-align :center;
     }
-
-    div{
-        text-align: center;
-    }
-
-
-    textarea{
-
+    #content4{
+        text-align :center;
     }
     main {
         min-width: 320px;
@@ -105,15 +135,12 @@
 <h1 id = "HEADER" class = "header">Insight UBC</h1>
 
 
-<div>
+<!--<div id = "textBox">-->
 
-    <input type="file" name="fileupload" id="fileupload" />
+    <!--<input type="file" name="fileupload" id="fileupload" />-->
 
-    <button id="upload">Upload</button><br/>
-    <textarea id="txtQuery"></textarea><br/>
-    <button id="btnSubmit">Submit</button>
-    <table id="Results"></table>
-</div>
+    <!--<button class = "button" id="upload">Upload</button><br/>-->
+<!--</div>-->
 
 <main>
     <input id="tab1" type="radio" name="tabs" checked>
@@ -128,29 +155,53 @@
     <input id="tab4" type="radio" name="tabs">
     <label for="tab4">Temp2</label>
 
+    <section id="content4">
+        <textarea id="txtQuery"></textarea><br/>
+        <button id="btnSubmit" class = "button">Submit</button>
+    </section>
+
     <section id="rooms">
-        <input type="radio" name="RoomFilter" value="rf0" checked>Select all rooms<br>
-        <input type="radio" name="RoomFilter" value="rf0" checked>
-        <fieldset>
-            <label for="roomType">Select by room type</label>
-            <select name="roomType" id="roomType">
-            </select></fieldset>
+        <input type="radio" name="RoomFilter" value="allR" checked>Select all rooms　<br/><br/>
 
-        <input type="radio" name="RoomFilter" value="rf0" checked>
-        <fieldset>
-            <label for="roomFurniture">Select by room furniture</label>
-            <select name="roomFurniture" id="roomFurniture">
-            </select></fieldset>
+        <input type="radio" name="RoomFilter" value="meterR" checked>Select rooms within <input type="text" name="rbRoomFilter" value="Input Meter" checked> meters of building
+        <select id="roombName-meterR">
+            <option value=""></option>
+        </select><br><br>
+        <input type="radio" name="RoomFilter" value="typeR" checked>
+        Select rooms by type
+        <select id="roomtype">
+            <option value=""></option>
+        </select> or funiture <select id="roomfurniture">
+        <option value=""></option>
+    </select>
 
-        <input type="radio" name="RoomFilter" value="rf0" checked>Select by building name<input type="text" name="rbRoomFilter" value="Input Name" checked><br />
+        <br><br>
 
-        <button id="btnSubmitRoom">Submit</button>
+        <input type="radio" name="RoomFilter" value="sizeR" checked> Select rooms over size of <input type="text" id = 'sizeInput' name="rbRoomFilter" value="Input Size" checked>
+
+        <br><br>
+
+
+        <input type="radio" name="RoomFilter" value="buildingR" checked>Select rooms by building name
+        <select id="roombName-buildingR">
+            <option value=""></option>
+        </select>
+        <br><br>
+
+
+
+        <button class = "button" id="btnSubmitRoom">Submit</button>
 
     </section>
 
+    <div id="render">
+        <h3>Result</h3>
+    </div>
 </main>
 </body>
-<script src ="myScript.js"></script>
+
+<script src="d3.min.js"></script>
+<script src="myScript.js"></script>
 
 <body>
 

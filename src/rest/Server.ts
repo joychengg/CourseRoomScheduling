@@ -9,7 +9,6 @@ import Log from "../Util";
 import {InsightResponse} from "../controller/IInsightFacade";
 import InsightFacade from "../controller/InsightFacade";
 
-var fs = require("fs");
 /**
  * This configures the REST endpoints for the server.
  */
@@ -78,6 +77,11 @@ export default class Server {
                     'default': 'myScript.js'
                 }));
 
+                that.rest.get('/d3.min.js', restify.serveStatic({
+                    'directory': __dirname+'/views/',
+                    'default': 'd3.min.js'
+                }));
+
 
                 that.rest.post('/query', Server.performQ);
 
@@ -97,6 +101,7 @@ export default class Server {
                         });
 
                 });
+
 
                 that.rest.del("/dataset/:id", Server.deleteD);
 
@@ -164,6 +169,7 @@ export default class Server {
 
 
     }
+
 
     public static performQ(req: restify.Request, res: restify.Response, next: restify.Next){
 
