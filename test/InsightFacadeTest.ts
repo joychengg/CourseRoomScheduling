@@ -528,7 +528,7 @@ var testForYear: QueryRequest = {
     }
 }
 
-var fluorineQuery: QueryRequest = {"WHERE":{"AND":[{"IS":{"courses_dept":"adhe"}},{"IS":{"courses_id":"327"}}]},"TRANSFORMATIONS":{"GROUP":["courses_dept","courses_id"],"APPLY":[]},"OPTIONS":{"COLUMNS":["courses_dept","courses_id"],"FORM":"TABLE"}};
+var fluorineQuery: QueryRequest = {"WHERE":{"AND":[{"IS":{"courses_dept":"cpsc"}},{"IS":{"courses_id":"310"}}]},"TRANSFORMATIONS":{"GROUP":["courses_dept","courses_id"],"APPLY":[{"maxAverage":{"MAX":"courses_avg"}}]},"OPTIONS":{"COLUMNS":["maxAverage","courses_dept","courses_id"],"FORM":"TABLE"}}
 
 var testforcoverage: QueryRequest = {
     WHERE: {

@@ -747,7 +747,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     var key1 = Object.keys(input.IS);
 
-                    if (isArray(input.IS)) reject(failResponse2);
+                   // if (isArray(input.IS)) reject(failResponse2);
                     if (objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))) && key1[0].substring(0, key1[0].indexOf("_")) != path) reject(failResponse2);
 
 
