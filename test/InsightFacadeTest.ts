@@ -528,22 +528,7 @@ var testForYear: QueryRequest = {
     }
 }
 
-var fluorineQuery: QueryRequest = {
-    WHERE: {
-        "AND":[{"IS": {
-            "courses_dept": "adhe"
-        }},
-            {"IS":{"courses_id": "327"}}]
-
-    },
-    OPTIONS: {
-        "COLUMNS": [
-            "courses_id", "courses_year"
-        ],
-
-        "FORM": "TABLE"
-    }
-};
+var fluorineQuery: QueryRequest = {"WHERE":{"AND":[{"IS":{"courses_dept":"cpsc"}},{"IS":{"courses_id":"310"}}]},"TRANSFORMATIONS":{"GROUP":["courses_dept","courses_id"],"APPLY":[{"maxAverage":{"MAX":"courses_avg"}}]},"OPTIONS":{"COLUMNS":["maxAverage","courses_dept","courses_id"],"FORM":"TABLE"}}
 
 var testforcoverage: QueryRequest = {
     WHERE: {
@@ -1040,35 +1025,30 @@ var errorRequest: QueryRequest = {
 
 var countCourses = {
     WHERE: {
-        "AND": [{
             "IS": {
-                "courses_dept": "adhe"
+                "courses_dept": "cpsc"
             }
-        }, {
-            "GT": {
-                "courses_avg": 70
-            }
-        }]
     },
     OPTIONS: {
         "COLUMNS": [
+            "courses_secSize",
             "courses_dept",
-            "courses_id", "countCourses"
+            "courses_id"
         ],
-        "ORDER": {
-            "dir": "DOWN",
-            "keys": ["courses_dept"]
-        },
+        // "ORDER": {
+        //     "dir": "DOWN",
+        //     "keys": ["courses_dept"]
+        // },
         "FORM": "TABLE"
     },
-    "TRANSFORMATIONS": {
-        "GROUP": ["courses_dept", "courses_id"],
-        "APPLY": [
-            {
-                "countCourses":{
-                    "COUNT":"courses_id"}
-            }]
-    }
+    // "TRANSFORMATIONS": {
+    //     "GROUP": ["courses_dept", "courses_id"],
+    //     "APPLY": [
+    //         {
+    //             "countCourses":{
+    //                 "COUNT":"courses_id"}
+    //         }]
+    // }
 };
 
 var qs: QueryRequest = { "WHERE": { "EQ": { "courses_year": 1900 } }, "OPTIONS": { "COLUMNS": [ "courses_dept", "courses_title" ], "FORM": "TABLE" }, "TRANSFORMATIONS": { "GROUP": [ "courses_year", "courses_title", "courses_dept" ], "APPLY": [{ "avgaudits": { "AVG": "courses_audit" } }] } };
@@ -1522,7 +1502,7 @@ describe("InsightFacadeTest", function () {
 
         inValidZip = Buffer.from(fs.readFileSync("./invalidJson.zip")).toString('base64');
 
-        return s.start().then().catch();
+      //  return s.start().then().catch();
 
     });
 
@@ -1938,7 +1918,7 @@ describe("InsightFacadeTest", function () {
     after(function () {
         Log.test('After: ' + (<any>this).test.parent.title);
 
-        return s.stop().then().catch();
+       // return s.stop().then().catch();
     });
 
     afterEach(function () {
@@ -1958,308 +1938,319 @@ describe("InsightFacadeTest", function () {
     //     });
     // });
 
-    it("adding rooms.zip first time --- resolve(204)", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('rooms', roomFile).then(function (value) {
-            //Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(204);
-        }).catch(function (err) {
-            console.log("error" + JSON.stringify(err));
-            expect.fail();
-        });
-    });
-
-    // it("apply furniture", function () {
+    // it("adding rooms.zip first time --- resolve(204)", function () {
     //     this.timeout(10000);
-    //     return insightFacade.performQuery(applyRequest2).then(function (value) {
-    //         Log.test('Value: ' + value.code);
-    //         expect(value.code).to.equal(200);
-    //        // console.log(value.body);
-    //         //   expect(value.body).to.deep.equal(applyResult2);
+    //     return insightFacade.addDataset('rooms', roomFile).then(function (value) {
+    //         //Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(204);
     //     }).catch(function (err) {
-    //         console.log("error" + err);
+    //         console.log("error" + JSON.stringify(err));
     //         expect.fail();
     //     });
     // });
-
-    it("apply with maxseat and avgseat", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(roomWithApply).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //console.log(value.body);
-            //expect(value.body).to.deep.equal(resultForapply);
-
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-
-    it("apply contains _", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(ApplykeyWrong).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err.body);
-            expect(err.code).to.equal(400);
-        });
-    });
-
-    it("PUT description", function () {
-        this.timeout(10000);
-        fs.unlinkSync("./rooms.json");
-        return chai.request(URL)
-            .put('/dataset/rooms')
-            .attach("body", fs.readFileSync("./rooms.zip"), "rooms.zip")
-            .then(function (res: any) {
-                Log.trace('then:');
-                expect(res).to.have.status(204);
-                // some assertions
-            })
-            .catch(function (err:any) {
-                Log.trace('catch:'+err);
-                // some assertions
-                expect.fail();
-            });
-    });
-
-    it("POST description", function () {
-        return chai.request(URL)
-            .post('/query')
-            .send(queryForRoom)
-            .then(function (res: any) {
-                Log.trace('then:');
-                expect(res).to.have.status(200);
-                // some assertions
-            })
-            .catch(function (err:any) {
-                Log.trace('catch:');
-                // some assertions
-                expect.fail();
-            });
-    });
-    it("DEL should remove a dataset", function () {
-        return chai.request(URL)
-            .del('/dataset/rooms')
-            .then(function (res: any) {
-                Log.trace('then:');
-                expect(res.status).to.equal(204);
-            })
-            .catch(function (err:any) {
-                Log.trace('catch:');
-                expect.fail();
-            });
-    });
-    it("DEL should remove a dataset2", function () {
-        return chai.request(URL)
-            .del('/dataset/rooms')
-            .then(function (res: any) {
-                Log.trace('then:');
-                expect.fail();
-            })
-            .catch(function (err:any) {
-                Log.trace('catch:');
-                expect(err.status).to.equal(404);
-            });
-    });
-
-    it("adding rooms.zip first time2 --- resolve(204)", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('rooms', roomFile).then(function (value) {
-            //Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(204);
-        }).catch(function (err) {
-            console.log("error" + JSON.stringify(err));
-            expect.fail();
-        });
-    });
-
-    it("latQuery", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(latQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(value.body).to.deep.equal(argonResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    // it("Knuth: Find all studio type rooms without some furniture.", function () {
+    //
+    // // it("apply furniture", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.performQuery(applyRequest2).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         expect(value.code).to.equal(200);
+    // //        // console.log(value.body);
+    // //         //   expect(value.body).to.deep.equal(applyResult2);
+    // //     }).catch(function (err) {
+    // //         console.log("error" + err);
+    // //         expect.fail();
+    // //     });
+    // // });
+    //
+    // it("apply with maxseat and avgseat", function () {
     //     this.timeout(10000);
-    //     return insightFacade.performQuery(knuthQuery).then(function (value) {
+    //     return insightFacade.performQuery(roomWithApply).then(function (value) {
     //         Log.test('Value: ' + value.code);
     //         //console.log(value.body);
     //         expect(value.code).to.equal(200);
-    //         //expect(knuthResult).to.deep.equal(value.body);
+    //         //console.log(value.body);
+    //         //expect(value.body).to.deep.equal(resultForapply);
+    //
     //     }).catch(function (err) {
     //         console.log("error" + err);
     //         expect.fail();
     //     });
     // });
     //
-    // it("apply is empty but column contain maxseat - should give 400", function () {
+    //
+    // it("apply contains _", function () {
     //     this.timeout(10000);
-    //     return insightFacade.performQuery(testfornoApply).then(function (value) {
+    //     return insightFacade.performQuery(ApplykeyWrong).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + err.body);
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
+    //
+    // it("PUT description", function () {
+    //     this.timeout(10000);
+    //     fs.unlinkSync("./rooms.json");
+    //     return chai.request(URL)
+    //         .put('/dataset/rooms')
+    //         .attach("body", fs.readFileSync("./rooms.zip"), "rooms.zip")
+    //         .then(function (res: any) {
+    //             Log.trace('then:');
+    //             expect(res).to.have.status(204);
+    //             // some assertions
+    //         })
+    //         .catch(function (err:any) {
+    //             Log.trace('catch:'+err);
+    //             // some assertions
+    //             expect.fail();
+    //         });
+    // });
+    //
+    // it("POST description", function () {
+    //     return chai.request(URL)
+    //         .post('/query')
+    //         .send(queryForRoom)
+    //         .then(function (res: any) {
+    //             Log.trace('then:');
+    //             expect(res).to.have.status(200);
+    //             // some assertions
+    //         })
+    //         .catch(function (err:any) {
+    //             Log.trace('catch:');
+    //             // some assertions
+    //             expect.fail();
+    //         });
+    // });
+    // it("DEL should remove a dataset", function () {
+    //     return chai.request(URL)
+    //         .del('/dataset/rooms')
+    //         .then(function (res: any) {
+    //             Log.trace('then:');
+    //             expect(res.status).to.equal(204);
+    //         })
+    //         .catch(function (err:any) {
+    //             Log.trace('catch:');
+    //             expect.fail();
+    //         });
+    // });
+    // it("DEL should remove a dataset2", function () {
+    //     return chai.request(URL)
+    //         .del('/dataset/rooms')
+    //         .then(function (res: any) {
+    //             Log.trace('then:');
+    //             expect.fail();
+    //         })
+    //         .catch(function (err:any) {
+    //             Log.trace('catch:');
+    //             expect(err.status).to.equal(404);
+    //         });
+    // });
+    //
+    // it("adding rooms.zip first time2 --- resolve(204)", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('rooms', roomFile).then(function (value) {
+    //         //Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(204);
+    //     }).catch(function (err) {
+    //         console.log("error" + JSON.stringify(err));
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("latQuery", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(latQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         //expect(value.body).to.deep.equal(argonResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // // it("Knuth: Find all studio type rooms without some furniture.", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.performQuery(knuthQuery).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         //console.log(value.body);
+    // //         expect(value.code).to.equal(200);
+    // //         //expect(knuthResult).to.deep.equal(value.body);
+    // //     }).catch(function (err) {
+    // //         console.log("error" + err);
+    // //         expect.fail();
+    // //     });
+    // // });
+    // //
+    // // it("apply is empty but column contain maxseat - should give 400", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.performQuery(testfornoApply).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         expect.fail();
+    // //     }).catch(function (err) {
+    // //         console.log("error" + err);
+    // //         expect(err.code).to.equal(400);
+    // //       //  console.log(err.body);
+    // //     });
+    // // });
+    // //
+    // //
+    // //
+    // //
+    // //
+    // // it("Nautilus: Should be able to find all rooms of a certain type", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.performQuery(nautilusQuery).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         //console.log(value.body);
+    // //         expect(value.code).to.equal(200);
+    // //       //  expect(JSON.stringify(value.body).length).to.equal(JSON.stringify(nautilusResult).length);
+    // //     }).catch(function (err) {
+    // //         console.log("error" + err);
+    // //         expect.fail();
+    // //     });
+    // // });
+    // //
+    // // it("deepNest", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.performQuery(deepNestRequest).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         //console.log(value.body);
+    // //         expect(value.code).to.equal(200);
+    // //         //expect(JSON.stringify(value.body).length).to.equal(JSON.stringify(nautilusResult).length);
+    // //     }).catch(function (err) {
+    // //         console.log("error" + err);
+    // //         expect.fail();
+    // //     });
+    // // });
+    // //
+    // // it("LTroomQuery", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.performQuery(LTroomQuery).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         expect(value.code).to.equal(200);
+    // //     }).catch(function (err) {
+    // //         console.log("error" + err);
+    // //         expect.fail();
+    // //     });
+    // // });
+    // //
+    // // it("laterStarQuery", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.performQuery(laterStarQuery).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         expect(value.code).to.equal(200);
+    // //     }).catch(function (err) {
+    // //         console.log("error" + err);
+    // //         expect.fail();
+    // //     });
+    // // });
+    // //
+    // // it("Helium: Filter by partial href", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.performQuery(heliumQuery).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         //console.log(value.body);
+    // //         expect(value.code).to.equal(200);
+    // //        // expect(heliumResult).to.deep.equal(value.body);
+    // //     }).catch(function (err) {
+    // //         console.log("error" + err);
+    // //         expect.fail();
+    // //     });
+    // // });
+    //
+    // it("Kleene: Find all group type rooms without some furniture", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(kleeneQuery).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         //expect(kleeneResult).to.deep.equal(value.body);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("errAND", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(errANDQuery).then(function (value) {
     //         Log.test('Value: ' + value.code);
     //         expect.fail();
     //     }).catch(function (err) {
     //         console.log("error" + err);
     //         expect(err.code).to.equal(400);
-    //       //  console.log(err.body);
     //     });
     // });
     //
-    //
-    //
-    //
-    //
-    // it("Nautilus: Should be able to find all rooms of a certain type", function () {
+    // it("errOR", function () {
     //     this.timeout(10000);
-    //     return insightFacade.performQuery(nautilusQuery).then(function (value) {
+    //     return insightFacade.performQuery(errORQuery).then(function (value) {
     //         Log.test('Value: ' + value.code);
-    //         //console.log(value.body);
-    //         expect(value.code).to.equal(200);
-    //       //  expect(JSON.stringify(value.body).length).to.equal(JSON.stringify(nautilusResult).length);
+    //         expect.fail();
     //     }).catch(function (err) {
     //         console.log("error" + err);
-    //         expect.fail();
+    //         expect(err.code).to.equal(400);
     //     });
     // });
     //
-    // it("deepNest", function () {
+    //
+    // it("server", function () {
+    //     Serv1.start();
+    //     Serv1.stop();
+    // });
+    //
+    // it("adding rooms.zip with wrong id --- resolve(400)", function () {
     //     this.timeout(10000);
-    //     return insightFacade.performQuery(deepNestRequest).then(function (value) {
+    //     return insightFacade.addDataset('courses123', roomFile).then(function (value) {
     //         Log.test('Value: ' + value.code);
-    //         //console.log(value.body);
-    //         expect(value.code).to.equal(200);
-    //         //expect(JSON.stringify(value.body).length).to.equal(JSON.stringify(nautilusResult).length);
-    //     }).catch(function (err) {
-    //         console.log("error" + err);
     //         expect.fail();
+    //     }).catch(function (err) {
+    //         console.log("error" + JSON.stringify(err));
+    //         expect(err.code).to.equal(400);
     //     });
     // });
     //
-    // it("LTroomQuery", function () {
+    // it("adding rooms.zip with courses id --- resolve(400)", function () {
     //     this.timeout(10000);
-    //     return insightFacade.performQuery(LTroomQuery).then(function (value) {
+    //     return insightFacade.addDataset('courses', roomFile).then(function (value) {
     //         Log.test('Value: ' + value.code);
-    //         expect(value.code).to.equal(200);
-    //     }).catch(function (err) {
-    //         console.log("error" + err);
     //         expect.fail();
+    //     }).catch(function (err) {
+    //        console.log("error" + JSON.stringify(err.body));
+    //         expect(err.code).to.equal(400);
     //     });
     // });
     //
-    // it("laterStarQuery", function () {
+    //
+    // it("delete file fail --- reject(404)", function () {
     //     this.timeout(10000);
-    //     return insightFacade.performQuery(laterStarQuery).then(function (value) {
+    //     return insightFacade.removeDataset('courses').then(function (value) {
     //         Log.test('Value: ' + value.code);
-    //         expect(value.code).to.equal(200);
+    //         expect.fail();
     //     }).catch(function (err) {
     //         console.log("error" + err);
-    //         expect.fail();
+    //         expect(err.code).to.equal(404);
     //     });
     // });
     //
-    // it("Helium: Filter by partial href", function () {
+    //
+    // // it("cant parse file - reject 400", function () {
+    // //     this.timeout(10000);
+    // //     return insightFacade.addDataset('courses123', inValidZip).then(function (value) {
+    // //         Log.test('Value: ' + value.code);
+    // //         expect.fail();
+    // //     }).catch(function (err) {
+    // //         //console.log(JSON.stringify(err.body));
+    // //         expect(err.code).to.equal(400);
+    // //     });
+    // // });
+    //
+    // it("add file fail- reject 400", function () {
     //     this.timeout(10000);
-    //     return insightFacade.performQuery(heliumQuery).then(function (value) {
-    //         Log.test('Value: ' + value.code);
-    //         //console.log(value.body);
-    //         expect(value.code).to.equal(200);
-    //        // expect(heliumResult).to.deep.equal(value.body);
-    //     }).catch(function (err) {
-    //         console.log("error" + err);
-    //         expect.fail();
-    //     });
-    // });
-
-    it("Kleene: Find all group type rooms without some furniture", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(kleeneQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            //console.log(value.body);
-            expect(value.code).to.equal(200);
-            //expect(kleeneResult).to.deep.equal(value.body);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("errAND", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(errANDQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-        });
-    });
-
-    it("errOR", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(errORQuery).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(400);
-        });
-    });
-
-
-    it("server", function () {
-        Serv1.start();
-        Serv1.stop();
-    });
-
-    it("adding rooms.zip with wrong id --- resolve(400)", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses123', roomFile).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + JSON.stringify(err));
-            expect(err.code).to.equal(400);
-        });
-    });
-
-    it("adding rooms.zip with courses id --- resolve(400)", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses', roomFile).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-           console.log("error" + JSON.stringify(err.body));
-            expect(err.code).to.equal(400);
-        });
-    });
-
-
-    it("delete file fail --- reject(404)", function () {
-        this.timeout(10000);
-        return insightFacade.removeDataset('courses').then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect(err.code).to.equal(404);
-        });
-    });
-
-
-    // it("cant parse file - reject 400", function () {
-    //     this.timeout(10000);
-    //     return insightFacade.addDataset('courses123', inValidZip).then(function (value) {
+    //     return insightFacade.addDataset('courses1223', invalidFile).then(function (value) {
     //         Log.test('Value: ' + value.code);
     //         expect.fail();
     //     }).catch(function (err) {
@@ -2267,91 +2258,80 @@ describe("InsightFacadeTest", function () {
     //         expect(err.code).to.equal(400);
     //     });
     // });
-
-    it("add file fail- reject 400", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses1223', invalidFile).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            //console.log(JSON.stringify(err.body));
-            expect(err.code).to.equal(400);
-        });
-    });
-
-    it("query for room", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryForRoom).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            // console.log(JSON.stringify(value.body));
-            //   expect(value.body).to.deep.equal(testResult);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-
-    it("query for room complex", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(queryForRoomComplex).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-            // console.log(JSON.stringify(value.body));
-            //     expect(value.body).to.deep.equal(result);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-    it("query lat lon", function () {
-        this.timeout(10000);
-        return insightFacade.performQuery(newTestwithLatlong).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(200);
-           // console.log(JSON.stringify(value.body));
-            //     expect(value.body).to.deep.equal(result);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
-
-
-    it("cant parse file(no result key) - reject 400", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('coursesNO', noResultZip).then(function (value) {
-            //Log.test('Value: ' + value.body);
-            expect.fail();
-        }).catch(function (err) {
-            expect(err.code).to.equal(400);
-        });
-    });
-
-
-    it("cant parse not a zip file - reject 400", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('coursesDIE', wrongZip).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect.fail();
-        }).catch(function (err) {
-            // console.log(JSON.stringify(err.body));
-            expect(err.code).to.equal(400);
-        });
-    });
-
-    it("first add of file - resolve in 204", function () {
-        this.timeout(10000);
-        return insightFacade.addDataset('courses', zipStuff).then(function (value) {
-            Log.test('Value: ' + value.code);
-            expect(value.code).to.equal(201);
-        }).catch(function (err) {
-            console.log("error" + err);
-            expect.fail();
-        });
-    });
+    //
+    // it("query for room", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryForRoom).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         // console.log(JSON.stringify(value.body));
+    //         //   expect(value.body).to.deep.equal(testResult);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    //
+    // it("query for room complex", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(queryForRoomComplex).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //         // console.log(JSON.stringify(value.body));
+    //         //     expect(value.body).to.deep.equal(result);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    // it("query lat lon", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(newTestwithLatlong).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(200);
+    //        // console.log(JSON.stringify(value.body));
+    //         //     expect(value.body).to.deep.equal(result);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+    //
+    //
+    // it("cant parse file(no result key) - reject 400", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('coursesNO', noResultZip).then(function (value) {
+    //         //Log.test('Value: ' + value.body);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
+    //
+    //
+    // it("cant parse not a zip file - reject 400", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('coursesDIE', wrongZip).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect.fail();
+    //     }).catch(function (err) {
+    //         // console.log(JSON.stringify(err.body));
+    //         expect(err.code).to.equal(400);
+    //     });
+    // });
+    //
+    // it("first add of file - resolve in 204", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.addDataset('courses', zipStuff).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         expect(value.code).to.equal(201);
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
 
     it("adding courses", function () {
         this.timeout(10000);
@@ -2364,11 +2344,26 @@ describe("InsightFacadeTest", function () {
         });
     });
 
-    it("qs", function () {
+    // it("qs", function () {
+    //     this.timeout(10000);
+    //     return insightFacade.performQuery(qs).then(function (value) {
+    //         Log.test('Value: ' + value.code);
+    //         //console.log(value.body);
+    //         expect(value.code).to.equal(200);
+    //         console.log(JSON.stringify(value.body));
+    //         //expect(value.body).to.deep.equal(countCourses);
+    //
+    //     }).catch(function (err) {
+    //         console.log("error" + err);
+    //         expect.fail();
+    //     });
+    // });
+
+    it("fluorine", function () {
         this.timeout(10000);
-        return insightFacade.performQuery(qs).then(function (value) {
+        return insightFacade.performQuery(fluorineQuery).then(function (value) {
             Log.test('Value: ' + value.code);
-            //console.log(value.body);
+            console.log(value.body);
             expect(value.code).to.equal(200);
             console.log(JSON.stringify(value.body));
             //expect(value.body).to.deep.equal(countCourses);
@@ -2380,14 +2375,13 @@ describe("InsightFacadeTest", function () {
     });
 
 
-
-    it("apply with countCourses", function () {
+    it("section size", function () {
         this.timeout(10000);
         return insightFacade.performQuery(countCourses).then(function (value) {
             Log.test('Value: ' + value.code);
             //console.log(value.body);
             expect(value.code).to.equal(200);
-              // console.log(JSON.stringify(value.body));
+            console.log(JSON.stringify(value.body));
             //expect(value.body).to.deep.equal(countCourses);
 
         }).catch(function (err) {
@@ -3300,6 +3294,28 @@ describe("InsightFacadeTest", function () {
         }).catch(function (err) {
             console.log("error" + err);
             expect(err.code).to.equal(400);
+        });
+    });
+
+    it("adding courses", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('courses', zipStuff).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(201);
+        }).catch(function (err) {
+            console.log("error" + JSON.stringify(err.body));
+            expect.fail();
+        });
+    });
+
+    it("adding courses", function () {
+        this.timeout(10000);
+        return insightFacade.addDataset('rooms', roomFile).then(function (value) {
+            Log.test('Value: ' + value.code);
+            expect(value.code).to.equal(201);
+        }).catch(function (err) {
+            console.log("error" + JSON.stringify(err.body));
+            expect.fail();
         });
     });
 

@@ -68,19 +68,14 @@ export default class Server {
                 that.rest.get('/echo/:msg', Server.echo);
 
                 that.rest.get('/', restify.serveStatic({
-                    'directory': __dirname+'/views/',
-                    'default': 'index.html'
+                    'directory': __dirname,
+                    'default': 'views/index.html'
                 }));
 
-                that.rest.get('/myScript.js', restify.serveStatic({
-                    'directory': __dirname+'/views/',
-                    'default': 'myScript.js'
+                that.rest.get('/views/.*', restify.serveStatic({
+                    'directory': __dirname
                 }));
 
-                that.rest.get('/d3.min.js', restify.serveStatic({
-                    'directory': __dirname+'/views/',
-                    'default': 'd3.min.js'
-                }));
 
 
                 that.rest.post('/query', Server.performQ);

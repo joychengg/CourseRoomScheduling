@@ -747,7 +747,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     var key1 = Object.keys(input.IS);
 
-                    if (isArray(input.IS)) reject(failResponse2);
+                   // if (isArray(input.IS)) reject(failResponse2);
                     if (objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))) && key1[0].substring(0, key1[0].indexOf("_")) != path) reject(failResponse2);
 
 
@@ -800,6 +800,7 @@ export default class InsightFacade implements IInsightFacade {
             var key_column = query.OPTIONS.COLUMNS[0];
             path = key_column.substring(0, key_column.indexOf("_"));
 
+            console.log("here is path first" + path);
 
             if (path==="courses"){
 
@@ -867,10 +868,11 @@ export default class InsightFacade implements IInsightFacade {
 
                 }
 
+                console.log("here is path "+path);
 
                 try {
                     if (path === "courses") {
-                       // console.log(JSON.stringify(everythingArr));
+                        // console.log(JSON.stringify(everythingArr));
                         for (var course of everythingArr) {
 
                             if (objforQuery.Filter(query.WHERE, course) === true)
@@ -918,10 +920,10 @@ export default class InsightFacade implements IInsightFacade {
                         return false;
                     }
                 }
-                return true; 
+                return true;
             }
 
-
+            console.log("array of courses" + JSON.stringify(arrOFCourses));
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)){
 
@@ -942,7 +944,7 @@ export default class InsightFacade implements IInsightFacade {
                     reject(failResponseForGroup1);
                 }
 
-              //  console.log("after filter, before combine timestamp: "+Date.now());
+                //  console.log("after filter, before combine timestamp: "+Date.now());
 
                 if (query.TRANSFORMATIONS.APPLY.length === 0) {
 
@@ -1045,7 +1047,7 @@ export default class InsightFacade implements IInsightFacade {
             var newObj: any = {};
             var resultArray = [];
 
-           // console.log("before group timestamp: "+Date.now());
+            // console.log("before group timestamp: "+Date.now());
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)) {
 
@@ -1083,7 +1085,7 @@ export default class InsightFacade implements IInsightFacade {
                         if(!condition) {
                             newObj[JSON.stringify(obj2["groupResult"])]= obj2;
 
-                           // console.log("here is newObj " + JSON.stringify(newObj));
+                            // console.log("here is newObj " + JSON.stringify(newObj));
                         }
 
 
@@ -1165,7 +1167,7 @@ export default class InsightFacade implements IInsightFacade {
                         // console.log("after" + JSON.stringify(newObj[publicIndex]));
                     }
 
-                  //  console.log("after group before apply for count and avg timestamp: "+Date.now());
+                    //  console.log("after group before apply for count and avg timestamp: "+Date.now());
 
                     var distinctArr:any;
                     for (var index in query.TRANSFORMATIONS.APPLY){
@@ -1211,7 +1213,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     }
 
-                   // console.log("the end timestamp: "+Date.now());
+                    // console.log("the end timestamp: "+Date.now());
 
                     for (var insideEle of Object.keys(newObj)){
 

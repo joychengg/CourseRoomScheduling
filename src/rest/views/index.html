@@ -50,14 +50,13 @@
         background: #eee;
     }
 
-    /*#fileupload{*/
-        /*border-left: 6px solid red;*/
-        /*background-color: lightgrey;*/
-        /*text-align: center;*/
-    /*}*/
+    #fileupload{
+        border-left: 6px solid red;
+        background-color: lightgrey;
+    }
 
-    #textBox{
-        text-align :center;
+    div{
+        text-align: center;
     }
     #content4{
         text-align :center;
@@ -120,11 +119,17 @@
 
     #tab1:checked ~ #courses,
     #tab2:checked ~ #rooms,
-    #tab3:checked ~ #content3,
+    #tab3:checked ~ #Schedule,
     #tab4:checked ~ #content4 {
         display: block;
     }
 
+    span {
+        margin-left: 5em;
+    }
+
+    #department {display:inline-block;margin-right:10px;}
+    #CourseID {display:inline-block;}
 
 
 
@@ -135,12 +140,15 @@
 <h1 id = "HEADER" class = "header">Insight UBC</h1>
 
 
-<!--<div id = "textBox">-->
+<div>
 
-    <!--<input type="file" name="fileupload" id="fileupload" />-->
+    <input type="file" name="fileupload" id="fileupload" />
 
-    <!--<button class = "button" id="upload">Upload</button><br/>-->
-<!--</div>-->
+    <button id="upload">Upload</button><br/>
+    <textarea id="txtQuery"></textarea><br/>
+    <button id="btnSubmit">Submit</button>
+    <table id="Results"></table>
+</div>
 
 <main>
     <input id="tab1" type="radio" name="tabs" checked>
@@ -150,10 +158,66 @@
     <label for="tab2">Rooms</label>
 
     <input id="tab3" type="radio" name="tabs">
-    <label for="tab3">Temp1</label>
+    <label for="tab3">Scheduling</label>
 
     <input id="tab4" type="radio" name="tabs">
     <label for="tab4">Temp2</label>
+
+    <section id="courses">
+
+
+        <form>
+            Course Department:
+            <input id = "Department" type="text" placeholder="CPSC">
+            <span>
+            Courses ID:
+                </span>
+            <input id = "CourseID" type="text" placeholder="310">
+            <br>
+            <br/>
+            Section Size:<br>
+            <input id = "SecSize" type="text" placeholder="100">
+            <br>
+            <br/>
+            Instructor:<br>
+            <input id = "Instructor" type="text"  placeholder="Reid">
+            <br/>
+            <br>Course Title:<br>
+            <input id = "courseTitle" type="text" placeholder="Software Engineering">
+            <br/>
+            <br/>
+            <input id = "HAvg" type="checkbox" name="HighAverage" value="rf0" />
+
+            Highest Average
+            <span>
+
+            <input id = "LAvg" type="checkbox" name="LowAverage" value="rf0" />
+                Lowest Average
+
+                </span>
+            <br/>
+            <input id = "MSection" type="checkbox" name="MSection" value="rf0"/>
+            Most Section
+
+            <span>
+
+                <input id = "MPass" type="checkbox" name="MPass" value="rf0" />
+                Most Passes
+
+            </span>
+            <span>
+                <input id = "MFail" type="checkbox" name="MFail" value="rf0" />
+                Most Failes
+            </span>
+
+            <br/>
+
+            <button class = "button" id="CourseSubButt">Submit</button>
+
+
+        </form>
+
+    </section>
 
     <section id="content4">
         <textarea id="txtQuery"></textarea><br/>
@@ -196,11 +260,41 @@
 
     <div id="render">
     </div>
+
+    <br>
+
+    <section id="Schedule">
+
+
+        <input id = "SDeptCheck" type="checkbox" name="DeptCheck" value="rf0" />
+        Course Department:
+        <input id = "SDept" type="text" placeholder="CPSC">
+        <span>
+
+            <input id = "SIDCheck" type="checkbox" name="IDCheck" value="rf0" />
+            Courses ID:
+                </span>
+        <input id = "SCoursesID" type="text" placeholder="310">
+
+    </section>
+
+    <section id="roomsS">
+        <input type="radio" name="RoomFilter" value="allR" checked>Select all rooms　<br/><br/>
+
+        <input type="radio" name="RoomFilter" value="meterR" checked>Select rooms within <input type="text" name="rbRoomFilter" value="Input Meter" checked> meters of building
+        <select id="SroombName-meterR">
+            <option value=""></option>
+        </select>
+
+    </section>
+
+
+
 </main>
 </body>
 
-<script src="d3.min.js"></script>
-<script src="myScript.js"></script>
+<script src="../views/d3.min.js"></script>
+<script src="../views/myScript.js"></script>
 
 <body>
 
