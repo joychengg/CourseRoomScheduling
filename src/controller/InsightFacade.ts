@@ -1036,7 +1036,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 //console.log("key here "+Object.keys(resultObj[inputObj["groupResult"]]));
 
-                if (!isNullOrUndefined(resultObj[JSON.stringify(inputObj["groupResult"])])) {
+                if (!isNullOrUndefined(resultObj[inputObj["groupResult"]])) {
                     return true;
                 }
                 return false;
@@ -1239,9 +1239,9 @@ export default class InsightFacade implements IInsightFacade {
 
                         if(!GroupLoop(newObj, obj2)) {
 
-                            newObj[obj2["groupResult"]]= obj2;
+                            newObj[JSON.stringify(obj2["groupResult"])]= obj2;
 
-                        }
+                        }}
                         for (var insideEle of Object.keys(newObj)){
 
                             var columnSet = new Set(query.OPTIONS.COLUMNS);
@@ -1264,7 +1264,7 @@ export default class InsightFacade implements IInsightFacade {
                     }
 
                 }
-            }
+
 
             // console.log(finalCourseArr.length);
             if (resultArray.length!==0) {
