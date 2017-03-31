@@ -27,7 +27,7 @@ export default class QueryClassMeth {
             return (parseInt(course[key]) === number);
         }
         else{
-        return (course[key] === number);}
+            return (course[key] === number);}
     }
 
     is_expr(course:any, key:string, value:string):boolean {
@@ -70,8 +70,6 @@ export default class QueryClassMeth {
             return 'Audit';
         } else if(input === 'courses_year') {
             return 'Year';
-        } else if (input === 'courses_secSize') {
-            return 'Enrolled';
         }
 
     }
@@ -117,8 +115,6 @@ export default class QueryClassMeth {
             return 'Audit';
         } else if(input === 'courses_year') {
             return 'Year';
-        } else if(input === 'courses_secSize') {
-            return 'Enrolled';
         }
 
 
@@ -139,10 +135,7 @@ export default class QueryClassMeth {
 
         if ((input_key==="courses_audit")&&(typeof(input_value)==="number")) {
             return true;
-        }else if((input_key === "courses_secSize")&&(typeof(input_value)==="number")){
-            return true;
-
-        }else if((input_key === "courses_avg")&&(typeof(input_value)==="number")){
+        }else if ((input_key === "courses_avg")&&(typeof(input_value)==="number")){
             return true;
 
         }else if((input_key === "courses_pass")&&(typeof(input_value)==="number")){
@@ -151,8 +144,9 @@ export default class QueryClassMeth {
             return true;
         }else if((input_key === "courses_year")&&(typeof(input_value)==="number")){
             return true;
-        }else{
-            //console.log("been here");
+        }
+        else {
+
             throw new Error;
         }
     }
@@ -218,12 +212,12 @@ export default class QueryClassMeth {
 
             if(key1[0] === "courses_year"){
 
-               if(this.checkSection(course)){
+                if(this.checkSection(course)){
 
-                   return (1900 > input.GT[key1[0]]);
-               }else{
-                   return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
-               }
+                    return (1900 > input.GT[key1[0]]);
+                }else{
+                    return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
+                }
 
             }
             return this.gt_expr(course, this.methodKey1(key1[0]), input.GT[key1[0]]);
@@ -333,11 +327,10 @@ export default class QueryClassMeth {
 
             for (var c = 0; c < Object.keys(course).length; c++) {
 
-                if (this.methodKey3(input_option[group][i]) === Object.keys(course)[c]) {
-
+                if (input_option[group][i] === Object.keys(course)[c]) {
                     result[input_option[group][i]] = course[Object.keys(course)[c]];
                     if (group==="GROUP")
-                    result["groupResult"][input_option[group][i]]=course[Object.keys(course)[c]];
+                        result["groupResult"][input_option[group][i]]=course[Object.keys(course)[c]];
                 }
             }
         }
@@ -385,7 +378,7 @@ export default class QueryClassMeth {
 
         for (var c = 0; c < Object.keys(course).length; c++) {
 
-        for (var i = 0; i < input_option[group].length; i++) {
+            for (var i = 0; i < input_option[group].length; i++) {
 
                 if ((course["Section"] === "overall") && (input_option[group][i] === "courses_year")){
                     result[input_option[group][i]] = 1900;
@@ -408,19 +401,19 @@ export default class QueryClassMeth {
             }
 
 
-        for (var z = 0; z < input_option[apply].length; z++) {
+            for (var z = 0; z < input_option[apply].length; z++) {
 
-            var MainkeyInApply2 = null;
-            var valueinMain2 = null;
-            var innderValue2 = null;
+                var MainkeyInApply2 = null;
+                var valueinMain2 = null;
+                var innderValue2 = null;
 
-            MainkeyInApply2 = input_option[apply][z];
+                MainkeyInApply2 = input_option[apply][z];
 
-            valueinMain2 = MainkeyInApply2[Object.keys(MainkeyInApply2)[0]];
+                valueinMain2 = MainkeyInApply2[Object.keys(MainkeyInApply2)[0]];
 
-            innderValue2 = valueinMain2[Object.keys(valueinMain2)[0]];
+                innderValue2 = valueinMain2[Object.keys(valueinMain2)[0]];
 
-          //  for (var b = 0; b < Object.keys(course).length; b++) {
+                //  for (var b = 0; b < Object.keys(course).length; b++) {
 
                 if (Object.keys(valueinMain2)[0]==="COUNT"){
                     result["counter" + innderValue2] = [];
@@ -429,26 +422,26 @@ export default class QueryClassMeth {
                 if (Object.keys(valueinMain2)[0]==="AVG"){
                     result["avg" + innderValue2] = [];
                 }
-                    if ((course["Section"] === "overall") && (input_option[group][z] === "courses_year")) {
-                        result[input_option[group][z]] = 1900;
+                if ((course["Section"] === "overall") && (input_option[group][z] === "courses_year")) {
+                    result[input_option[group][z]] = 1900;
+                }
+
+                if (this.methodKey3(innderValue2) === Object.keys(course)[c]) {
+
+                    if (innderValue2 === "courses_year") {
+
+                        result[Object.keys(input_option[apply][z])[0]] = parseInt(course[Object.keys(course)[c]]);
+
                     }
-
-                    if (this.methodKey3(innderValue2) === Object.keys(course)[c]) {
-
-                        if (innderValue2 === "courses_year") {
-
-                            result[Object.keys(input_option[apply][z])[0]] = parseInt(course[Object.keys(course)[c]]);
-
-                        }
-                        else {
-                            result[Object.keys(input_option[apply][z])[0]] = course[Object.keys(course)[c]];
-
-                        }
+                    else {
+                        result[Object.keys(input_option[apply][z])[0]] = course[Object.keys(course)[c]];
 
                     }
 
                 }
+
             }
+        }
         return result;
 
     }

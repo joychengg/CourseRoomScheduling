@@ -797,13 +797,8 @@ export default class InsightFacade implements IInsightFacade {
 
             }
 
-            for (let tmp of query.OPTIONS.COLUMNS){
-                if (tmp.indexOf("_") > 0){
-                    var tempString = tmp;
-                    path = tempString.substring(0, tmp.indexOf("_"));
-                    break;
-                }
-            }
+            var key_column = query.OPTIONS.COLUMNS[0];
+            path = key_column.substring(0, key_column.indexOf("_"));
 
 
             if (path==="courses"){
@@ -1246,29 +1241,31 @@ export default class InsightFacade implements IInsightFacade {
 
                             newObj[obj2["groupResult"]]= obj2;
 
-                        }}
-                    for (var insideEle of Object.keys(newObj)){
-
-                        var columnSet = new Set(query.OPTIONS.COLUMNS);
-
-                        for (var inKey of Object.keys(newObj[insideEle])) {
-
-                            if (!columnSet.has(inKey)) {
-                                delete newObj[insideEle][inKey];
-                            }else if (inKey === 'courses_uuid'){
-                                var string = newObj[insideEle][inKey].toString();
-                                newObj[insideEle][inKey] = string;
-                            }else if (inKey === 'courses_year'){
-                                var int = parseInt(newObj[insideEle][inKey]);
-                                newObj[insideEle][inKey] = int;
-                            }
                         }
+                        for (var insideEle of Object.keys(newObj)){
 
-                        resultArray.push(newObj[insideEle]);
+                            var columnSet = new Set(query.OPTIONS.COLUMNS);
+
+                            for (var inKey of Object.keys(newObj[insideEle])) {
+
+                                if (!columnSet.has(inKey)) {
+                                    delete newObj[insideEle][inKey];
+                                }else if (inKey === 'courses_uuid'){
+                                    var string = newObj[insideEle][inKey].toString();
+                                    newObj[insideEle][inKey] = string;
+                                }else if (inKey === 'courses_year'){
+                                    var int = parseInt(newObj[insideEle][inKey]);
+                                    newObj[insideEle][inKey] = int;
+                                }
+                            }
+
+                            resultArray.push(newObj[insideEle]);
+                        }
                     }
-                }
 
+                }
             }
+
             // console.log(finalCourseArr.length);
             if (resultArray.length!==0) {
                 finalCourseArr = resultArray;

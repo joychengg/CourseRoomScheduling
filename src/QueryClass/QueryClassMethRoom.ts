@@ -216,7 +216,7 @@ export default class QueryClassMethRoom {
                 if (input_option[group][i] === Object.keys(room)[c]) {
                     result[input_option[group][i]] = room[Object.keys(room)[c]];
                     if(group==="GROUP")
-                    result["groupResult"][input_option[group][i]]=room[Object.keys(room)[c]];
+                        result["groupResult"][input_option[group][i]]=room[Object.keys(room)[c]];
                 }
             }
         }
@@ -259,19 +259,19 @@ export default class QueryClassMethRoom {
                 result["groupResult"][Object.keys(room)[c]]=room[Object.keys(room)[c]];
             }
 
-        for (var a = 0; a < lengthApply; a++) {
-            // console.log(input_option[apply][1]);
-            var MainkeyInApply = null;
-            var valueinMain = null;
-            var innderValue = null;
+            for (var a = 0; a < lengthApply; a++) {
+                // console.log(input_option[apply][1]);
+                var MainkeyInApply = null;
+                var valueinMain = null;
+                var innderValue = null;
 
-            MainkeyInApply = input_option[apply][a];// this should be {"name":{"MAX":"name2"}}
+                MainkeyInApply = input_option[apply][a];// this should be {"name":{"MAX":"name2"}}
 
-            valueinMain = MainkeyInApply[Object.keys(MainkeyInApply)[0]];//this should be {"MAX":"name2"}
+                valueinMain = MainkeyInApply[Object.keys(MainkeyInApply)[0]];//this should be {"MAX":"name2"}
 
-            innderValue = valueinMain[Object.keys(valueinMain)[0]];
+                innderValue = valueinMain[Object.keys(valueinMain)[0]];
 
-            //for (var b = 0; b < Object.keys(room).length; b++) {
+                //for (var b = 0; b < Object.keys(room).length; b++) {
 
                 if (innderValue === Object.keys(room)[c]) {
                     if (Object.keys(valueinMain)[0]==="COUNT"){
@@ -293,4 +293,3 @@ export default class QueryClassMethRoom {
 
     }
 }
-
