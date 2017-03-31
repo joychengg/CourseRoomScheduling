@@ -596,7 +596,7 @@ export default class InsightFacade implements IInsightFacade {
             var arrOFCourses = [];
             var arrOFrooms = [];
 
-            var finalCourseArr = [];　
+            var finalCourseArr = [];
 
             var objforQuery = new QueryClassMeth();
 
@@ -695,7 +695,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 var failResponse2: InsightResponse = {
                     code: 400,
-                    body: {"error": "wrong key"}
+                    body: {"error": "error"}
                 };
 
                 var key = Object.keys(input)[0];
@@ -747,8 +747,8 @@ export default class InsightFacade implements IInsightFacade {
 
                     var key1 = Object.keys(input.IS);
 
-                   if (isArray(input.IS)) reject(failResponse2);
-                   if (objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))) && key1[0].substring(0, key1[0].indexOf("_")) != path) reject(failResponse2);
+                    if (isArray(input.IS)) reject(failResponse2);
+                    if (objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))) && key1[0].substring(0, key1[0].indexOf("_")) != path) reject(failResponse2);
 
 
                     if (!objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_")))) {
@@ -799,12 +799,12 @@ export default class InsightFacade implements IInsightFacade {
 
             for (let tmp of query.OPTIONS.COLUMNS){
                 if (tmp.indexOf("_") > 0){
-                    path = tmp.substring(0, tmp.indexOf("_"));
+                    var tempString = tmp;
+                    path = tempString.substring(0, tmp.indexOf("_"));
                     break;
                 }
             }
 
-            //console.log("here is path first" + path);
 
             if (path==="courses"){
 
@@ -872,7 +872,6 @@ export default class InsightFacade implements IInsightFacade {
 
                 }
 
-                //console.log("here is path "+path);
 
                 try {
                     if (path === "courses") {
@@ -927,7 +926,7 @@ export default class InsightFacade implements IInsightFacade {
                 return true;
             }
 
-            //console.log("array of courses" + JSON.stringify(arrOFCourses));
+
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)){
 
@@ -1042,7 +1041,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 //console.log("key here "+Object.keys(resultObj[inputObj["groupResult"]]));
 
-                if (!isNullOrUndefined(resultObj[inputObj["groupResult"]])) {
+                if (!isNullOrUndefined(resultObj[JSON.stringify(inputObj["groupResult"])])) {
                     return true;
                 }
                 return false;
@@ -1241,37 +1240,35 @@ export default class InsightFacade implements IInsightFacade {
                 } else {
                     for (var b = 0; b < finalCourseArr.length; b++) {
 
-                         var obj2 = finalCourseArr[b];
+                        var obj2 = finalCourseArr[b];
 
                         if(!GroupLoop(newObj, obj2)) {
 
-                            newObj[JSON.stringify(obj2["groupResult"])]= obj2;
+                            newObj[obj2["groupResult"]]= obj2;
 
                         }}
-                        for (var insideEle of Object.keys(newObj)){
+                    for (var insideEle of Object.keys(newObj)){
 
-                            var columnSet = new Set(query.OPTIONS.COLUMNS);
+                        var columnSet = new Set(query.OPTIONS.COLUMNS);
 
-                            for (var inKey of Object.keys(newObj[insideEle])) {
+                        for (var inKey of Object.keys(newObj[insideEle])) {
 
-                                if (!columnSet.has(inKey)) {
-                                    delete newObj[insideEle][inKey];
-                                }else if (inKey === 'courses_uuid'){
-                                    var string = newObj[insideEle][inKey].toString();
-                                    newObj[insideEle][inKey] = string;
-                                }else if (inKey === 'courses_year'){
-                                    var int = parseInt(newObj[insideEle][inKey]);
-                                    newObj[insideEle][inKey] = int;
-                                }
+                            if (!columnSet.has(inKey)) {
+                                delete newObj[insideEle][inKey];
+                            }else if (inKey === 'courses_uuid'){
+                                var string = newObj[insideEle][inKey].toString();
+                                newObj[insideEle][inKey] = string;
+                            }else if (inKey === 'courses_year'){
+                                var int = parseInt(newObj[insideEle][inKey]);
+                                newObj[insideEle][inKey] = int;
                             }
-
-                            resultArray.push(newObj[insideEle]);
                         }
-                    }
 
+                        resultArray.push(newObj[insideEle]);
+                    }
                 }
 
-
+            }
             // console.log(finalCourseArr.length);
             if (resultArray.length!==0) {
                 finalCourseArr = resultArray;
