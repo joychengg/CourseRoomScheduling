@@ -333,7 +333,7 @@ export default class QueryClassMeth {
 
             for (var c = 0; c < Object.keys(course).length; c++) {
 
-                if (input_option[group][i] === Object.keys(course)[c]) {
+                if (this.methodKey3(input_option[group][i]) === Object.keys(course)[c]) {
 
                     result[input_option[group][i]] = course[Object.keys(course)[c]];
                     if (group==="GROUP")

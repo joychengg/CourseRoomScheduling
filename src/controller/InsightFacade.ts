@@ -695,7 +695,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 var failResponse2: InsightResponse = {
                     code: 400,
-                    body: {"error": "error"}
+                    body: {"error": "wrong key"}
                 };
 
                 var key = Object.keys(input)[0];
@@ -747,7 +747,7 @@ export default class InsightFacade implements IInsightFacade {
 
                     var key1 = Object.keys(input.IS);
 
-                   // if (isArray(input.IS)) reject(failResponse2);
+                    if (isArray(input.IS)) reject(failResponse2);
                     if (objforQuery.checkKey(key1[0].substring(0, key1[0].indexOf("_"))) && key1[0].substring(0, key1[0].indexOf("_")) != path) reject(failResponse2);
 
 
@@ -797,10 +797,14 @@ export default class InsightFacade implements IInsightFacade {
 
             }
 
-            var key_column = query.OPTIONS.COLUMNS[0];
-            path = key_column.substring(0, key_column.indexOf("_"));
+            for (let tmp of query.OPTIONS.COLUMNS){
+                if (tmp.indexOf("_") > 0){
+                    path = tmp.substring(0, tmp.indexOf("_"));
+                    break;
+                }
+            }
 
-            console.log("here is path first" + path);
+            //console.log("here is path first" + path);
 
             if (path==="courses"){
 
@@ -868,7 +872,7 @@ export default class InsightFacade implements IInsightFacade {
 
                 }
 
-                console.log("here is path "+path);
+                //console.log("here is path "+path);
 
                 try {
                     if (path === "courses") {
@@ -923,7 +927,7 @@ export default class InsightFacade implements IInsightFacade {
                 return true;
             }
 
-            console.log("array of courses" + JSON.stringify(arrOFCourses));
+            //console.log("array of courses" + JSON.stringify(arrOFCourses));
 
             if (!isNullOrUndefined(query.TRANSFORMATIONS)){
 
@@ -1244,28 +1248,28 @@ export default class InsightFacade implements IInsightFacade {
                             newObj[JSON.stringify(obj2["groupResult"])]= obj2;
 
                         }}
-                        for (var insideEle of Object.keys(newObj)){
+                    for (var insideEle of Object.keys(newObj)){
 
-                            var columnSet = new Set(query.OPTIONS.COLUMNS);
+                        var columnSet = new Set(query.OPTIONS.COLUMNS);
 
-                            for (var inKey of Object.keys(newObj[insideEle])) {
+                        for (var inKey of Object.keys(newObj[insideEle])) {
 
-                                if (!columnSet.has(inKey)) {
-                                    delete newObj[insideEle][inKey];
-                                }else if (inKey === 'courses_uuid'){
-                                    var string = newObj[insideEle][inKey].toString();
-                                    newObj[insideEle][inKey] = string;
-                                }else if (inKey === 'courses_year'){
-                                    var int = parseInt(newObj[insideEle][inKey]);
-                                    newObj[insideEle][inKey] = int;
-                                }
+                            if (!columnSet.has(inKey)) {
+                                delete newObj[insideEle][inKey];
+                            }else if (inKey === 'courses_uuid'){
+                                var string = newObj[insideEle][inKey].toString();
+                                newObj[insideEle][inKey] = string;
+                            }else if (inKey === 'courses_year'){
+                                var int = parseInt(newObj[insideEle][inKey]);
+                                newObj[insideEle][inKey] = int;
                             }
-
-                            resultArray.push(newObj[insideEle]);
                         }
-                    }
 
+                        resultArray.push(newObj[insideEle]);
+                    }
                 }
+
+            }
 
 
             // console.log(finalCourseArr.length);

@@ -528,7 +528,21 @@ var testForYear: QueryRequest = {
     }
 }
 
-var fluorineQuery: QueryRequest = {"WHERE":{"AND":[{"IS":{"courses_dept":"cpsc"}},{"IS":{"courses_id":"310"}}]},"TRANSFORMATIONS":{"GROUP":["courses_dept","courses_id"],"APPLY":[{"maxAverage":{"MAX":"courses_avg"}}]},"OPTIONS":{"COLUMNS":["maxAverage","courses_dept","courses_id"],"FORM":"TABLE"}}
+var fluorineQuery: QueryRequest = {
+    "WHERE": {},
+    "OPTIONS": {
+        "COLUMNS": [
+            "courses_dept"
+        ],
+        "ORDER": "courses_dept",
+        "FORM": "TABLE"
+    },
+    "TRANSFORMATIONS": {
+        "GROUP": ["courses_dept"],
+        "APPLY": []
+    }
+};
+
 
 var testforcoverage: QueryRequest = {
     WHERE: {
@@ -2369,7 +2383,7 @@ describe("InsightFacadeTest", function () {
             //expect(value.body).to.deep.equal(countCourses);
 
         }).catch(function (err) {
-            console.log("error" + err);
+            console.log("error" + JSON.stringify(err));
             expect.fail();
         });
     });
