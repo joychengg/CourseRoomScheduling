@@ -1241,7 +1241,7 @@ export default class InsightFacade implements IInsightFacade {
                 } else {
                     for (var b = 0; b < finalCourseArr.length; b++) {
 
-                        var obj2 = finalCourseArr[b];
+                         var obj2 = finalCourseArr[b];
 
                         if(!GroupLoop(newObj, obj2)) {
 
