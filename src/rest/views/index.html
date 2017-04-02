@@ -13,31 +13,47 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script></head>
 
 <style>
-    .button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover{background-color:#f5f5f5}
+
+    /*.button {*/
+        /*background-color: #4CAF50; !* Green *!*/
+        /*border: none;*/
+        /*color: white;*/
+        /*text-align: center;*/
+        /*text-decoration: none;*/
+        /*display: inline-block;*/
+        /*font-size: 14px;*/
+        /*margin: 7px 2px;*/
+        /*-webkit-transition-duration: 0.4s; !* Safari *!*/
+        /*transition-duration: 0.4s;*/
+        /*cursor: pointer;*/
+    /*}*/
+    .Stext{
         text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 14px;
-        margin: 7px 2px;
-        -webkit-transition-duration: 0.4s; /* Safari */
-        transition-duration: 0.4s;
-        cursor: pointer;
     }
 
-    .button {
-        background-color: white;
-        color: #008CBA;
-        border: 2px solid #008CBA;
-        height:20px
-    }
+    /*.button {*/
+        /*background-color: white;*/
+        /*color: #008CBA;*/
+        /*border: 2px solid #008CBA;*/
+        /*height:20px*/
+    /*}*/
 
-    .button:hover {
-        background-color: #008CBA;
-        color: white;
-    }
+    /*.button:hover {*/
+        /*background-color: #008CBA;*/
+        /*color: white;*/
+    /*}*/
     h1 {
         padding: 50px 0;
         font-weight: 400;
@@ -49,11 +65,13 @@
         color: #555;
         background: #eee;
     }
-
-    #fileupload{
-        border-left: 6px solid red;
-        background-color: lightgrey;
+    .wrapper {
+        text-align: center;
     }
+
+    .button {
+    }
+
 
     div{
         text-align: center;
@@ -94,6 +112,7 @@
         font-weight: normal;
         margin-right: 10px;
     }
+
 
     label[for*='1']:before {
         content: '\f1cb';
@@ -140,15 +159,6 @@
 <h1 id = "HEADER" class = "header">Insight UBC</h1>
 
 
-<div>
-
-    <input type="file" name="fileupload" id="fileupload" />
-
-    <button id="upload">Upload</button><br/>
-    <textarea id="txtQuery"></textarea><br/>
-    <button id="btnSubmit">Submit</button>
-    <table id="Results"></table>
-</div>
 
 <main>
     <input id="tab1" type="radio" name="tabs" checked>
@@ -211,23 +221,39 @@
             </span>
 
             <br/>
-
-            <button class = "button" id="CourseSubButt">Submit</button>
+            <div class="wrapper">
+                <button class = "button" id="CourseSubButt">Submit</button>
+            </div>
 
 
         </form>
 
+
     </section>
 
     <section id="content4">
-        <textarea id="txtQuery"></textarea><br/>
-        <button id="btnSubmit" class = "button">Submit</button>
+        Course Department:
+        <select id="ADept">
+            <option value=""></option>
+        </select>
+        <span>
+
+            Courses ID:
+                </span>
+        <select id="ACourse">
+            <option value=""></option>
+        </select><br/><br/>
+        <button class = "button" id="btnSubmitACourse">Add Course</button><br/><br/>
+        <div id="renderAcourse">
+        </div>
+        <button class = "button" id="btnSubmitChart">Make Chart</button>
+        <canvas id="myChart" width="400" height="400"></canvas>
     </section>
 
     <section id="rooms">
-        <input type="radio" name="RoomFilter" value="allR" checked>Select all rooms　<br/><br/>
+        <input type="radio" name="RoomFilter" value="allR" checked> Select all rooms<br/><br/>
 
-        <input type="radio" name="RoomFilter" value="meterR" checked>Select rooms within <input type="text" id = "meter" name="rbRoomFilter" value="Input Meter" checked> meters of building
+        <input type="radio" name="RoomFilter" value="meterR" checked> Select rooms within <input type="text" id = "meter" name="rbRoomFilter" value="Input Meter" checked> meters of building
         <select id="roombName-meterR">
             <option value=""></option>
         </select><br><br>
@@ -246,15 +272,17 @@
         <br><br>
 
 
-        <input type="radio" name="RoomFilter" value="buildingR" checked>Select rooms by building name
+        <input type="radio" name="RoomFilter" value="buildingR" checked> Select rooms by building name
         <select id="roombName-buildingR">
             <option value=""></option>
         </select>
         <br><br>
 
+        <div class="wrapper">
 
+            <button class = "button" id="btnSubmitRoom">Submit</button>
+        </div>
 
-        <button class = "button" id="btnSubmitRoom">Submit</button>
 
     </section>
 
@@ -268,25 +296,54 @@
 
         <input id = "SDeptCheck" type="checkbox" name="DeptCheck" value="rf0" />
         Course Department:
-        <input id = "SDept" type="text" placeholder="CPSC">
+        <select id="SDept">
+            <option value=""></option>
+        </select>
         <span>
 
             <input id = "SIDCheck" type="checkbox" name="IDCheck" value="rf0" />
             Courses ID:
                 </span>
-        <input id = "SCoursesID" type="text" placeholder="310">
-
-    </section>
-
-    <section id="roomsS">
-        <input type="radio" name="RoomFilter" value="allR" checked>Select all rooms　<br/><br/>
-
-        <input type="radio" name="RoomFilter" value="meterR" checked>Select rooms within <input type="text" name="rbRoomFilter" value="Input Meter" checked> meters of building
-        <select id="SroombName-meterR">
+        <select id="SCourse">
+            <option value=""></option>
+        </select><br/><br/>
+        <div class="wrapper">
+            <button class = "button" id="btnSubmitSCourse">Add Course</button>
+        </div>
+        <br/><br/>
+        <input id = "SRoomCheck" type="checkbox" name="RoomCheck" value="rf0" />
+        Room Building:
+        <select id="SRoom">
             <option value=""></option>
         </select>
+        <span>
+
+            <input id = "SRoomNumCheck" type="checkbox" name="RoomNumCheck" value="rf0" />
+            Rooms Within
+                            <input type="text" id = "Smeter" name="rbRoomFilter" value="Input Meter" checked> Meters of Building
+                        <select id="SroombName-meterR">
+                            <option value=""></option>
+                        </select><br><br>
+                </span>
+        <div class="wrapper">
+            <button class = "button" id="btnSubmitSRoom">Add Room</button>
+        </div><br/><br/>
+
+        <div class = "Stext">
+            <h5>Rooms Added</h5></div>
+        <div id="renderSroom">
+        </div><br/>
+
+        <div class = "Stext"><h5>Courses Added</h5></div>
+        <div id="renderScourse">
+        </div>
+        <div class="wrapper">
+            <button class = "button" id="btnSubmitSchedule">Schedule!</button></div>
+
+        </div>
 
     </section>
+
 
 
 
@@ -295,6 +352,62 @@
 
 <script src="../views/d3.min.js"></script>
 <script src="../views/myScript.js"></script>
+<script src="../views/Chart.js"></script>
+<script>
+
+$('#btnSubmitChart').click(function(){
+    var tmpLabels = [];
+    var tmpData = [];
+
+    for (var i = 0; i < aCourseArray.length; i++){
+        var cID = aCourseArray[i]["courses_id"];
+        var cDept = aCourseArray[i]["courses_dept"];
+        var cAVG = aCourseArray[i]["courses_avg"];
+        tmpLabels.push(cDept + " " + cID);
+        tmpData.push(cAVG);
+    };
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: tmpLabels,
+            datasets: [{
+                label: 'Average',
+                data: tmpData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+
+    });
+
+</script>
+
 
 <body>
 
